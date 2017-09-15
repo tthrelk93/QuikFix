@@ -7,13 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */; };
+		323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */; };
+		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
+		3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */; };
+		3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */; };
 		3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C861F57653F001D8FEC /* AppDelegate.swift */; };
-		3B468C891F57653F001D8FEC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C881F57653F001D8FEC /* ViewController.swift */; };
 		3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8A1F57653F001D8FEC /* Main.storyboard */; };
 		3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8D1F57653F001D8FEC /* Assets.xcassets */; };
 		3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */; };
 		3B468C9C1F57653F001D8FEC /* QuikFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C9B1F57653F001D8FEC /* QuikFixTests.swift */; };
 		3B468CA71F57653F001D8FEC /* QuikFixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */; };
+		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
+		3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */; };
+		3B712AA21F65B02E00FC6567 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */; };
+		3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */; };
+		3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */; };
+		3B9802431F65B90D00F785C8 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802421F65B90D00F785C8 /* Student.swift */; };
+		3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802441F65BA0F00F785C8 /* JobPoster.swift */; };
+		3B9802471F66F49600F785C8 /* CreateAccountStudentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */; };
+		3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802481F68769D00F785C8 /* NavigatorViewController.swift */; };
+		3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */; };
+		3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */; };
+		3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */; };
+		3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A21F6350540068D7EB /* Finalize.swift */; };
+		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
+		A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +53,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
+		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
+		3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = studentProfile.swift; sourceTree = "<group>"; };
+		3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3B468C831F57653F001D8FEC /* QuikFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuikFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468C861F57653F001D8FEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B468C881F57653F001D8FEC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3B468C8B1F57653F001D8FEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3B468C8D1F57653F001D8FEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B468C901F57653F001D8FEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +69,28 @@
 		3B468CA21F57653F001D8FEC /* QuikFixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuikFixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuikFixUITests.swift; sourceTree = "<group>"; };
 		3B468CA81F57653F001D8FEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
+		3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostDateAndTimeViewController.swift; sourceTree = "<group>"; };
+		3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountViewController.swift; sourceTree = "<group>"; };
+		3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountMainViewController.swift; sourceTree = "<group>"; };
+		3B9802421F65B90D00F785C8 /* Student.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		3B9802441F65BA0F00F785C8 /* JobPoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPoster.swift; sourceTree = "<group>"; };
+		3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountStudentViewController.swift; sourceTree = "<group>"; };
+		3B9802481F68769D00F785C8 /* NavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
+		3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountJobPosterViewController.swift; sourceTree = "<group>"; };
+		3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPosterProfileViewController.swift; sourceTree = "<group>"; };
+		3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JobPost-Payment.swift"; sourceTree = "<group>"; };
+		3B9F21A21F6350540068D7EB /* Finalize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Finalize.swift; sourceTree = "<group>"; };
+		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
+		497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		89986E26090F7B76E1797362 /* Pods-QuikFixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.release.xcconfig"; sourceTree = "<group>"; };
+		92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DC1A85FDAE22099A01722CF /* Pods-QuikFix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.debug.xcconfig"; sourceTree = "<group>"; };
+		DDB6BE309CC8A4E3A57F39B8 /* Pods-QuikFixUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F169D01D3A871B858AF0C069 /* Pods-QuikFixTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,12 +114,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E3EF9EA473923E87395C655 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9DC1A85FDAE22099A01722CF /* Pods-QuikFix.debug.xcconfig */,
+				149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */,
+				F169D01D3A871B858AF0C069 /* Pods-QuikFixTests.debug.xcconfig */,
+				89986E26090F7B76E1797362 /* Pods-QuikFixTests.release.xcconfig */,
+				497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */,
+				DDB6BE309CC8A4E3A57F39B8 /* Pods-QuikFixUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3B468C7A1F57653E001D8FEC = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +141,8 @@
 				3B468C9A1F57653F001D8FEC /* QuikFixTests */,
 				3B468CA51F57653F001D8FEC /* QuikFixUITests */,
 				3B468C841F57653F001D8FEC /* Products */,
+				0E3EF9EA473923E87395C655 /* Pods */,
+				CDA56F631708AAA711DBEFEC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +159,19 @@
 		3B468C851F57653F001D8FEC /* QuikFix */ = {
 			isa = PBXGroup;
 			children = (
+				3B9F21A61F6355B20068D7EB /* Model */,
+				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
 				3B468C861F57653F001D8FEC /* AppDelegate.swift */,
-				3B468C881F57653F001D8FEC /* ViewController.swift */,
 				3B468C8A1F57653F001D8FEC /* Main.storyboard */,
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
+				3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */,
+				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
+				3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */,
+				3B98023D1F65B23000F785C8 /* JobPost */,
+				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
+				3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -125,6 +194,49 @@
 			path = QuikFixUITests;
 			sourceTree = "<group>";
 		};
+		3B98023D1F65B23000F785C8 /* JobPost */ = {
+			isa = PBXGroup;
+			children = (
+				3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */,
+				3B9F21A21F6350540068D7EB /* Finalize.swift */,
+				3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */,
+				3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */,
+			);
+			name = JobPost;
+			sourceTree = "<group>";
+		};
+		3B98024C1F68831800F785C8 /* CreateAccount/Login */ = {
+			isa = PBXGroup;
+			children = (
+				3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */,
+				3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */,
+				3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */,
+				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
+				3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */,
+			);
+			name = CreateAccount/Login;
+			sourceTree = "<group>";
+		};
+		3B9F21A61F6355B20068D7EB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3B9F21A41F6354F10068D7EB /* JobPost.swift */,
+				3B9802421F65B90D00F785C8 /* Student.swift */,
+				3B9802441F65BA0F00F785C8 /* JobPoster.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CDA56F631708AAA711DBEFEC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */,
+				FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */,
+				92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +244,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B468CAB1F57653F001D8FEC /* Build configuration list for PBXNativeTarget "QuikFix" */;
 			buildPhases = (
+				1427D56D173AE9FD818FFC20 /* [CP] Check Pods Manifest.lock */,
 				3B468C7F1F57653E001D8FEC /* Sources */,
 				3B468C801F57653E001D8FEC /* Frameworks */,
 				3B468C811F57653E001D8FEC /* Resources */,
+				43364C9E7CD091253BE820D2 /* [CP] Embed Pods Frameworks */,
+				74958879C06DDAE4D85FCFDE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,9 +264,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B468CAE1F57653F001D8FEC /* Build configuration list for PBXNativeTarget "QuikFixTests" */;
 			buildPhases = (
+				2F137FF89D299196F811E294 /* [CP] Check Pods Manifest.lock */,
 				3B468C931F57653F001D8FEC /* Sources */,
 				3B468C941F57653F001D8FEC /* Frameworks */,
 				3B468C951F57653F001D8FEC /* Resources */,
+				E59BC8F9CF7637C3A65DBC48 /* [CP] Embed Pods Frameworks */,
+				D4CAF1B35FBE3E48F334678E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -167,9 +285,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B468CB11F57653F001D8FEC /* Build configuration list for PBXNativeTarget "QuikFixUITests" */;
 			buildPhases = (
+				2D8B1D31A089A3782CDD6C65 /* [CP] Check Pods Manifest.lock */,
 				3B468C9E1F57653F001D8FEC /* Sources */,
 				3B468C9F1F57653F001D8FEC /* Frameworks */,
 				3B468CA01F57653F001D8FEC /* Resources */,
+				A0F3BE148E18D1F47E02058C /* [CP] Embed Pods Frameworks */,
+				F2E00AE2029E199090A613B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,7 +314,7 @@
 				TargetAttributes = {
 					3B468C821F57653E001D8FEC = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 55D7278478;
+						DevelopmentTeam = 2A8TEKG3F8;
 						ProvisioningStyle = Automatic;
 					};
 					3B468C961F57653F001D8FEC = {
@@ -236,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
+				3B712AA21F65B02E00FC6567 /* GoogleService-Info.plist in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
 				3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */,
 			);
@@ -257,13 +379,166 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1427D56D173AE9FD818FFC20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2D8B1D31A089A3782CDD6C65 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2F137FF89D299196F811E294 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		43364C9E7CD091253BE820D2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		74958879C06DDAE4D85FCFDE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A0F3BE148E18D1F47E02058C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4CAF1B35FBE3E48F334678E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E59BC8F9CF7637C3A65DBC48 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F2E00AE2029E199090A613B4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3B468C7F1F57653E001D8FEC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B468C891F57653F001D8FEC /* ViewController.swift in Sources */,
+				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,
+				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
+				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
+				3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */,
+				3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */,
+				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
+				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
+				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,
+				3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */,
 				3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */,
+				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
+				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,
+				3B9802471F66F49600F785C8 /* CreateAccountStudentViewController.swift in Sources */,
+				3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */,
+				3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */,
+				3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */,
+				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,9 +688,11 @@
 		};
 		3B468CAC1F57653F001D8FEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DC1A85FDAE22099A01722CF /* Pods-QuikFix.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 55D7278478;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2A8TEKG3F8;
 				INFOPLIST_FILE = QuikFix/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shitapps.QuikFix;
@@ -426,9 +703,11 @@
 		};
 		3B468CAD1F57653F001D8FEC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 55D7278478;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2A8TEKG3F8;
 				INFOPLIST_FILE = QuikFix/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shitapps.QuikFix;
@@ -439,6 +718,7 @@
 		};
 		3B468CAF1F57653F001D8FEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F169D01D3A871B858AF0C069 /* Pods-QuikFixTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -454,6 +734,7 @@
 		};
 		3B468CB01F57653F001D8FEC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 89986E26090F7B76E1797362 /* Pods-QuikFixTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -469,6 +750,7 @@
 		};
 		3B468CB21F57653F001D8FEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 55D7278478;
@@ -483,6 +765,7 @@
 		};
 		3B468CB31F57653F001D8FEC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDB6BE309CC8A4E3A57F39B8 /* Pods-QuikFixUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 55D7278478;
@@ -514,6 +797,7 @@
 				3B468CAD1F57653F001D8FEC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3B468CAE1F57653F001D8FEC /* Build configuration list for PBXNativeTarget "QuikFixTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +806,7 @@
 				3B468CB01F57653F001D8FEC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3B468CB11F57653F001D8FEC /* Build configuration list for PBXNativeTarget "QuikFixUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +815,7 @@
 				3B468CB31F57653F001D8FEC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
