@@ -169,6 +169,7 @@
 				3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */,
 				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
 				3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */,
+				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
 				3B98023D1F65B23000F785C8 /* JobPost */,
 				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
 				3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */,
@@ -211,7 +212,6 @@
 				3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */,
 				3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */,
 				3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */,
-				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
 				3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */,
 			);
 			name = CreateAccount/Login;

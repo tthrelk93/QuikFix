@@ -65,34 +65,25 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         
     }
-    @IBAction func menuBoundsPressed(_ sender: Any) {
+    @IBAction func showMenuAction(_ sender: UIButton) {
         let menuViewController = storyboard!.instantiateViewController(withIdentifier: "MenuViewController")
         menuViewController.modalPresentationStyle = .custom
-        menuViewController.transitioningDelegate = self as UIViewControllerTransitioningDelegate
+        menuViewController.transitioningDelegate = self
         
         presentationAnimator.animationDelegate = menuViewController as? GuillotineAnimationDelegate
-        
-        presentationAnimator.supportView = self.navigationController?.navigationBar
-        presentationAnimator.presentButton = self.navigationController?.navigationBar
+        presentationAnimator.supportView = navigationController!.navigationBar
+        presentationAnimator.presentButton = sender
         present(menuViewController, animated: true, completion: nil)
-        
     }
-    @IBOutlet weak var menuBounds: UIBarButtonItem!
+
+   // @IBOutlet weak var menuBounds: UIBarButtonItem!
     //var actualMenuBounds
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let navBar = self.navigationController!.navigationBar
-       // menuBounds.setBackgroundImage(UIImage(named: "Image"), for: .normal, barMetrics: UIBarMetrics.default)
-        
-       
-        navigationItem.leftBarButtonItem = menuBounds
-        
-       
-        
-        
-       // navBar.barTintColor = UIColor(red: 65.0 / 255.0, green: 62.0 / 255.0, blue: 79.0 / 255.0, alpha: 1)
-        //navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navBar.barTintColor = UIColor.white
+        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 49.0 / 255.0, green: 74.0 / 255.0, blue: 82.0 / 255.0, alpha: 1)]
         
         profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20

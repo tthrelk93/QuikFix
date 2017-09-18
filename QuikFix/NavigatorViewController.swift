@@ -10,7 +10,13 @@ import UIKit
 
 class NavigatorViewController: UIViewController {
 
+    @IBAction func jobHistoryPressed(_ sender: Any) {
+    }
+    @IBAction func profilePressed(_ sender: Any) {
+        performSegue(withIdentifier: "NavToProfStudent", sender: self)
+    }
     @IBAction func findJobsPressed(_ sender: Any) {
+        
     }
     @IBOutlet weak var findJobsButton: UIButton!
     @IBOutlet weak var backgroundDesign: UIImageView!
@@ -28,14 +34,19 @@ class NavigatorViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "NavToProfStudent"{
+            if let vc = segue.destination as? studentProfile {
+               // vc.
+            }
+        }
     }
-    */
+    
 
 }
