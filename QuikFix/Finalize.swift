@@ -70,6 +70,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     @IBAction func postPressed(_ sender: Any) {
         var values = [String:Any]()
         var ref = Database.database().reference().child("jobs").childByAutoId()
+        values["posterName"] = self.posterName
 
         values["category1"] = jobPost.category1
         values["category2"] = jobPost.category2
@@ -110,6 +111,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var blockView: UIView!
     @IBOutlet weak var finalizeView: UIView!
+    var posterName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         enterAdditInfoTextView.delegate = self
@@ -119,6 +121,17 @@ class Finalize: UIViewController, UITextViewDelegate {
         } else {
             paymentTypeLabel.text = "Payment:"
         }
+        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let snapshots = snapshot.children.allObjects as! [DataSnapshot]
+            
+            for snap in snapshots {
+                if snap.key as! String == "name"{
+                    self.posterName = snap.value as! String
+                    break
+                }
+            }
+        })
         //jobPost.category = "Babysitting"
         
         

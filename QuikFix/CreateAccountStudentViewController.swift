@@ -18,10 +18,13 @@ class CreateAccountStudentViewController: UIViewController {
 
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBAction func createAccountPressed(_ sender: Any) {
-        
+        let last4Bool = emailTextField.text?.hasSuffix(".edu")
         if (nameTextField.text != "Name" && nameTextField.hasText == true) && (emailTextField.text != "Email" && emailTextField.hasText == true) && (passwordTextField.text != "Password" && passwordTextField.hasText == true) && (confirmPasswordTextField.text != "Confirm Password" && confirmPasswordTextField.hasText == true){
             if confirmPasswordTextField.text != passwordTextField.text{
                 //present error passwords don't match
+            }
+            else if last4Bool == false{
+                //present error that not school email
             }
             else {
                 student.bio = ""
@@ -49,9 +52,6 @@ class CreateAccountStudentViewController: UIViewController {
                             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                         }
-                        
-                        
-                        
                         return
                     }
                     //self.user = (user?.uid)!
@@ -64,10 +64,6 @@ class CreateAccountStudentViewController: UIViewController {
                     let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
                     
                     if let profileImage = self.profPic, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
-                        
-                        //storageRef.putData(uploadData)
-                        
-                        
                         storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                             
                             if error != nil {
@@ -86,6 +82,7 @@ class CreateAccountStudentViewController: UIViewController {
                                 values["school"] = self.student.school
                                 values["major"] = self.student.major
                                 values["jobsFinished"] = self.student.jobsFinished
+                                values["totalEarned"] = 0
                                 values["upcomingJobs"] = self.student.upcomingJobs
                                 values["experience"] = self.student.experience
                                 values["rating"] =  self.student.rating
@@ -95,10 +92,7 @@ class CreateAccountStudentViewController: UIViewController {
                                 tempDict[(user?.uid)!] = values
                                 //firedatase upload
                                 Database.database().reference().child("students").updateChildValues(tempDict)
-                                
                                 self.performSegue(withIdentifier: "CreateStudentToProfile", sender: self)
-                                //self.registerUserIntoDatabaseWithUID(uid, values: values as [String : Any])
-                                
                                 
                             }
                         })

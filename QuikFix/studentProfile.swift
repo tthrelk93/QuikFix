@@ -31,9 +31,14 @@ class studentProfile: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var earnedLabel: UILabel!
     @IBOutlet weak var studentBio: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
+    var jobsFinishedArray = [String]()
+    var upcomingJobsArray = [String]()
+    var experienceDict = [String:Any]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
@@ -41,7 +46,28 @@ class studentProfile: UIViewController, UIScrollViewDelegate {
                         self.nameLabel.text = snap.value as! String
                         
                     }
-                    
+                    else if snap.key == "school"{
+                        self.schoolLabel.text = snap.value as? String
+                        }
+                    else if snap.key == "major"{
+                        self.majorLabel.text = snap.value as? String
+                    }
+                        else if snap.key == "jobsFinished"{
+                        for job in snap.value as! [String]{
+                            self.jobsFinishedArray.append(job)
+                        }
+                        self.jobsFinished.text = String(describing:self.jobsFinishedArray.count)
+                        
+                    }
+                    else if snap.key == "rating"{
+                        self.starView.rating = Double(snap.value as! Int)
+                    }
+                    else if snap.key == "totalEarned"{
+                        self.earnedAmount.text = ("$\(String(describing:snap.value as! Int))")
+                    }
+                        
+                
+                
                     else if snap.key == "pic"{
                         if let messageImageUrl = URL(string: snap.value as! String) {
                             

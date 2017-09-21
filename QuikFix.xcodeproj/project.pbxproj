@@ -32,6 +32,9 @@
 		3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */; };
 		3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A21F6350540068D7EB /* Finalize.swift */; };
 		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
+		3BB8CC761F719DC8002EAEF3 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */; };
+		3BB8CC7A1F719F33002EAEF3 /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */; };
+		3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */; };
 		A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +86,9 @@
 		3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JobPost-Payment.swift"; sourceTree = "<group>"; };
 		3B9F21A21F6350540068D7EB /* Finalize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Finalize.swift; sourceTree = "<group>"; };
 		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
+		3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
+		3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostViewController.swift; sourceTree = "<group>"; };
 		497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89986E26090F7B76E1797362 /* Pods-QuikFixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -159,20 +165,22 @@
 		3B468C851F57653F001D8FEC /* QuikFix */ = {
 			isa = PBXGroup;
 			children = (
-				3B9F21A61F6355B20068D7EB /* Model */,
-				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
 				3B468C861F57653F001D8FEC /* AppDelegate.swift */,
 				3B468C8A1F57653F001D8FEC /* Main.storyboard */,
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
 				3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */,
-				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
+				3B98023D1F65B23000F785C8 /* JobPost */,
+				3BB8CC7C1F71A436002EAEF3 /* Cells */,
+				3B9F21A61F6355B20068D7EB /* Model */,
+				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
+				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
 				3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */,
 				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
-				3B98023D1F65B23000F785C8 /* JobPost */,
-				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
 				3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */,
+				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
+				3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -225,6 +233,15 @@
 				3B9802441F65BA0F00F785C8 /* JobPoster.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		3BB8CC7C1F71A436002EAEF3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */,
+				3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		CDA56F631708AAA711DBEFEC /* Frameworks */ = {
@@ -530,6 +547,7 @@
 				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
 				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
 				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,
+				3BB8CC7A1F719F33002EAEF3 /* DateTableViewCell.swift in Sources */,
 				3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */,
 				3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */,
 				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
@@ -538,6 +556,8 @@
 				3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */,
 				3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */,
 				3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */,
+				3BB8CC761F719DC8002EAEF3 /* DateCollectionViewCell.swift in Sources */,
+				3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */,
 				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

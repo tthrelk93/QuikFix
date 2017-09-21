@@ -20,5 +20,6 @@ class Student: NSObject {
     var upcomingJobs: [String]?
     var experience: [String:Any]?
     var rating: Int?
+    var totalEarned: String?
     
 }

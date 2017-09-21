@@ -16,14 +16,14 @@ class NavigatorViewController: UIViewController {
         performSegue(withIdentifier: "NavToProfStudent", sender: self)
     }
     @IBAction func findJobsPressed(_ sender: Any) {
-        
+        performSegue(withIdentifier: "NavToFindJob", sender: self)
     }
     @IBOutlet weak var findJobsButton: UIButton!
     @IBOutlet weak var backgroundDesign: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        backgroundDesign.clipsToBounds = true
-        backgroundDesign.layer.cornerRadius = backgroundDesign.frame.width/2
+        //backgroundDesign.clipsToBounds = true
+        //backgroundDesign.layer.cornerRadius = backgroundDesign.frame.width/2
 
         // Do any additional setup after loading the view.
     }
