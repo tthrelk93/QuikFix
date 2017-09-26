@@ -22,7 +22,7 @@ class JobPost_Payment: UIViewController {
             if flatPriceTextField.text == "0.00" || flatPriceTextField.hasText == false {
                 //show error that info is missing
             } else {
-                jobPost.paymentType = 0
+                //jobPost.paymentType = 0
                 jobPost.payment = flatPriceTextField.text
                 performSegue(withIdentifier: "JPStepThreeToStepFour", sender: self)
                 //perform segue
@@ -32,7 +32,7 @@ class JobPost_Payment: UIViewController {
             if hourlyRateTextField.text == "0.00" || hourlyRateTextField.hasText == false {
                 //show error that missing info
             } else {
-                jobPost.paymentType = 1
+                //jobPost.paymentType = 1
                 jobPost.payment = hourlyRateTextField.text
                 performSegue(withIdentifier: "JPStepThreeToStepFour", sender: self)
             }

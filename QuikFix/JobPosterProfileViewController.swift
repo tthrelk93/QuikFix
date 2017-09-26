@@ -17,16 +17,7 @@ import GuillotineMenu
 class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
-   /* @IBAction func guillotinePressed(_ sender: Any) {
-        let menuViewController = storyboard!.instantiateViewController(withIdentifier: "MenuViewController")
-        menuViewController.modalPresentationStyle = .custom
-        menuViewController.transitioningDelegate = self 
-        
-        presentationAnimator.animationDelegate = menuViewController as? GuillotineAnimationDelegate
-        presentationAnimator.supportView = self.navigationController?.navigationBar
-        presentationAnimator.presentButton = sender as? UIView
-        present(menuViewController, animated: true, completion: nil)
-    }*/
+   
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
     

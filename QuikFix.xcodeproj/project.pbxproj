@@ -10,14 +10,21 @@
 		089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */; };
 		323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */; };
 		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
+		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
+		3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */; };
+		3B144E131F7983220088A1D0 /* JobPostTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */; };
 		3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */; };
 		3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */; };
+		3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */; };
+		3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */; };
 		3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C861F57653F001D8FEC /* AppDelegate.swift */; };
 		3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8A1F57653F001D8FEC /* Main.storyboard */; };
 		3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8D1F57653F001D8FEC /* Assets.xcassets */; };
 		3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */; };
 		3B468C9C1F57653F001D8FEC /* QuikFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C9B1F57653F001D8FEC /* QuikFixTests.swift */; };
 		3B468CA71F57653F001D8FEC /* QuikFixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */; };
+		3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5238801F783518006DFDAE /* DateTableViewCell.swift */; };
+		3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5238811F783518006DFDAE /* DateTableViewCell.xib */; };
 		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
 		3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */; };
 		3B712AA21F65B02E00FC6567 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */; };
@@ -32,8 +39,6 @@
 		3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */; };
 		3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A21F6350540068D7EB /* Finalize.swift */; };
 		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
-		3BB8CC761F719DC8002EAEF3 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */; };
-		3BB8CC7A1F719F33002EAEF3 /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */; };
 		3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */; };
 		A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */; };
 /* End PBXBuildFile section */
@@ -58,8 +63,13 @@
 /* Begin PBXFileReference section */
 		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
 		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
+		3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobTypePickerViewController.swift; sourceTree = "<group>"; };
+		3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleJobPostViewController.swift; sourceTree = "<group>"; };
+		3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostTimeViewController.swift; sourceTree = "<group>"; };
 		3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = studentProfile.swift; sourceTree = "<group>"; };
 		3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B468C831F57653F001D8FEC /* QuikFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuikFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468C861F57653F001D8FEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B468C8B1F57653F001D8FEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -72,6 +82,8 @@
 		3B468CA21F57653F001D8FEC /* QuikFixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuikFixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuikFixUITests.swift; sourceTree = "<group>"; };
 		3B468CA81F57653F001D8FEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B5238801F783518006DFDAE /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
+		3B5238811F783518006DFDAE /* DateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateTableViewCell.xib; sourceTree = "<group>"; };
 		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
 		3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostDateAndTimeViewController.swift; sourceTree = "<group>"; };
 		3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -86,8 +98,6 @@
 		3B9F21A01F630DF60068D7EB /* JobPost-Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JobPost-Payment.swift"; sourceTree = "<group>"; };
 		3B9F21A21F6350540068D7EB /* Finalize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Finalize.swift; sourceTree = "<group>"; };
 		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
-		3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
-		3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
 		3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostViewController.swift; sourceTree = "<group>"; };
 		497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +150,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3B144E141F799FF40088A1D0 /* Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
+				3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */,
+			);
+			name = Profiles;
+			sourceTree = "<group>";
+		};
+		3B144E151F79A0300088A1D0 /* NavsAndMenus */ = {
+			isa = PBXGroup;
+			children = (
+				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
+				3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */,
+			);
+			name = NavsAndMenus;
+			sourceTree = "<group>";
+		};
 		3B468C7A1F57653E001D8FEC = {
 			isa = PBXGroup;
 			children = (
@@ -171,15 +199,15 @@
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
 				3B712AA11F65B02E00FC6567 /* GoogleService-Info.plist */,
-				3B98023D1F65B23000F785C8 /* JobPost */,
 				3BB8CC7C1F71A436002EAEF3 /* Cells */,
 				3B9F21A61F6355B20068D7EB /* Model */,
 				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
-				3B98024D1F68837000F785C8 /* JobPosterProfileViewController.swift */,
-				3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */,
-				3B9802481F68769D00F785C8 /* NavigatorViewController.swift */,
-				3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */,
+				3B144E141F799FF40088A1D0 /* Profiles */,
+				3B98023D1F65B23000F785C8 /* JobPost */,
+				3B144E151F79A0300088A1D0 /* NavsAndMenus */,
 				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
+				3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */,
+				3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */,
 				3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */,
 			);
 			path = QuikFix;
@@ -210,6 +238,7 @@
 				3B9F21A21F6350540068D7EB /* Finalize.swift */,
 				3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */,
 				3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */,
+				3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */,
 			);
 			name = JobPost;
 			sourceTree = "<group>";
@@ -238,8 +267,10 @@
 		3BB8CC7C1F71A436002EAEF3 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				3BB8CC741F719DC8002EAEF3 /* DateCollectionViewCell.swift */,
-				3BB8CC781F719F33002EAEF3 /* DateTableViewCell.swift */,
+				3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */,
+				3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */,
+				3B5238801F783518006DFDAE /* DateTableViewCell.swift */,
+				3B5238811F783518006DFDAE /* DateTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -374,8 +405,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
+				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
 				3B712AA21F65B02E00FC6567 /* GoogleService-Info.plist in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
+				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
 				3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */,
 				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
@@ -547,16 +581,18 @@
 				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
 				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
 				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,
-				3BB8CC7A1F719F33002EAEF3 /* DateTableViewCell.swift in Sources */,
 				3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */,
+				3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */,
 				3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */,
 				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
+				3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */,
 				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,
 				3B9802471F66F49600F785C8 /* CreateAccountStudentViewController.swift in Sources */,
+				3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */,
 				3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */,
 				3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */,
+				3B144E131F7983220088A1D0 /* JobPostTimeViewController.swift in Sources */,
 				3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */,
-				3BB8CC761F719DC8002EAEF3 /* DateCollectionViewCell.swift in Sources */,
 				3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */,
 				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
 			);

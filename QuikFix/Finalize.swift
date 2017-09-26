@@ -18,10 +18,15 @@ class Finalize: UIViewController, UITextViewDelegate {
     
     @IBAction func editAdditinfoPressed(_ sender: Any) {
     }
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var editAdditInfo: UIButton!
     @IBOutlet weak var editDatePressed: UIButton!
     @IBOutlet weak var editPayment: UIButton!
     
+    @IBOutlet weak var editTimeButton: UIButton!
+    
+    @IBAction func editTimePressed(_ sender: Any) {
+    }
     @IBAction func editPaymentPressed(_ sender: Any) {
     }
     @IBOutlet weak var editCat: UIButton!
@@ -36,9 +41,12 @@ class Finalize: UIViewController, UITextViewDelegate {
         //***setting the labels if the additional info textview isnt empty or placeholder text
         if enterAdditInfoTextView.text != "Tap here to add any additional information about the job." && enterAdditInfoTextView.text != ""{
             jobPost.additInfo = enterAdditInfoTextView.text
-            rateLabel.text = "$\(jobPost.payment!)"
+            rateLabel.text = "$25 / hour"
             categoryLabel.text = ("\(jobPost.category1!)/\(jobPost.category2!)")
+            //convertTimeFormater(date: jobPost.time!)
+            timeLabel.text = jobPost.time
             additInfoTextView.text = enterAdditInfoTextView.text
+            
             
             //***converting date back from string into Date()
            /* let dateFormatter = DateFormatter()
@@ -59,25 +67,35 @@ class Finalize: UIViewController, UITextViewDelegate {
             editDate.isHidden = false
             editPayment.isHidden = false
             editAdditInfo.isHidden = false
+            editTimeButton.isHidden = false
         } else {
             editCat.isHidden = true
             editDate.isHidden = true
             editPayment.isHidden = true
             editAdditInfo.isHidden = true
+            editTimeButton.isHidden = true
         }
     }
     var listingsArray = [String]()
+    
+    
+    
+    
     @IBAction func postPressed(_ sender: Any) {
         var values = [String:Any]()
         var ref = Database.database().reference().child("jobs").childByAutoId()
         values["posterName"] = self.posterName
+        values["posterID"] = Auth.auth().currentUser?.uid
 
         values["category1"] = jobPost.category1
         values["category2"] = jobPost.category2
+        //var formattedDate = convertDateFormater(date: jobPost.date!)
         values["date"] = jobPost.date
         values["additInfo"] = jobPost.additInfo
-        values["payment"] = jobPost.payment
-        values["paymentType"] = jobPost.paymentType
+        values["payment"] = "$25 / hour"
+        values["time"] = jobPost.time 
+        //values["paymentType"] = jobPost.paymentType
+        values["jobID"] = ref.key
         
         ref.updateChildValues(values)
         var values2 = [String: Any]()
@@ -116,11 +134,11 @@ class Finalize: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         enterAdditInfoTextView.delegate = self
         enterAdditInfoTextView.textColor = qfGreen
-        if jobPost.paymentType == 1{
+        /*if jobPost.paymentType == 1{
             paymentTypeLabel.text = "Rate:"
         } else {
             paymentTypeLabel.text = "Payment:"
-        }
+        }*/
         Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let snapshots = snapshot.children.allObjects as! [DataSnapshot]

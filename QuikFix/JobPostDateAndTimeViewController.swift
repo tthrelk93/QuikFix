@@ -15,7 +15,10 @@ class JobPostDateAndTimeViewController: UIViewController {
     var jobPost = JobPost()
     
     @IBAction func continuePressed(_ sender: Any) {
-        jobPost.date = String(describing: timeAndDatePicker.date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM-dd-yyyy"
+        var dateStamp = dateFormatter.string(from: timeAndDatePicker.date)
+        jobPost.date = dateStamp
         performSegue(withIdentifier: "JPStepTwoToStepThree", sender: self)
     }
 
@@ -29,7 +32,7 @@ class JobPostDateAndTimeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("jobPost: \(self.jobPost)")
         if segue.identifier == "JPStepTwoToStepThree"{
-            if let vc = segue.destination as? JobPost_Payment{
+            if let vc = segue.destination as? JobPostTimeViewController{
                 vc.jobPost = self.jobPost
             }
             
