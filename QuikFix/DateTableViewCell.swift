@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 
 protocol PerformSegueInJobPostViewController {
-    func performSegueToSingleJob(category: String, jobID: String)
+    func performSegueToSingleJob(category: String, jobID: String, job: JobPost)
     
 }
 
@@ -28,8 +28,9 @@ class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectio
     
     
     
-    func performSegueInTableView(category: String, jobID: String){
-        delegate?.performSegueToSingleJob(category: category, jobID: jobID)
+    
+    func performSegueInTableView(category: String, jobID: String, job: JobPost){
+        delegate?.performSegueToSingleJob(category: category, jobID: jobID, job: job)
     }
     
     override func awakeFromNib() {
@@ -64,6 +65,7 @@ class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectio
         cell.additInfoLabel.text = self.jobsForDate[indexPath.row].additInfo
         cell.category = self.category
         cell.jobID = self.jobsForDate[indexPath.row].jobID!
+        cell.job = self.jobsForDate[indexPath.row]
         
         cell.delegate = self
         

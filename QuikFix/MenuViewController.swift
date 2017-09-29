@@ -8,9 +8,24 @@
 
 import UIKit
 import GuillotineMenu
+import FirebaseAuth
 
 class MenuViewController: UIViewController, GuillotineMenu {
 
+    
+    @IBAction func logoutPressed(_ sender: Any) {
+        
+        do {
+            try Auth.auth().signOut()
+        } catch let logoutError {
+            print(logoutError)
+        }
+        
+        performSegue(withIdentifier: "LogoutSegue2", sender: self)
+
+    }
+    
+    
     @IBOutlet weak var menuframe: UIButton!
     var dismissButton: UIButton?
     var titleLabel: UILabel?
@@ -57,6 +72,14 @@ class MenuViewController: UIViewController, GuillotineMenu {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBOutlet weak var calendarView: UIView!
+    @IBAction func calendarPressed(_ sender: Any) {
+        if calendarView.isHidden == true{
+            calendarView.isHidden = false
+        } else {
+            calendarView.isHidden = true
+        }
+    }
 
     /*
     // MARK: - Navigation

@@ -7,9 +7,23 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class NavigatorViewController: UIViewController {
 
+   
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+        do {
+            try Auth.auth().signOut()
+        } catch let logoutError {
+            print(logoutError)
+        }
+        
+        
+        performSegue(withIdentifier: "LogoutSegue", sender: self)
+    }
+    @IBOutlet weak var jobHistoryButton: UIButton!
+    @IBOutlet weak var profileButton: UIButton!
     @IBAction func jobHistoryPressed(_ sender: Any) {
     }
     @IBAction func profilePressed(_ sender: Any) {
@@ -22,10 +36,8 @@ class NavigatorViewController: UIViewController {
     @IBOutlet weak var backgroundDesign: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        //backgroundDesign.clipsToBounds = true
-        //backgroundDesign.layer.cornerRadius = backgroundDesign.frame.width/2
-
-        // Do any additional setup after loading the view.
+       
+                // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

@@ -19,7 +19,7 @@ class JobPost: NSObject {
     var posterName: String?
     var jobID: String?
     var posterID: String?
-    var replies: [String]?
+    //var responses: [String]?
     
     
     

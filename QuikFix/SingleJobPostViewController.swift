@@ -25,13 +25,56 @@ class SingleJobPostViewController: UIViewController {
     }
     @IBOutlet weak var applySuccessView: UIView!
    
+    @IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
         self.applySuccessView.isHidden = false
-        Database.database().reference().child("jobs").child(jobID).observe(.value, with: { (snapshot) in
+        print("posterID: \(self.posterID)")
+        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                 var containsResponsesBool = false
+               
                 for snap in snapshots{
                     if snap.key == "responses"{
-                        
+                        containsResponsesBool = true
+                        var tempJobDict = snap.value as! [String:Any]
+                        var keyInDictBool = false
+                        var tempIDArray = [String]()
+                        for (key, val) in
+                            tempJobDict{
+                            if key == self.jobID{
+                                tempIDArray = val as! [String]
+                                tempIDArray.append((Auth.auth().currentUser?.uid)!)
+                                tempJobDict[key] = tempIDArray
+                                keyInDictBool = true
+                                break
+                                
+                                }
+                        }
+                        if keyInDictBool == false{
+                            tempJobDict[self.jobID] = [Auth.auth().currentUser?.uid]
+                            var uploadData = [String:Any]()
+                            uploadData["responses"] = tempJobDict
+                            Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadData)
+                            break
+                        } else {
+                            var uploadData = [String:Any]()
+                            uploadData["responses"] = tempJobDict
+                            Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadData)
+                            break
+                        }
+                    }
+                }
+                if containsResponsesBool == false{
+                    var uploadData = [String:Any]()
+                    uploadData[self.jobID] = [Auth.auth().currentUser?.uid]
+                    var uploadDict = [String:Any]()
+                    uploadDict["responses"] = uploadData
+                    Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                    
+                }
+                DispatchQueue.main.async{
+                    sleep(2)
+                self.applySuccessView.isHidden = true
                 }
                 
             }
@@ -40,6 +83,7 @@ class SingleJobPostViewController: UIViewController {
         
     
     }
+    
     @IBOutlet weak var detailsTextView: UITextView!
     var jobID = String()
     
@@ -48,15 +92,12 @@ class SingleJobPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+      
         posterImage.layer.cornerRadius = posterImage.frame.width/2
         posterImage.clipsToBounds = true
-        
-       posterImage.layer.shadowColor = UIColor.black.cgColor
-        posterImage.layer.shadowOpacity = 1
-        posterImage.layer.shadowOffset = CGSize.zero
-        posterImage.layer.shadowRadius = posterImage.frame.width/2
-        posterImage.layer.shadowPath = UIBezierPath(rect: posterImage.bounds).cgPath
-        posterImage.layer.shouldRasterize = false
+        shadowView.dropShadow()
         
         
         
@@ -129,3 +170,20 @@ class SingleJobPostViewController: UIViewController {
     
 
 }
+
+extension UIView{
+    
+    func dropShadow() {
+        
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.2
+        self.layer.shadowOffset = CGSize(width: -2, height: 2)
+        self.layer.shadowRadius = 30
+        self.layer.cornerRadius = self.frame.width/2
+        
+        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        self.layer.shouldRasterize = true
+    }
+}
+

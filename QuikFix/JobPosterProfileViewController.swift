@@ -74,7 +74,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         let navBar = self.navigationController!.navigationBar
         navBar.barTintColor = UIColor.white
-        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 49.0 / 255.0, green: 74.0 / 255.0, blue: 82.0 / 255.0, alpha: 1)]
+       // navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)]
+        navBar.backgroundColor = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+        
+        
         
         profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
@@ -111,7 +114,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     }
                     else if snap.key == "responses"{
                     
-                        self.responseBubble.titleLabel?.text = String(describing:(snap.value as! [String]).count)
+                       // self.responseBubble.titleLabel?.text = String(describing:(snap.value as! [String]).count)
                         
                     }
                 }

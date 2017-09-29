@@ -35,7 +35,7 @@ class CreateAccountStudentViewController: UIViewController {
                 student.major = ""
                 student.jobsFinished = [String]()
                 student.upcomingJobs = [String]()
-                student.experience = [String: Any]()
+                student.experience = [String]()
                 student.rating = Int()
                 
                 //Firebase create user

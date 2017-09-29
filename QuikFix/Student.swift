@@ -16,9 +16,10 @@ class Student: NSObject {
     var pic: String?
     var school: String?
     var major: String?
+    var gradYear: String?
     var jobsFinished: [String]?
     var upcomingJobs: [String]?
-    var experience: [String:Any]?
+    var experience: [String]?
     var rating: Int?
     var totalEarned: String?
     

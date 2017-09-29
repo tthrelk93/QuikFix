@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PerformSegueInTableViewCell {
-    func performSegueInTableView(category: String, jobID: String)
+    func performSegueInTableView(category: String, jobID: String, job: JobPost)
     
 }
 
@@ -25,9 +25,10 @@ class DateCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     var category = String()
     var jobID = String()
+    var job = JobPost()
     
     @IBAction func selectCellButtonPressed(_ sender: Any) {
-        delegate.performSegueInTableView(category: self.category, jobID: self.jobID)
+        delegate.performSegueInTableView(category: self.category, jobID: self.jobID, job: self.job)
         
     }
     @IBOutlet weak var selectCellButton: UIButton!

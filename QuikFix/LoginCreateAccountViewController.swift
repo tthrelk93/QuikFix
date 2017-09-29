@@ -10,8 +10,9 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class LoginCreateAccountViewController: UIViewController {
+class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var createAccountView: UIView!
+    
     @IBAction func signInButtonPressed(_ sender: Any) {
         guard let email = userNameTextField.text, let password = passwordTextField.text
             else{
@@ -73,6 +74,9 @@ class LoginCreateAccountViewController: UIViewController {
     @IBOutlet weak var userNameTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userNameTextField.delegate = self
+        passwordTextField.delegate = self
         //userNameTextField.color
 
         // Do any additional setup after loading the view.
@@ -81,6 +85,13 @@ class LoginCreateAccountViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+   
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 
