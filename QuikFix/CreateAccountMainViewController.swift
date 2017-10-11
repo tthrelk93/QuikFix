@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateAccountMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateAccountMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBAction func iAmStudentPressed(_ sender: Any) {
         if userPic.image == nil {
@@ -36,6 +36,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         picker.delegate = self
         //picker.delegate = self
         userPic.layer.cornerRadius = userPic.frame.width/2
@@ -115,6 +116,11 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 

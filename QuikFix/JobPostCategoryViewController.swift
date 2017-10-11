@@ -76,7 +76,7 @@ class JobPostCategoryViewController: UIViewController, UIPickerViewDelegate, UIP
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "JPStepOneToStepTwo"{
-            if let vc = segue.destination as? JobPostDateAndTimeViewController{
+            if let vc = segue.destination as? SelectWorkerNumberViewController{
                 vc.jobPost = self.jobPost
             }
             

@@ -14,6 +14,26 @@ import FirebaseStorage
 
 class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate {
     
+    @IBOutlet weak var availableForWorkLabel: UILabel!
+    @IBAction func availableSwitchActivated(_ sender: Any) {
+        var tempDict = [String:Any]()
+        if availableSwitch.isOn{
+            tempDict["available"] = true
+            availableForWorkLabel.text = "Available for work"
+        } else {
+            tempDict["available"] = false
+            availableForWorkLabel.text = "Not available for work"
+        }
+        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        
+        
+    }
+    @IBOutlet weak var availableSwitch: UISwitch!
+    var notUsersProfile = false
+    var studentIDFromResponse = String()
+    var job = JobPost()
+    var jobArray = [String]()
+    
     @IBOutlet weak var earnedAmount: UILabel!
     @IBOutlet weak var jobsFinished: UILabel!
     @IBOutlet weak var expTableView: UITableView!
@@ -98,7 +118,18 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     
         
     }
+    
+    @IBOutlet weak var menuButton: UIButton!
+    
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var backButtonForPoster: UIButton!
     func loadPageData(){
+        if self.notUsersProfile == false{
+            availableForWorkLabel.isHidden = false
+            availableSwitch.isHidden = false
+            menuButton.isHidden = false
+            backButtonForPoster.isHidden = true
+            editButton.isHidden = false
         self.editProfPicImageView.layer.cornerRadius = 10
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         picker.delegate = self
@@ -172,6 +203,86 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                 }
             }
         })
+        } else {
+            availableForWorkLabel.isHidden = true
+            availableSwitch.isHidden = true
+            menuButton.isHidden = true
+            backButtonForPoster.isHidden = false
+            editButton.isHidden = true
+            self.editProfPicImageView.layer.cornerRadius = 10
+            profileImageView.layer.cornerRadius = profileImageView.frame.width/2
+            picker.delegate = self
+            profileImageView.clipsToBounds = true
+            editGradYearTextField.delegate = self
+            editMajorTextField.delegate = self
+            editNameTextField.delegate = self
+            editBioTextView.delegate = self
+            editSchoolTextField.delegate = self
+            Database.database().reference().child("students").child(self.studentIDFromResponse).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if snap.key == "name"{
+                            self.nameLabel.text = snap.value as! String
+                            self.editNameTextField.placeholder = snap.value as! String
+                            
+                        }
+                        else if snap.key == "school"{
+                            self.schoolLabel.text = snap.value as? String
+                            self.editSchoolTextField.placeholder = snap.value as! String
+                        }
+                        else if snap.key == "major"{
+                            self.majorLabel.text = snap.value as? String
+                            self.editMajorTextField.placeholder = snap.value as! String
+                        }
+                        else if snap.key == "jobsFinished"{
+                            for job in snap.value as! [String]{
+                                self.jobsFinishedArray.append(job)
+                            }
+                            self.jobsFinished.text = String(describing:self.jobsFinishedArray.count)
+                            
+                            
+                        }
+                        else if snap.key == "city"{
+                            self.cityLabel.text = snap.value as! String
+                            self.editCityTextField.placeholder = snap.value as! String
+                            
+                            
+                        }
+                        else if snap.key == "rating"{
+                            self.starView.rating = Double(snap.value as! Int)
+                        }
+                        else if snap.key == "totalEarned"{
+                            self.earnedAmount.text = ("$\(String(describing:snap.value as! Int))")
+                        }
+                            
+                        else if snap.key == "gradYear"{
+                            self.gradYearLabel.text = snap.value as! String
+                            self.editGradYearTextField.placeholder = snap.value as! String
+                        }
+                            
+                        else if snap.key == "experience"{
+                            self.expTableData = snap.value as! [String]
+                        }
+                            
+                            
+                            
+                        else if snap.key == "pic"{
+                            if let messageImageUrl = URL(string: snap.value as! String) {
+                                
+                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                    self.profileImageView.image = UIImage(data: imageData as Data)
+                                    self.editProfPicImageView.image = UIImage(data: imageData as Data)
+                                } }
+                            //  loadImageUsingCacheWithUrlString(snap.value as! String)
+                        }
+                        else if snap.key == "bio"{
+                            self.studentBio.text = snap.value as! String
+                            self.editBioTextView.text = snap.value as! String
+                        }
+                    }
+                }
+            })
+        }
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -306,11 +417,22 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         dismiss(animated: true, completion: nil)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.x>0 {
             scrollView.contentOffset.x = 0
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "StudentBackToResponse"{
+            if let vc = segue.destination as? SpecificResponseViewController{
+                vc.job = self.job
+                vc.jobArray = self.jobArray
+            }
+        
+        }
+    }
+    
 
 
     

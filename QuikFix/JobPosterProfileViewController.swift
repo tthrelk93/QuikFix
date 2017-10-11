@@ -9,14 +9,14 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
-import GuillotineMenu
+
 
 
 
 
 class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
-    fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
+   // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
    
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
@@ -41,6 +41,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
     @IBOutlet weak var jobPostedView: UIView!
     @IBAction func responseBubblePressed(_ sender: Any) {
+        
+        
     }
     @IBOutlet weak var responseBubble: UIButton!
     @IBOutlet weak var postJobsButton: UIButton!
@@ -61,10 +63,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         menuViewController.modalPresentationStyle = .custom
         menuViewController.transitioningDelegate = self
         
-        presentationAnimator.animationDelegate = menuViewController as? GuillotineAnimationDelegate
-        presentationAnimator.supportView = navigationController!.navigationBar
-        presentationAnimator.presentButton = sender
-        present(menuViewController, animated: true, completion: nil)
+       // presentationAnimator.animationDelegate = menuViewController as? GuillotineAnimationDelegate
+        //presentationAnimator.supportView = navigationController!.navigationBar
+        //presentationAnimator.presentButton = sender
+        //present(menuViewController, animated: true, completion: nil)
     }
 
    // @IBOutlet weak var menuBounds: UIBarButtonItem!
@@ -72,10 +74,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let navBar = self.navigationController!.navigationBar
-        navBar.barTintColor = UIColor.white
+        //let navBar = self.navigationController!.navigationBar
+       // navBar.barTintColor = UIColor.white
        // navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)]
-        navBar.backgroundColor = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+       // navBar.backgroundColor = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
         
         
         
@@ -113,8 +115,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
                     }
                     else if snap.key == "responses"{
-                    
-                       // self.responseBubble.titleLabel?.text = String(describing:(snap.value as! [String]).count)
+                        if (snap.value as! [String:Any]).count == 0{
+                            self.responseBubble.isHidden = true
+                        } else {
+                    self.responseBubble.isHidden = false
+                            self.responseBubble.titleLabel?.text = String(describing:(snap.value as! [String:Any]).count)
+                        }
                         
                     }
                 }
@@ -130,11 +136,11 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         // Dispose of any resources that can be recreated.
     }
     
-    @available(iOS 2.0, *)
+   /* @available(iOS 2.0, *)
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning?{
         print("pressss")
-        presentationAnimator.animationDuration = 0.1
-        presentationAnimator.mode = .presentation
+       // presentationAnimator.animationDuration = 0.1
+       // presentationAnimator.mode = .presentation
         return presentationAnimator
     }
     
@@ -145,7 +151,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         presentationAnimator.animationDuration = 0.1
         presentationAnimator.mode = .dismissal
         return presentationAnimator
-    }
+    }*/
     
 
     /*

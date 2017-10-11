@@ -19,6 +19,8 @@ class JobPost: NSObject {
     var posterName: String?
     var jobID: String?
     var posterID: String?
+    var workerCount: Any?
+    var acceptedCount: Any?
     //var responses: [String]?
     
     

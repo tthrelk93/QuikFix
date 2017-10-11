@@ -10,6 +10,7 @@ import Foundation
 
 class Student: NSObject {
     var name: String?
+    var studentID: String?
     var email: String?
     var password: String?
     var bio: String?
@@ -21,6 +22,9 @@ class Student: NSObject {
     var upcomingJobs: [String]?
     var experience: [String]?
     var rating: Int?
-    var totalEarned: String?
+    var totalEarned: Int?
+    var city: String?
+    var location: [String:Any]?
+    var available: Bool?
     
 }

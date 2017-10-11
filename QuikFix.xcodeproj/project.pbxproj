@@ -13,10 +13,17 @@
 		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
 		3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */; };
 		3B144E131F7983220088A1D0 /* JobPostTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */; };
-		3B144E201F7EA6F90088A1D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B144E1F1F7EA6F90088A1D0 /* GoogleService-Info.plist */; };
 		3B144E231F7ECD2D0088A1D0 /* ExperienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E211F7ECD2C0088A1D0 /* ExperienceTableViewCell.swift */; };
 		3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B144E221F7ECD2C0088A1D0 /* ExperienceTableViewCell.xib */; };
+		3B144E261F802E130088A1D0 /* JobHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E251F802E130088A1D0 /* JobHistoryViewController.swift */; };
 		3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */; };
+		3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */; };
+		3B200B4A1F857C2B00D40997 /* JobReplyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */; };
+		3B200B4C1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */; };
+		3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B4D1F8590ED00D40997 /* SpecificResponseViewController.swift */; };
+		3B200B501F86AB1C00D40997 /* FindAvailableWorkersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */; };
+		3B200B521F86EF6800D40997 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B511F86EF6800D40997 /* CalendarViewController.swift */; };
+		3B2D16F01F8573BB00C85C0F /* JobResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */; };
 		3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */; };
 		3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */; };
 		3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */; };
@@ -26,6 +33,7 @@
 		3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */; };
 		3B468C9C1F57653F001D8FEC /* QuikFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C9B1F57653F001D8FEC /* QuikFixTests.swift */; };
 		3B468CA71F57653F001D8FEC /* QuikFixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */; };
+		3B4ED06F1F8A9E5A00939152 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B4ED06E1F8A9E5A00939152 /* GoogleService-Info.plist */; };
 		3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5238801F783518006DFDAE /* DateTableViewCell.swift */; };
 		3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5238811F783518006DFDAE /* DateTableViewCell.xib */; };
 		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
@@ -69,10 +77,17 @@
 		3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleJobPostViewController.swift; sourceTree = "<group>"; };
 		3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostTimeViewController.swift; sourceTree = "<group>"; };
 		3B144E161F7B34700088A1D0 /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
-		3B144E1F1F7EA6F90088A1D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B144E211F7ECD2C0088A1D0 /* ExperienceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceTableViewCell.swift; sourceTree = "<group>"; };
 		3B144E221F7ECD2C0088A1D0 /* ExperienceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperienceTableViewCell.xib; sourceTree = "<group>"; };
+		3B144E251F802E130088A1D0 /* JobHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobHistoryViewController.swift; sourceTree = "<group>"; };
 		3B18903A1F5F0A2C00F63ECA /* studentProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = studentProfile.swift; sourceTree = "<group>"; };
+		3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWorkerNumberViewController.swift; sourceTree = "<group>"; };
+		3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobReplyCollectionViewCell.swift; sourceTree = "<group>"; };
+		3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecificResponseCollectionViewCell.swift; sourceTree = "<group>"; };
+		3B200B4D1F8590ED00D40997 /* SpecificResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecificResponseViewController.swift; sourceTree = "<group>"; };
+		3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindAvailableWorkersViewController.swift; sourceTree = "<group>"; };
+		3B200B511F86EF6800D40997 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobResponseViewController.swift; sourceTree = "<group>"; };
 		3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -88,6 +103,7 @@
 		3B468CA21F57653F001D8FEC /* QuikFixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuikFixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuikFixUITests.swift; sourceTree = "<group>"; };
 		3B468CA81F57653F001D8FEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B4ED06E1F8A9E5A00939152 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B5238801F783518006DFDAE /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
 		3B5238811F783518006DFDAE /* DateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateTableViewCell.xib; sourceTree = "<group>"; };
 		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
@@ -204,7 +220,7 @@
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
-				3B144E1F1F7EA6F90088A1D0 /* GoogleService-Info.plist */,
+				3B4ED06E1F8A9E5A00939152 /* GoogleService-Info.plist */,
 				3BB8CC7C1F71A436002EAEF3 /* Cells */,
 				3B9F21A61F6355B20068D7EB /* Model */,
 				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
@@ -215,6 +231,10 @@
 				3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */,
 				3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */,
 				3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */,
+				3B144E251F802E130088A1D0 /* JobHistoryViewController.swift */,
+				3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */,
+				3B200B4D1F8590ED00D40997 /* SpecificResponseViewController.swift */,
+				3B200B511F86EF6800D40997 /* CalendarViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -245,6 +265,8 @@
 				3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */,
 				3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */,
 				3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */,
+				3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */,
+				3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */,
 			);
 			name = JobPost;
 			sourceTree = "<group>";
@@ -279,6 +301,8 @@
 				3B5238811F783518006DFDAE /* DateTableViewCell.xib */,
 				3B144E211F7ECD2C0088A1D0 /* ExperienceTableViewCell.swift */,
 				3B144E221F7ECD2C0088A1D0 /* ExperienceTableViewCell.xib */,
+				3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */,
+				3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -418,12 +442,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
+				3B4ED06F1F8A9E5A00939152 /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
 				3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */,
-				3B144E201F7EA6F90088A1D0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,14 +615,18 @@
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
 				3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */,
+				3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */,
 				3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */,
 				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
 				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
 				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,
 				3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */,
+				3B200B4C1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift in Sources */,
 				3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */,
 				3B144E231F7ECD2D0088A1D0 /* ExperienceTableViewCell.swift in Sources */,
 				3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */,
+				3B144E261F802E130088A1D0 /* JobHistoryViewController.swift in Sources */,
+				3B200B521F86EF6800D40997 /* CalendarViewController.swift in Sources */,
 				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
 				3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */,
 				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,
@@ -606,10 +634,14 @@
 				3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */,
 				3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */,
 				3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */,
+				3B200B4A1F857C2B00D40997 /* JobReplyCollectionViewCell.swift in Sources */,
+				3B2D16F01F8573BB00C85C0F /* JobResponseViewController.swift in Sources */,
+				3B200B501F86AB1C00D40997 /* FindAvailableWorkersViewController.swift in Sources */,
 				3B144E131F7983220088A1D0 /* JobPostTimeViewController.swift in Sources */,
 				3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */,
 				3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */,
 				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
+				3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

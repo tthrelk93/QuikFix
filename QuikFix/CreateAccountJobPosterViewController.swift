@@ -10,8 +10,9 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import CoreLocation
 
-class CreateAccountJobPosterViewController: UIViewController {
+class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     var profPic: UIImage?
     var jobPoster = JobPoster()
     @IBOutlet weak var nameTextField: UITextField!
@@ -77,6 +78,9 @@ class CreateAccountJobPosterViewController: UIViewController {
                                 
                                 //values["bio"] = self.student.bio
                                 values["name"] = self.jobPoster.name
+                                var locDict = [String:Any]()
+                                values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                                
                                 values["email"] = self.jobPoster.email
                                 values["password"] = self.jobPoster.password
                                 //values["school"] = self.student.school
@@ -110,6 +114,16 @@ class CreateAccountJobPosterViewController: UIViewController {
         }
 
     }
+    
+    let locationManager = CLLocationManager()
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
+        //ref.updateChildValues(locDict)
+    }
+
 
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -117,6 +131,15 @@ class CreateAccountJobPosterViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        passwordTextField.delegate = self
+        emailTextField.delegate = self
+        confirmPasswordTextField.delegate = self
+        addressTextField.delegate = self
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
 
         // Do any additional setup after loading the view.
     }
@@ -124,6 +147,11 @@ class CreateAccountJobPosterViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 

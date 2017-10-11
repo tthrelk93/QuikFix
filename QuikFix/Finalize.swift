@@ -41,7 +41,7 @@ class Finalize: UIViewController, UITextViewDelegate {
         //***setting the labels if the additional info textview isnt empty or placeholder text
         if enterAdditInfoTextView.text != "Tap here to add any additional information about the job." && enterAdditInfoTextView.text != ""{
             jobPost.additInfo = enterAdditInfoTextView.text
-            rateLabel.text = "$25 / hour"
+            rateLabel.text = "$25 / hour * \(self.jobPost.workerCount!) worker(s)"
             categoryLabel.text = ("\(jobPost.category1!)/\(jobPost.category2!)")
             //convertTimeFormater(date: jobPost.time!)
             timeLabel.text = jobPost.time
@@ -80,7 +80,9 @@ class Finalize: UIViewController, UITextViewDelegate {
     
     
     
-    
+    var segueJobData = [String:Any]()
+    var seguePosterData = [String:Any]()
+    var jobRef = String()
     @IBAction func postPressed(_ sender: Any) {
         var values = [String:Any]()
         var ref = Database.database().reference().child("jobs").childByAutoId()
@@ -93,33 +95,44 @@ class Finalize: UIViewController, UITextViewDelegate {
         values["date"] = jobPost.date
         values["additInfo"] = jobPost.additInfo
         values["payment"] = "$25 / hour"
-        values["time"] = jobPost.time 
+        values["time"] = jobPost.time
+        values["workerCount"] = jobPost.workerCount
+        values["acceptedCount"] = 0
         //values["paymentType"] = jobPost.paymentType
         values["jobID"] = ref.key
         
-        ref.updateChildValues(values)
+        self.segueJobData = values
+        self.jobRef = ref.key
+        //ref.updateChildValues(values)
         var values2 = [String: Any]()
         //values2["currentListings"]
         
         Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
+            var tempBool = false
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if snap.key == "currentListings"{
+                        tempBool = true
                         for val in snap.value as! [String]{
                             self.listingsArray.append(val)
                         }
                     }
                 }
+                if tempBool == false{
+                    
+                }
                 self.listingsArray.append(ref.key)
-            }
+            
             var tempDict = [String:Any]()
             tempDict["currentListings"] = self.listingsArray
-            Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+            self.seguePosterData = tempDict
+           // Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+                self.performSegue(withIdentifier: "FinalizeToFindWorkers", sender: self)
+            }
             
         })
 
-        performSegue(withIdentifier: "FinalizeToPosterProfile", sender: self)
+        
         
     }
     @IBOutlet weak var additInfoTextView: UITextView!
@@ -182,24 +195,49 @@ class Finalize: UIViewController, UITextViewDelegate {
         
     }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
+    {
+        if(text == "\n")
+        {
+            view.endEditing(true)
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
+    
+    //func textView
+    
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("jsegPostData: \(self.seguePosterData)")
+        let vc = segue.destination as? FindAvailableWorkersViewController
+        vc?.jobUploadData = self.segueJobData
+        vc?.posterUploadData = self.seguePosterData
+        vc?.jobRef = self.jobRef
+    }
+    
         
-        let destinationNavigationController = segue.destination as! UINavigationController
+        
+        /*let destinationNavigationController = segue.destination as! UINavigationController
         let targetController = destinationNavigationController.topViewController as! JobPosterProfileViewController
         
         
         
             //print("heyyyyyy")
             targetController.showJobPostedView = true
+ 
+ 
             
         
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
+    }*/
     
 
 }

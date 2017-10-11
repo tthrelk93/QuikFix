@@ -11,8 +11,9 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
+import CoreLocation
 
-class CreateAccountStudentViewController: UIViewController {
+class CreateAccountStudentViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var student = Student()
     var profPic: UIImage?
 
@@ -75,6 +76,7 @@ class CreateAccountStudentViewController: UIViewController {
                                 
                                 var values = Dictionary<String, Any>()
                                                                
+                            values["studentID"] = Auth.auth().currentUser!.uid
                                 values["bio"] = self.student.bio
                                 values["name"] = self.student.name
                                 values["email"] = self.student.email
@@ -86,6 +88,10 @@ class CreateAccountStudentViewController: UIViewController {
                                 values["upcomingJobs"] = self.student.upcomingJobs
                                 values["experience"] = self.student.experience
                                 values["rating"] =  self.student.rating
+                                values["available"] = false
+                                values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                                //var locDict = [String:Any]()
+                                
                                 values["pic"] = profileImageUrl
                                 
                                 var tempDict = [String: Any]()
@@ -113,6 +119,15 @@ class CreateAccountStudentViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        passwordTextField.delegate = self
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        confirmPasswordTextField.delegate = self
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+
 
         // Do any additional setup after loading the view.
     }
@@ -121,6 +136,22 @@ class CreateAccountStudentViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    var tempDict = [String: Any]()
+    let locationManager = CLLocationManager()
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
+        //ref.updateChildValues(locDict)
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+
     
    
 

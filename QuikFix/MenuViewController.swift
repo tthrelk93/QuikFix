@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class MenuViewController: UIViewController, GuillotineMenu {
 
+    @IBOutlet weak var menuButtonPressed: UIButton!
     
     @IBAction func logoutPressed(_ sender: Any) {
         

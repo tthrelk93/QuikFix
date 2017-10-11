@@ -11,6 +11,10 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController{
+    @IBAction func calendarPressed(_ sender: Any) {
+        performSegue(withIdentifier: "JobVCToCalendar", sender: self)
+        
+    }
     
     var categoryType = String()
         @IBOutlet weak var calendarTableView: UITableView!
@@ -209,6 +213,12 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 vc.posterID = self.selectedJob.posterID!
                 vc.categoryType = self.categoryType
                 
+            }
+            
+        }
+        if segue.identifier == "JobVCToCalendar"{
+            if let vc = segue.destination as? CalendarViewController{
+                vc.categoryType = self.categoryType
             }
             
         }

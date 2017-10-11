@@ -17,12 +17,11 @@ protocol PerformSegueInTableViewCell {
 class DateCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var posterName: UILabel!
-    
+   
     @IBOutlet weak var distLabel: UILabel!
    
-    @IBOutlet weak var rateLabel: UILabel!
-    
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var rateLabel: UILabel!
     var category = String()
     var jobID = String()
     var job = JobPost()

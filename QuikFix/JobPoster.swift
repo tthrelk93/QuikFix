@@ -17,6 +17,9 @@ class JobPoster: NSObject{
     var jobsCompleted: [String]?
     var address: String?
     var responses: [String:Any]?
+    var prevWorker: [String]?
+    var location: [String:Any]?
+    var city: String?
     //var city: String?
     //var state: String?
 }
