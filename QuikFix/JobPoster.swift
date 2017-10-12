@@ -14,6 +14,7 @@ class JobPoster: NSObject{
     var password: String?
     var pic: String?
     var currentListings: [String]?
+    var upcomingJobs: [String]?
     var jobsCompleted: [String]?
     var address: String?
     var responses: [String:Any]?

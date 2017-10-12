@@ -24,7 +24,7 @@ class JobPostTimeViewController: UIViewController {
         var startTime = timeFormatter(time: startTimePicker.date)
         var endTime = timeFormatter(time: endTimePicker.date)
         jobPost.time = "\(startTime) - \(endTime)"
-        performSegue(withIdentifier: "JPStepThreeToStepFour", sender: self)
+        performSegue(withIdentifier: "JPStep4ToStep5", sender: self)
     }
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var startTimePicker: UIDatePicker!
@@ -46,8 +46,8 @@ class JobPostTimeViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "JPStepThreeToStepFour"{
-            if let vc = segue.destination as? Finalize{
+        if segue.identifier == "JPStep4ToStep5"{
+            if let vc = segue.destination as? JobPostLocationPickerViewController{
                 vc.jobPost = self.jobPost
             }
             

@@ -12,7 +12,11 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
 
     @IBAction func iAmStudentPressed(_ sender: Any) {
         if userPic.image == nil {
-            //present alert that you need to select profile pic
+            let alert = UIAlertController(title: "Select profile image", message: "Press the profile icon to select a profile picture.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+
         } else {
             performSegue(withIdentifier: "CreateStudent", sender: self)
         }
@@ -23,6 +27,10 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     @IBAction func iWantToPostPressed(_ sender: Any) {
          if userPic.image == nil {
             //present alert to pick pic
+            let alert = UIAlertController(title: "Select profile image", message: "Press the profile icon to select a profile picture.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
          } else {
             performSegue(withIdentifier: "CreateJobPoster", sender: self)
         }

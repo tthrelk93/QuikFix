@@ -13,6 +13,10 @@ pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'GuillotineMenu', '~> 3.0'	
 pod "Koyomi"
+pod 'GooglePlaces'
+pod 'GoogleMaps’
+pod 'GooglePlacePicker’
+pod 'SwiftOverlays', '~> 4.0.0'
 
   target 'QuikFixTests' do
     inherit! :search_paths
@@ -24,6 +28,10 @@ pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
+pod 'GooglePlaces'
+pod 'GoogleMaps'
+pod 'GooglePlacePicker’
+pod 'SwiftOverlays', '~> 4.0.0'
   end
 
   target 'QuikFixUITests' do
@@ -36,6 +44,9 @@ pod 'Firebase/Auth'
 pod 'Firebase/Storage'	
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
+pod 'GoogleMaps’
+pod 'GooglePlacePicker’
+pod 'SwiftOverlays', '~> 4.0.0'
   end
 
 end

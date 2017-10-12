@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import SwiftOverlays
 
 
 
@@ -18,6 +19,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
    // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
    
+    @IBOutlet weak var postSuccessShadeView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
     
@@ -27,6 +29,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 for snap in snapshots{
                     if snap.key == "currentListings"{
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
+                        self.postSuccessShadeView.isHidden = true
                         self.jobPostedView.isHidden = true
                         self.postJobsButton.isHidden = false
                         break
@@ -71,9 +74,11 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
 
    // @IBOutlet weak var menuBounds: UIBarButtonItem!
     //var actualMenuBounds
+    var curListBool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        jobPostedView.layer.cornerRadius = 12
+        postSuccessShadeView.layer.cornerRadius = 12
         //let navBar = self.navigationController!.navigationBar
        // navBar.barTintColor = UIColor.white
        // navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)]
@@ -86,6 +91,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         
         if showJobPostedView == true{
+            self.postSuccessShadeView.isHidden = false
             jobPostedView.isHidden = false
             postJobsButton.isHidden = true
             
@@ -112,6 +118,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         //  loadImageUsingCacheWithUrlString(snap.value as! String)
                     }
                     else if snap.key == "currentListings"{
+                        self.curListBool = true
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
                     }
                     else if snap.key == "responses"{
@@ -124,7 +131,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         
                     }
                 }
+                if self.curListBool == false{
+                    self.currentListingsCount.text = "0"
+                }
+                
             }
+            SwiftOverlays.removeAllBlockingOverlays()
         })
 
 

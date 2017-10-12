@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
-class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate {
+class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate {
     
     @IBOutlet weak var availableForWorkLabel: UILabel!
     @IBAction func availableSwitchActivated(_ sender: Any) {
@@ -124,6 +124,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var backButtonForPoster: UIButton!
     func loadPageData(){
+        tabBar.delegate = self
         if self.notUsersProfile == false{
             availableForWorkLabel.isHidden = false
             availableSwitch.isHidden = false
@@ -145,6 +146,15 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                     if snap.key == "name"{
                         self.nameLabel.text = snap.value as! String
                         self.editNameTextField.placeholder = snap.value as! String
+                        
+                    }
+                        else if snap.key == "available"{
+                        if snap.value as! Bool == true{
+                            self.availableSwitch.isOn = true
+                        } else {
+                            self.availableSwitch.isOn = false
+                        }
+                        
                         
                     }
                     else if snap.key == "school"{
@@ -423,6 +433,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         }
     }
     
+    @IBOutlet weak var tabBar: UITabBar!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "StudentBackToResponse"{
             if let vc = segue.destination as? SpecificResponseViewController{
@@ -432,6 +443,22 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         
         }
     }
+    public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        if item == tabBar.items?[0]{
+            performSegue(withIdentifier: "StudentProfileTabBarToJobHistory", sender: self)
+        } else if item == tabBar.items?[1]{
+            performSegue(withIdentifier: "StudentProfileTabBarToJobFinder", sender: self)
+            
+        } else if item == tabBar.items?[2]{
+            
+            
+        } else {
+            performSegue(withIdentifier: "StudentProfileTabBarToCalendar", sender: self)
+            
+        }
+    }
+    
+
     
 
 

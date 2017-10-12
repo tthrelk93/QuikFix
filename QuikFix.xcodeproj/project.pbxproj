@@ -50,6 +50,7 @@
 		3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A21F6350540068D7EB /* Finalize.swift */; };
 		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
 		3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */; };
+		3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */; };
 		A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 		3B9F21A21F6350540068D7EB /* Finalize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Finalize.swift; sourceTree = "<group>"; };
 		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
 		3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostViewController.swift; sourceTree = "<group>"; };
+		3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostLocationPickerViewController.swift; sourceTree = "<group>"; };
 		497479B0DEFC2CF302D5BE3B /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89986E26090F7B76E1797362 /* Pods-QuikFixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */,
 				3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */,
 				3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */,
+				3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */,
 			);
 			name = JobPost;
 			sourceTree = "<group>";
@@ -614,6 +617,7 @@
 				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
+				3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */,
 				3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */,
 				3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */,
 				3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */,

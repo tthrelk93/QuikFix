@@ -23,6 +23,8 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
                 return
         }
         
+        
+        
         Auth.auth().signIn(withEmail: email, password: password, completion: {
             (user: User?, error) in
             
@@ -57,6 +59,8 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
             }
             
         })
+        
+    
 
     }
     @IBAction func signUpButtonPressed(_ sender: Any) {

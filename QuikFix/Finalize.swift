@@ -13,6 +13,10 @@ import Firebase
 
 class Finalize: UIViewController, UITextViewDelegate {
     
+    @IBAction func locationEditPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var locationEditButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
     
     var jobPost = JobPost()
     
@@ -35,17 +39,143 @@ class Finalize: UIViewController, UITextViewDelegate {
     @IBOutlet weak var editDate: UIButton!
     
      let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+    
 
     @IBAction func finalizedPressed(_ sender: Any) {
         
         //***setting the labels if the additional info textview isnt empty or placeholder text
         if enterAdditInfoTextView.text != "Tap here to add any additional information about the job." && enterAdditInfoTextView.text != ""{
             jobPost.additInfo = enterAdditInfoTextView.text
-            rateLabel.text = "$25 / hour * \(self.jobPost.workerCount!) worker(s)"
+            //let timeInterval = someDate.timeIntervalSince1970
+            var timeString1 = jobPost.time!
+            var timeString = [String]()
+            ///var timeString1 = [String]()
+            
+            //let middle = timeString.index((timeString.startIndex), offsetBy: (timeString.characters.count)! / 2)
+            
+            var time1Hour = String()
+            var time1Minutes = String()
+            var time2Hour = String()
+            var time2Minute = String()
+            
+            var time1Hour1 = [String]()
+            var time1Minutes1 = [String]()
+            var time2Hour1 = [String]()
+            var time2Minute1 = [String]()
+            
+            
+            var time1AMPM = String()
+            var time2AMPM = String()
+            for index in (timeString1.characters.indices){
+                timeString.append(String(describing: timeString1[index]))
+                
+            
+            
+            }
+            
+            if timeString[1] == ":"{
+                time2AMPM = "\(timeString[15])\(timeString[16])"
+                time1AMPM = "\(timeString[5])\(timeString[6])"
+                time1Hour = "0\(timeString[0])"
+                time1Minutes = "\(timeString[2])\(timeString[3])"
+                if timeString[11] == ":"{
+                    time2Hour = "0\(timeString[10])"
+                    time2Minute = "\(timeString[12])\(timeString[13])"
+                } else {
+                    time2Hour = "\(timeString[10])\(timeString[11])"
+                    time2Minute = "\(timeString[13])\(timeString[14])"
+                }
+            } else {
+                time2AMPM = "\(timeString[16])\(timeString[17])"
+                time1AMPM = "\(timeString[6])\(timeString[7])"
+                time1Hour = "\(timeString[0])\(timeString[1])"
+                time1Minutes = "\(timeString[3])\(timeString[4])"
+                if timeString[12] == ":"{
+                    time2Hour = "0\(timeString[11])"
+                    time2Minute = "\(timeString[3])\(timeString[4])"
+                } else {
+                    time2Hour = "\(timeString[11])\(timeString[12])"
+                    time2Minute = "\(timeString[14])\(timeString[15])"
+                }
+            }
+            for index in (time1Hour.characters.indices){
+                time1Hour1.append(String(time1Hour[index]))
+            }
+            for index in (time2Hour.characters.indices){
+                time2Hour1.append(String(time2Hour[index]))
+                
+                
+                
+            }
+            for index in (time1Minutes.characters.indices){
+                time1Minutes1.append(String(time1Minutes[index]))
+                
+                
+                
+            }
+            for index in (time2Minute.characters.indices){
+                time2Minute1.append(String(time2Minute[index]))
+                
+                
+                
+            }
+
+
+
+        var startDate = String()
+        
+        var endDate = String()
+        if time1AMPM == "PM"{
+    
+                startDate = "\(Int(String(time1Hour1[0]))! + 1)\(Int(String(time1Hour1[1]))! + 2):\(time1Minutes1[0])\(time1Minutes1[1])"
+            
+        } else {
+            startDate = "\(time1Hour):\(time1Minutes)"
+        }
+        
+        if time2AMPM == "PM"{
+            
+                endDate = "\(Int(String(time2Hour1[0]))! + 1)\(Int(String(time2Hour1[1]))! + 2):\(time2Minute1[0])\(time2Minute1[1])"
+            
+        } else {
+            endDate = "\(time2Hour):\(time2Minute)"
+        }
+        
+            
+        let startArray = startDate.components(separatedBy: ":") // ["23", "51"]
+            let endArray = endDate.components(separatedBy: ":") // ["00", "01"]
+            print("start: \(startArray)")
+            print("end: \(endArray)")
+        
+        let startHours = Int(startArray[0])! * 60 // 1380
+        let startMinutes = Int(startArray[1])! + startHours // 1431
+        
+        let endHours = Int(endArray[0])! * 60 // 0
+        let endMinutes = Int(endArray[1])! + endHours // 1
+        
+        var timeDifference = endMinutes - startMinutes // -1430
+        
+        let day = 24 * 60 // 1440
+        
+        if timeDifference < 0 {
+            timeDifference += day // 10
+        }
+            print("td\(timeDifference)")
+        
+        var calcRate = ((25 * (timeDifference / 60)) * (jobPost.workerCount as! Int))
+        
+        
+
+        
+        
+        
+        
+            rateLabel.text = "$\(calcRate)($25/hr * \(self.jobPost.workerCount!) worker(s))"
             categoryLabel.text = ("\(jobPost.category1!)/\(jobPost.category2!)")
             //convertTimeFormater(date: jobPost.time!)
             timeLabel.text = jobPost.time
             additInfoTextView.text = enterAdditInfoTextView.text
+            locationLabel.text = jobPost.location
             
             
             //***converting date back from string into Date()
@@ -68,12 +198,14 @@ class Finalize: UIViewController, UITextViewDelegate {
             editPayment.isHidden = false
             editAdditInfo.isHidden = false
             editTimeButton.isHidden = false
+            locationEditButton.isHidden = false
         } else {
             editCat.isHidden = true
             editDate.isHidden = true
             editPayment.isHidden = true
             editAdditInfo.isHidden = true
             editTimeButton.isHidden = true
+            locationEditButton.isHidden = true
         }
     }
     var listingsArray = [String]()
@@ -92,6 +224,7 @@ class Finalize: UIViewController, UITextViewDelegate {
         values["category1"] = jobPost.category1
         values["category2"] = jobPost.category2
         //var formattedDate = convertDateFormater(date: jobPost.date!)
+        values["location"] = jobPost.location
         values["date"] = jobPost.date
         values["additInfo"] = jobPost.additInfo
         values["payment"] = "$25 / hour"

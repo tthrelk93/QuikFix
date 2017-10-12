@@ -73,24 +73,25 @@ class MenuViewController: UIViewController, GuillotineMenu {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBOutlet weak var calendarView: UIView!
-    @IBAction func calendarPressed(_ sender: Any) {
-        if calendarView.isHidden == true{
-            calendarView.isHidden = false
-        } else {
-            calendarView.isHidden = true
-        }
-    }
+       @IBAction func calendarPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PosterMenuToCalendar", sender: self)
+            }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "PosterMenuToCalendar"{
+            if let vc = segue.destination as? CalendarViewController{
+                vc.senderScreen == "poster"
+                
+            }
+        }
     }
-    */
+    
 
 }
 extension MenuViewController: GuillotineAnimationDelegate {

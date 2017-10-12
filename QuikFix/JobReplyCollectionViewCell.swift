@@ -117,7 +117,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
         
         return cell
     }
-    
+    var upcomingJobs = [String]()
     @IBOutlet weak var noNewResponses: UILabel!
     //cellDelegateMethods
     var delegateStudentID = String()
@@ -142,6 +142,9 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                 
                 for snap in snapshots {
+                    if snap.key == "upcomingJobs"{
+                        self.upcomingJobs = snap.value as! [String]
+                    }
                     if snap.key == "responses"{
                         var tempDict = snap.value as! [String:Any]
                         for (key,val) in tempDict{
@@ -155,7 +158,13 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                                 
                             }
                         }
-                        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(["responses":tempDict])
+                        var posterUploadDict = [String:Any]()
+                        posterUploadDict["responses"] = tempDict
+                        
+                        self.upcomingJobs.append(self.job.jobID)
+                        posterUploadDict["upcomingJobs"] = self.upcomingJobs
+                        
+                        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(posterUploadDict)
                         Database.database().reference().child("students").child(studentID).observeSingleEvent(of: .value, with: { (snapshot) in
                             
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {

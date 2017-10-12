@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftOverlays.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>leveldb-library.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,6 +57,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0F6899C7891CF4C83C8767D065D18C2D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
@@ -62,12 +72,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4FC34E9C597E2AACB325462CCF6F042B</key>
+		<key>277D835036AE4B5C79FB05344E5E768C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6CE28943B540E31D06E3F3CD3BE93EDE</key>
+		<key>4FC34E9C597E2AACB325462CCF6F042B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,17 +87,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>87D4140CC9C7DC523BC87CEEC5455C20</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B72E7C0EF9FC0E26AF5F21586F4D37DD</key>
+		<key>B840D32217F849F7BA3B3EE5F7DCBDD9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D4DA5BA0702F699A9C6E09866655C15A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -15,8 +15,12 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
     
     
     @IBAction func backPressed(_ sender: Any) {
+        if self.senderScreen == "poster"{
+            performSegue(withIdentifier: "CalendarToPosterMenu", sender: self)
         
+        } else {
         performSegue(withIdentifier: "BackFromCalendar", sender: self)
+        }
     }
     
     @IBOutlet weak var tabBarCalendarButton: UITabBarItem!
@@ -36,6 +40,39 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
         
         
 
+        if self.senderScreen == "poster"{
+            for (key, val) in self.jobDict{
+                var tempDict = [String:Any]()
+                tempDict = val as! [String:Any]
+                var tempDate = tempDict["date"] as! String
+                
+                let dateForm = dateFormatter.date(from:tempDate)!
+                
+                
+                if date == dateForm{
+                    
+                    collectData.append(val as! [String:Any])
+                }
+                
+                
+            }
+            for (key, val) in self.currentListingsDict{
+                var tempDict = [String:Any]()
+                tempDict = val as! [String:Any]
+                var tempDate = tempDict["date"] as! String
+                
+                let dateForm = dateFormatter.date(from:tempDate)!
+                
+                
+                if date == dateForm{
+                    
+                    collectData.append(val as! [String:Any])
+                }
+                
+                
+            }
+
+        } else {
         for (key, val) in self.jobDict{
             var tempDict = [String:Any]()
             tempDict = val as! [String:Any]
@@ -50,6 +87,7 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
             }
             
             
+        }
         }
         /*if self.collectData.count == 0{
             self.dayEventsCollect.isHidden = true
@@ -68,11 +106,18 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
     @IBOutlet weak var calendar: Koyomi!
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var dayEventsCollect: UICollectionView!
+    var currentListings = [String]()
     var upcomingJobs = [String]()
     var jobDict = [String:Any]()
+    var currentListingsDict = [String:Any]()
      var dateArray = [Date]()
+    var senderScreen = String()
+    var currentListingsDateArray = [Date]()
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.senderScreen == "poster"{
+            tabBar.isHidden = true
+        }
         tabBar.delegate = self
         
         tabBar.selectedItem = tabBarCalendarButton
@@ -82,8 +127,72 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
             cell.layer.cornerRadius = cell.frame.width/2
         }
         
-    
-    
+        if senderScreen == "poster"{
+            
+            Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots{
+                        if snap.key == "currentListings"{
+                            self.currentListings = snap.value as! [String]
+                        }
+                        if snap.key == "upcomingJobs"{
+                            self.upcomingJobs = snap.value as! [String]
+                            
+                            
+                        }
+                        
+                    }
+                    
+                }
+                Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        
+                        for snap in snapshots{
+                            if self.upcomingJobs.contains(snap.key){
+                                self.jobDict[snap.key as! String] = snap.value as! [String:Any]
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "MMMM-dd-yyyy"
+                                var tempDate = (snap.value as! [String:Any])["date"] as! String
+                                
+                                let dateForm = dateFormatter.date(from:tempDate)!
+                                print("df = \(dateForm)")
+                                self.calendar.setDayBackgrondColor(self.qfGreen, of: dateForm)
+                                self.calendar.setDayColor(.white, of: dateForm)
+                                self.dateArray.append(dateForm)
+                                
+                            }
+                            if self.currentListings.contains(snap.key){
+                                self.currentListingsDict[snap.key as! String] = snap.value as! [String:Any]
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "MMMM-dd-yyyy"
+                                var tempDate = (snap.value as! [String:Any])["date"] as! String
+                                
+                                let dateForm = dateFormatter.date(from:tempDate)!
+                                print("df = \(dateForm)")
+                                self.calendar.setDayBackgrondColor(UIColor.red, of: dateForm)
+                                self.calendar.setDayColor(.white, of: dateForm)
+                                self.currentListingsDateArray.append(dateForm)
+                                
+                            }
+                        }
+                        
+                        //self.calendar.select(dates: self.dateArray)
+                        
+                        
+                        
+                    }
+                    DispatchQueue.main.async{
+                        self.calendar.reloadData()
+                        
+                    }
+                })
+                
+            })
+
+            
+            
+        } else {
         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
@@ -128,6 +237,7 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
             })
             
         })
+        }
         
 
         // Do any additional setup after loading the view.
