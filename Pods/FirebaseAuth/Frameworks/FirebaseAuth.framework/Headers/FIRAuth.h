@@ -67,7 +67,7 @@ typedef void(^FIRIDTokenDidChangeListenerBlock)(FIRAuth *auth, FIRUser *_Nullabl
     @brief The type of block invoked when sign-in related events complete.
 
     @param authResult Optionally; Result of sign-in request containing both the user and
-       the additional user info.
+       the additional user info associated with the user.
     @param error Optionally; the error which occurred - or nil if the request was successful.
  */
 typedef void (^FIRAuthDataResultCallback)(FIRAuthDataResult *_Nullable authResult,
@@ -548,7 +548,7 @@ FIR_SWIFT_NAME(Auth)
     @brief Initiates a password reset for the given email address and @FIRActionCodeSettings object.
 
     @param email The email address of the user.
-    @param actionCodeSettings An @c FIRActionCodeSettings object containing settings related to the
+    @param actionCodeSettings An @c FIRActionCodeSettings object containing settings related to
         handling action codes.
     @param completion Optionally; a block which is invoked when the request finishes. Invoked
         asynchronously on the main thread in the future.
@@ -565,7 +565,7 @@ FIR_SWIFT_NAME(Auth)
             sending update email.
         </li>
         <li>@c FIRAuthErrorCodeMissingIosBundleID - Indicates that the iOS bundle ID is missing when
-            a iOS App Store ID is provided.
+            @c handleCodeInApp is set to YES.
         </li>
         <li>@c FIRAuthErrorCodeMissingAndroidPackageName - Indicates that the android package name
             is missing when the @c androidInstallApp flag is set to true.
@@ -663,6 +663,19 @@ FIR_SWIFT_NAME(Auth)
 - (void)useAppLanguage;
 
 #if TARGET_OS_IOS
+
+/** @fn canHandleURL:
+    @brief Whether the specific URL is handled by @c FIRAuth .
+    @param URL The URL received by the application delegate from any of the openURL method.
+    @return Whether or the URL is handled. YES means the URL is for Firebase Auth
+        so the caller should ignore the URL from further processing, and NO means the
+        the URL is for the app (or another libaray) so the caller should continue handling
+        this URL as usual.
+    @remarks If swizzling is disabled, URLs received by the application delegate must be forwarded
+        to this method for phone number auth to work.
+ */
+- (BOOL)canHandleURL:(nonnull NSURL *)URL;
+
 /** @fn setAPNSToken:type:
     @brief Sets the APNs token along with its type.
     @remarks If swizzling is disabled, the APNs Token must be set for phone number auth to work,
@@ -682,7 +695,8 @@ FIR_SWIFT_NAME(Auth)
         for phone number auth to work.
  */
 - (BOOL)canHandleNotification:(NSDictionary *)userInfo;
-#endif
+
+#endif  // TARGET_OS_IOS
 
 @end
 

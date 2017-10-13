@@ -272,6 +272,27 @@ typedef NS_ENUM(NSInteger, FIRAuthErrorCode) {
      */
     FIRAuthErrorCodeAppNotVerified = 17055,
 
+    /** Indicates that the reCAPTCHA token is not valid.
+     */
+    FIRAuthErrorCodeCaptchaCheckFailed = 17056,
+
+    /** Indicates that an attempt was made to present a new web context while one was already being
+        presented.
+     */
+    FIRAuthErrorCodeWebContextAlreadyPresented = 17057,
+
+    /** Indicates that the URL presentation was cancelled prematurely by the user.
+     */
+    FIRAuthErrorCodeWebContextCancelled = 17058,
+
+    /** Indicates a general failure during the app verification flow.
+     */
+    FIRAuthErrorCodeAppVerificationUserInteractionFailure = 17059,
+
+    /** Indicates that the clientID used to invoke a web flow is invalid.
+     */
+    FIRAuthErrorCodeInvalidClientID = 17060,
+
     /** Indicates an error occurred while attempting to access the keychain.
      */
     FIRAuthErrorCodeKeychainError = 17995,

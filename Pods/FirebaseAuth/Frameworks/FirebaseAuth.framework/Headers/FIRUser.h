@@ -23,6 +23,7 @@
 
 @class FIRPhoneAuthCredential;
 @class FIRUserProfileChangeRequest;
+@class FIRUserMetadata;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -404,7 +405,7 @@ FIR_SWIFT_NAME(User)
 /** @fn sendEmailVerificationWithActionCodeSettings:completion:
     @brief Initiates email verification for the user.
 
-    @param actionCodeSettings An @c FIRActionCodeSettings object containing settings related to the
+    @param actionCodeSettings An @c FIRActionCodeSettings object containing settings related to
         handling action codes.
 
     @remarks Possible error codes:

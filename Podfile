@@ -16,7 +16,7 @@ pod "Koyomi"
 pod 'GooglePlaces'
 pod 'GoogleMaps’
 pod 'GooglePlacePicker’
-pod 'SwiftOverlays', '~> 4.0.0'
+pod 'SwiftOverlays', '~> 3.0.0'
 
   target 'QuikFixTests' do
     inherit! :search_paths
@@ -31,7 +31,7 @@ pod "Koyomi"
 pod 'GooglePlaces'
 pod 'GoogleMaps'
 pod 'GooglePlacePicker’
-pod 'SwiftOverlays', '~> 4.0.0'
+pod 'SwiftOverlays', '~> 3.0.0'
   end
 
   target 'QuikFixUITests' do
@@ -46,7 +46,7 @@ pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
 pod 'GoogleMaps’
 pod 'GooglePlacePicker’
-pod 'SwiftOverlays', '~> 4.0.0'
+pod 'SwiftOverlays', '~> 3.0.0'
   end
 
 end

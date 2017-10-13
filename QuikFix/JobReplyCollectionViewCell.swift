@@ -161,7 +161,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                         var posterUploadDict = [String:Any]()
                         posterUploadDict["responses"] = tempDict
                         
-                        self.upcomingJobs.append(self.job.jobID)
+                        self.upcomingJobs.append(self.job.jobID!)
                         posterUploadDict["upcomingJobs"] = self.upcomingJobs
                         
                         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(posterUploadDict)

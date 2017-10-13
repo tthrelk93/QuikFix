@@ -63,13 +63,13 @@
 		63150D94EB7B8C3F2F271D933816A11C /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C249C44357EC8769852CFA60EA5BDE1 /* DictionaryExtension.swift */; };
 		64F31B70A6E5E6963518A01C285B435F /* GTMSessionFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 678DBF3954C7B6F53454A08E2DF8146D /* GTMSessionFetcher.m */; };
 		65B56BD3DBC9B81BB008219D0BA735A9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAFD15069DBFFAF7E7CD48183E2D230C /* Security.framework */; };
+		66755D23E46AC6BF88A9107257545913 /* SwiftOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F4C0D74D436F9D12D697E983D5BBC1 /* SwiftOverlays.swift */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		67A755AD63A1DFFDA48EDC07290352C3 /* histogram.cc in Sources */ = {isa = PBXBuildFile; fileRef = 933A2CAA040ADC0775299792B2D3ED3B /* histogram.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
 		6AE1AF4080C3ADF6909FC2814C68C17E /* Koyomi-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46BD1EE505EC58806BB57CDF4EF2D0B2 /* Koyomi-dummy.m */; };
 		6C4F51DAD5CA08C061556297785DF320 /* table.h in Headers */ = {isa = PBXBuildFile; fileRef = FC8F5156A2A20221AD9FC862091BE5E5 /* table.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA6DFC4473A9B2DB6B8A42EA986BA5B /* GTMSessionFetcher-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 246872C52665E0773938F0464AD2CC8B /* GTMSessionFetcher-dummy.m */; };
 		6F238FE66F71E88653786B278656014B /* c.cc in Sources */ = {isa = PBXBuildFile; fileRef = 50218475BCAD6800ABEF291D0BB2725B /* c.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
 		71C153C4C470595D401A4833BF8C832F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4690263E3C2DD3C24DEAC554FFBD486 /* Foundation.framework */; };
-		76D6A361F15BE4F663AD7806FD7FD737 /* SwiftOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F4C0D74D436F9D12D697E983D5BBC1 /* SwiftOverlays.swift */; };
 		7724AB82912200ABE007D11912B87A38 /* coding.cc in Sources */ = {isa = PBXBuildFile; fileRef = E100053D1565A61FF02B4D84235B14B6 /* coding.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
 		7B03FAC148886238E84406A57E374991 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E674571C78CE5A2C2329AD24F79D /* UIViewExtension.swift */; };
 		806BAA4E00218D70995697C4400BE7A0 /* pb_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7D3F7091D7DEFAE7E8DC003F1108AD /* pb_common.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,6 +99,7 @@
 		B792906BE2FF6D4AD5C4741A33CC9406 /* status.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B050679463ACA6DD9B9070852EF7C62 /* status.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B83684E62BB14922BD70C6D4B50A062B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4690263E3C2DD3C24DEAC554FFBD486 /* Foundation.framework */; };
 		B84E5EDC520912257FC9B9C67CF9C63C /* table_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A1E39F214925929D2E2B376B93C7CE4 /* table_builder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B98588F7B8CEC054CBCDCD35EAC291FF /* SwiftOverlays-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BD9D6CBD336A792E3B388CF8AA733 /* SwiftOverlays-dummy.m */; };
 		B9A04CBBF007CB8AAF75D61C5EF4D81F /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 85EA2506FFDF89DD319F47BCAB5FF5C7 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C1AB93F7A505EB0707FEAF2B67CF5CA3 /* version_set.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2978CD4176336A8B7B7ABE62EE8E5694 /* version_set.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
 		C22ED42B4F2A5B3EE842D2CA96D43FE3 /* iterator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F7CF4E7AD3A9A6392B70D07CB189C /* iterator.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
@@ -117,7 +118,6 @@
 		DA2F5A299DC9A8ECC5F73A66172E64BC /* GTMNSString+URLArguments.h in Headers */ = {isa = PBXBuildFile; fileRef = D20931295B64200DE85F1E4D81A4DD14 /* GTMNSString+URLArguments.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB29BCCDF1BAD7EAD132BC45A27C98DE /* Pods-QuikFixTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D6E92C5DF532084E01369F918DE22F /* Pods-QuikFixTests-dummy.m */; };
 		DB721CCD4AC8D96FD2C6B38F8E2CD6DE /* db.h in Headers */ = {isa = PBXBuildFile; fileRef = A4ACE58CA96C86C8415C9D19A10B72AD /* db.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DDB86EACF5B22C7363AF1F63631C6B42 /* SwiftOverlays-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BD9D6CBD336A792E3B388CF8AA733 /* SwiftOverlays-dummy.m */; };
 		DF9559C3822E3C6119BE43E4EDFD7EEE /* GTMSessionFetcherService.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C2874C5D4DD0C4575C9EC151BF2AC96 /* GTMSessionFetcherService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E181395E73163EB702FCE9A21403D67B /* pb_encode.h in Headers */ = {isa = PBXBuildFile; fileRef = 08044B77CDD6024B2DBF04F0488BBC94 /* pb_encode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5D11FEC1831C9838581A6CA37CC797C /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EB44C7E90C0EEA4A9F8AB0E79C758C /* UIColorExtension.swift */; };
@@ -1512,7 +1512,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAA8D59E73F8349E842DFFE9A80A245E /* Build configuration list for PBXNativeTarget "SwiftOverlays" */;
 			buildPhases = (
-				406FBB585DF7D81A5944C39931F8B98E /* Sources */,
+				54D2910903714F9AFADEDF64DC840AAE /* Sources */,
 				BB0A546F21BE8274AB46DE081FEE04E5 /* Frameworks */,
 				45B2A953A6861DF1AF6258B341737E0F /* Headers */,
 			);
@@ -1675,12 +1675,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		406FBB585DF7D81A5944C39931F8B98E /* Sources */ = {
+		54D2910903714F9AFADEDF64DC840AAE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDB86EACF5B22C7363AF1F63631C6B42 /* SwiftOverlays-dummy.m in Sources */,
-				76D6A361F15BE4F663AD7806FD7FD737 /* SwiftOverlays.swift in Sources */,
+				B98588F7B8CEC054CBCDCD35EAC291FF /* SwiftOverlays-dummy.m in Sources */,
+				66755D23E46AC6BF88A9107257545913 /* SwiftOverlays.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
