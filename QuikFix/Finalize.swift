@@ -126,16 +126,23 @@ class Finalize: UIViewController, UITextViewDelegate {
         
         var endDate = String()
         if time1AMPM == "PM"{
+            if time1Hour == "12"{
+                startDate = "12:\(time1Minutes1[0])\(time1Minutes1[1])"
+            } else {
     
                 startDate = "\(Int(String(time1Hour1[0]))! + 1)\(Int(String(time1Hour1[1]))! + 2):\(time1Minutes1[0])\(time1Minutes1[1])"
+            }
             
         } else {
             startDate = "\(time1Hour):\(time1Minutes)"
         }
         
         if time2AMPM == "PM"{
-            
+            if time2Hour == "12"{
+                startDate = "12:\(time2Minute1[0])\(time2Minute1[1])"
+            } else {
                 endDate = "\(Int(String(time2Hour1[0]))! + 1)\(Int(String(time2Hour1[1]))! + 2):\(time2Minute1[0])\(time2Minute1[1])"
+            }
             
         } else {
             endDate = "\(time2Hour):\(time2Minute)"
@@ -233,6 +240,7 @@ class Finalize: UIViewController, UITextViewDelegate {
         values["acceptedCount"] = 0
         //values["paymentType"] = jobPost.paymentType
         values["jobID"] = ref.key
+        values["completed"] = false
         
         self.segueJobData = values
         self.jobRef = ref.key

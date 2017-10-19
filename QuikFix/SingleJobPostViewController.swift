@@ -27,6 +27,37 @@ class SingleJobPostViewController: UIViewController {
    
     @IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
+        
+        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    var tempArray = [String]()
+                    
+                    if snap.key == "responses"{
+                        var tempDict = snap.value as! [String: Any]
+                        
+                        for (key, val) in tempDict{
+                            if key == self.jobID{
+                                tempArray = val as! [String]
+                            }
+                        }
+                        
+                    }
+                    if tempArray.isEmpty{
+                        self.studentHasAlreadyApplied = false
+                    } else if tempArray.contains((Auth.auth().currentUser?.uid)!) == false{
+                        self.studentHasAlreadyApplied = false
+                    } else {
+                        self.studentHasAlreadyApplied = true
+                    }
+                    
+                }
+            }
+            
+        
+        
+
+        if self.studentHasAlreadyApplied == false {
         self.applySuccessView.isHidden = false
         print("posterID: \(self.posterID)")
         Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -80,13 +111,20 @@ class SingleJobPostViewController: UIViewController {
             }
             
         })
+        } else {
+            let alert = UIAlertController(title: "Duplicate Application Error", message: "You have already applied to this job. Your application is awaiting review by the job poster.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+            })
         
     
     }
     
     @IBOutlet weak var detailsTextView: UITextView!
     var jobID = String()
-    
+    var studentsWhoHaveAppliedForJobArray = [String]()
+    var studentHasAlreadyApplied = false
     var categoryType = String()
     var posterID = String()
     override func viewDidLoad() {
@@ -126,6 +164,7 @@ class SingleJobPostViewController: UIViewController {
         Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
+                    var tempArray = [String]()
                     if snap.key == "address"{
                         self.addressLabel.text = snap.value as! String
                     } else if snap.key == "pic"{
@@ -138,8 +177,24 @@ class SingleJobPostViewController: UIViewController {
                         
                     } else if snap.key == "name"{
                         self.posterName.text = snap.value as! String
+                    } else if snap.key == "responses"{
+                        var tempDict = snap.value as! [String: Any]
+                        
+                        for (key, val) in tempDict{
+                            if key == self.jobID{
+                                tempArray = val as! [String]
+                            }
+                        }
+                        
                     }
-                    
+                    if tempArray.isEmpty{
+                        self.studentHasAlreadyApplied = false
+                    } else if tempArray.contains((Auth.auth().currentUser?.uid)!) == false{
+                        self.studentHasAlreadyApplied = false
+                    } else {
+                        self.studentHasAlreadyApplied = true
+                    }
+
                 }
             }
             

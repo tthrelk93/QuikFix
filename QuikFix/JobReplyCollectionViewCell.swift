@@ -14,7 +14,7 @@ import FirebaseAuth
 protocol AcceptDeclineDelegate2 {
    
     func viewProf2(studentID: String)
-    func acceptDelegateFunc(job: JobPost)
+    func acceptDelegateFunc(job: JobPost, studentID: String)
     func hideBack()
     
 }
@@ -123,7 +123,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
     var delegateStudentID = String()
     func accept(studentID: String){
         
-        delegate?.hideBack()
+       // delegate?.hideBack()
         
         
         self.delegateStudentID = studentID
@@ -193,7 +193,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                                         
                                         uploadDict3["acceptedCount"] = (self.job.acceptedCount as! Int) + 1
                                         Database.database().reference().child("jobs").child(self.job.jobID!).updateChildValues(uploadDict3)
-                                        self.delegate?.acceptDelegateFunc(job: self.job)
+                                        self.delegate?.acceptDelegateFunc(job: self.job, studentID: studentID)
                                         //self.collectionView.isHidden = true
                                         
                                         

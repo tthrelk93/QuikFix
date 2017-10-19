@@ -101,7 +101,21 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
             
         }
     }
+    @IBAction func rightMonthButtonPressed(_ sender: Any) {
+        calendar.display(in: .next)
+        self.monthLabel.text = self.calendar.currentDateString(withFormat: "MMMM")
+        
+        
+        
+    }
 
+    @IBAction func leftMonthButtonPressed(_ sender: Any) {
+        calendar.display(in: .previous)
+        self.monthLabel.text = self.calendar.currentDateString(withFormat: "MMMM")
+    }
+    @IBOutlet weak var monthLabel: UILabel!
+    
+    @IBOutlet weak var backButton: UIButton!
     let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     @IBOutlet weak var calendar: Koyomi!
     @IBOutlet weak var dayLabel: UILabel!
@@ -116,13 +130,22 @@ class CalendarViewController: UIViewController,UICollectionViewDataSource,UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         if self.senderScreen == "poster"{
+            print("tabBarHidden")
             tabBar.isHidden = true
-        }
+            backButton.isHidden = false
+        } else {
+            backButton.isHidden = true
         tabBar.delegate = self
+            tabBar.isHidden = false
         
         tabBar.selectedItem = tabBarCalendarButton
+        }
         self.calendar.calendarDelegate = self
         self.calendar.selectionMode = .single(style: .circle)
+        
+        
+        
+        self.monthLabel.text = self.calendar.currentDateString(withFormat: "MMMM")
         for cell in calendar.visibleCells{
             cell.layer.cornerRadius = cell.frame.width/2
         }
@@ -284,6 +307,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
  }*/
     
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        
         if item == tabBar.items?[0]{
             performSegue(withIdentifier: "TabBarCalendarToJobHistory", sender: self)
         } else if item == tabBar.items?[1]{
@@ -295,6 +319,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
         } else {
             
         }
+        
     }
 
 

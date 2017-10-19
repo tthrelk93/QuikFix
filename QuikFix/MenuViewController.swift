@@ -68,6 +68,9 @@ class MenuViewController: UIViewController, GuillotineMenu {
         presentingViewController!.dismiss(animated: true, completion: nil)
     }
 
+    @IBAction func jobLogPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PosterToJobHistory", sender: self)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -84,9 +87,15 @@ class MenuViewController: UIViewController, GuillotineMenu {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "PosterToJobHistory"{
+            if let vc = segue.destination as? JobHistoryViewController{
+                vc.senderScreen = "poster"
+            }
+        }
         if segue.identifier == "PosterMenuToCalendar"{
+            print("sup")
             if let vc = segue.destination as? CalendarViewController{
-                vc.senderScreen == "poster"
+                vc.senderScreen = "poster"
                 
             }
         }

@@ -10,11 +10,31 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController{
+// TabBarJobPostToJobLog JobVCToCalendar TabBarJobFinderToStudentProfile   
+
+class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController, UITabBarDelegate{
+    
+    public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        if item == tabBar.items?[0]{
+            performSegue(withIdentifier: "TabBarJobPostToJobLog", sender: self)
+        } else if item == tabBar.items?[1]{
+            
+            
+        } else if item == tabBar.items?[2]{
+            performSegue(withIdentifier: "TabBarJobFinderToStudentProfile", sender: self)
+            
+        } else {
+            performSegue(withIdentifier: "JobVCToCalendar", sender: self)
+            
+        }
+    }
+
+    
     @IBAction func calendarPressed(_ sender: Any) {
         performSegue(withIdentifier: "JobVCToCalendar", sender: self)
         
     }
+    @IBOutlet weak var tabBar: UITabBar!
     
     var categoryType = String()
         @IBOutlet weak var calendarTableView: UITableView!
@@ -23,7 +43,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
+        tabBar.delegate = self
         Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let snapshots = snapshot.children.allObjects as! [DataSnapshot]

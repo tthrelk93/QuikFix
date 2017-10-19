@@ -101,8 +101,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         responseBubble.layer.cornerRadius = responseBubble.frame.width/2
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.clipsToBounds = true
+        var responseBool = false
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
                 for snap in snapshots{
                     if snap.key == "name"{
                         //(self.navigationBar as UINavigationBar). //
@@ -122,6 +124,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
                     }
                     else if snap.key == "responses"{
+                        responseBool = true
                         if (snap.value as! [String:Any]).count == 0{
                             self.responseBubble.isHidden = true
                         } else {
@@ -130,6 +133,11 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         }
                         
                     }
+                }
+                if responseBool == false{
+                    self.responseBubble.isHidden = true
+                } else {
+                    self.responseBubble.isHidden = false
                 }
                 if self.curListBool == false{
                     self.currentListingsCount.text = "0"

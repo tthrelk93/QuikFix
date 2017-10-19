@@ -99,6 +99,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
     //cellDelegateMethods
     var delegateStudentID = String()
     func accept(studentID: String){
+        print("pecific response")
         self.delegateStudentID = studentID
         for student in 0...studentArray.count{
             if studentID == studentArray[student].studentID{
@@ -113,7 +114,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
+               
                 for snap in snapshots {
                     if snap.key == "responses"{
                         var tempDict = snap.value as! [String:Any]
@@ -135,6 +136,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                                 var containsJobs = false
                                 var upcomingArray = [String]()
                                 for snap in snapshots {
+                                    
                                     if snap.key == "upcomingJobs"{
                                         upcomingArray = snap.value as! [String]
                                         upcomingArray.append(self.job.jobID!)
@@ -151,7 +153,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                                     
                                 }
                             }
-                        })
+                                                    })
 
                         
                     }
