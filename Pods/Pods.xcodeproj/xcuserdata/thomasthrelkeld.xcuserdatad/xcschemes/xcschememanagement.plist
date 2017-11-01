@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>DropDown.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -15,6 +20,21 @@
 			<false/>
 		</dict>
 		<key>GuillotineMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>IQKeyboardManagerSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JSQMessagesViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JSQSystemSoundPlayer.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -39,6 +59,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Stripe-Stripe.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Stripe.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftOverlays.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,7 +87,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0F6899C7891CF4C83C8767D065D18C2D</key>
+		<key>069C620BF05FDD52E248A6909AA2A340</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,12 +102,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>277D835036AE4B5C79FB05344E5E768C</key>
+		<key>4FC34E9C597E2AACB325462CCF6F042B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4FC34E9C597E2AACB325462CCF6F042B</key>
+		<key>5168099F2EBFC99A707C03C9EADE01A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6D3927E9602CA413CB95AF31E0358DFC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,7 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B840D32217F849F7BA3B3EE5F7DCBDD9</key>
+		<key>7F008329A99C006D598DA8DF4630ACC5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7D2034F031E07A9C47D6AB8B9D473BE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,7 +137,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D4DA5BA0702F699A9C6E09866655C15A</key>
+		<key>C235F77E101E742652CCF98FFDFA5182</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C7DCF2B547F7871B9BFD74DE93B0E173</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CDE08CF390A9D1DF10634339AB7A395A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D144BB9D2C0B4BBF44650671FE7F704B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

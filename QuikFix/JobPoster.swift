@@ -21,6 +21,8 @@ class JobPoster: NSObject{
     var prevWorker: [String]?
     var location: [String:Any]?
     var city: String?
+    var paymentVerified: Bool?
+    var stripeToken: String?
     //var city: String?
     //var state: String?
 }

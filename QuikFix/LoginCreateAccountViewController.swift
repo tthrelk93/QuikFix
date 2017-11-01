@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import SwiftOverlays
 
 class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var createAccountView: UIView!
@@ -44,11 +45,14 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         for snap in snapshots{
                             if snap.key == Auth.auth().currentUser?.uid{
-                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
                                 studentBool = true
+                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                                //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                
                             }
                         }
                         if studentBool == false{
+                            //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
                             self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
                         }
                     }
@@ -66,6 +70,7 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBAction func signUpButtonPressed(_ sender: Any) {
     }
 
+    @IBOutlet weak var keepMeLoggedIn: UISwitch!
     
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var notSignedUpLabel: UILabel!
@@ -81,6 +86,32 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
         
         userNameTextField.delegate = self
         passwordTextField.delegate = self
+        
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if let user = user {
+                // User is signed in.
+                var studentBool = false
+                Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        for snap in snapshots{
+                            if snap.key == Auth.auth().currentUser?.uid{
+                                studentBool = true
+                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                                //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                
+                            }
+                        }
+                        if studentBool == false{
+                            //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                            self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
+                        }
+                    }
+                })
+
+            } else {
+                // No user is signed in.
+            }
+        }
         //userNameTextField.color
 
         // Do any additional setup after loading the view.

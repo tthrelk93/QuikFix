@@ -20,6 +20,8 @@
 		3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */; };
 		3B2007311F96AF8B000C008D /* JobLogJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2007301F96AF8B000C008D /* JobLogJobViewController.swift */; };
 		3B2007341F97B009000C008D /* ForgotPasswordViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2007331F97B009000C008D /* ForgotPasswordViewController1.swift */; };
+		3B20079A1F9A7CE3000C008D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2007981F9A7CE3000C008D /* ChatViewController.swift */; };
+		3B20079B1F9A7CE3000C008D /* ChatContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2007991F9A7CE3000C008D /* ChatContainer.swift */; };
 		3B200B4A1F857C2B00D40997 /* JobReplyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */; };
 		3B200B4C1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */; };
 		3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B4D1F8590ED00D40997 /* SpecificResponseViewController.swift */; };
@@ -36,8 +38,16 @@
 		3B468C9C1F57653F001D8FEC /* QuikFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C9B1F57653F001D8FEC /* QuikFixTests.swift */; };
 		3B468CA71F57653F001D8FEC /* QuikFixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */; };
 		3B4ED06F1F8A9E5A00939152 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B4ED06E1F8A9E5A00939152 /* GoogleService-Info.plist */; };
+		3B5082BE1F9FC53700BFFCE9 /* CheckoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082BD1F9FC53700BFFCE9 /* CheckoutRowView.swift */; };
+		3B5082C11F9FC7A600BFFCE9 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082BF1F9FC7A600BFFCE9 /* MyAPIClient.swift */; };
+		3B5082C21F9FC7A600BFFCE9 /* PaymentContextFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082C01F9FC7A600BFFCE9 /* PaymentContextFooterView.swift */; };
+		3B5082C41F9FC7B600BFFCE9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082C31F9FC7B600BFFCE9 /* SettingsViewController.swift */; };
+		3B5082C81F9FCE5300BFFCE9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082C71F9FCE5300BFFCE9 /* Buttons.swift */; };
+		3B5082CA1F9FD0AE00BFFCE9 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5082C91F9FD0AE00BFFCE9 /* CheckoutViewController.swift */; };
 		3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5238801F783518006DFDAE /* DateTableViewCell.swift */; };
 		3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5238811F783518006DFDAE /* DateTableViewCell.xib */; };
+		3B5A1A411FA9229700D55F80 /* CreateAccountStudent2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */; };
+		3B5A1A431FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */; };
 		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
 		3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */; };
 		3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */; };
@@ -87,6 +97,8 @@
 		3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWorkerNumberViewController.swift; sourceTree = "<group>"; };
 		3B2007301F96AF8B000C008D /* JobLogJobViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobLogJobViewController.swift; sourceTree = "<group>"; };
 		3B2007331F97B009000C008D /* ForgotPasswordViewController1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController1.swift; sourceTree = "<group>"; };
+		3B2007981F9A7CE3000C008D /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = ../ChatViewController.swift; sourceTree = "<group>"; };
+		3B2007991F9A7CE3000C008D /* ChatContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatContainer.swift; path = ../ChatContainer.swift; sourceTree = "<group>"; };
 		3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobReplyCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecificResponseCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B200B4D1F8590ED00D40997 /* SpecificResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecificResponseViewController.swift; sourceTree = "<group>"; };
@@ -109,8 +121,16 @@
 		3B468CA61F57653F001D8FEC /* QuikFixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuikFixUITests.swift; sourceTree = "<group>"; };
 		3B468CA81F57653F001D8FEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B4ED06E1F8A9E5A00939152 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B5082BD1F9FC53700BFFCE9 /* CheckoutRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutRowView.swift; sourceTree = "<group>"; };
+		3B5082BF1F9FC7A600BFFCE9 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
+		3B5082C01F9FC7A600BFFCE9 /* PaymentContextFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentContextFooterView.swift; sourceTree = "<group>"; };
+		3B5082C31F9FC7B600BFFCE9 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		3B5082C71F9FCE5300BFFCE9 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		3B5082C91F9FD0AE00BFFCE9 /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		3B5238801F783518006DFDAE /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
 		3B5238811F783518006DFDAE /* DateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateTableViewCell.xib; sourceTree = "<group>"; };
+		3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountStudent2ViewController.swift; sourceTree = "<group>"; };
+		3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateStudentAccountFinalViewController.swift; sourceTree = "<group>"; };
 		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
 		3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostDateAndTimeViewController.swift; sourceTree = "<group>"; };
 		3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountViewController.swift; sourceTree = "<group>"; };
@@ -208,7 +228,13 @@
 			isa = PBXGroup;
 			children = (
 				3B2007301F96AF8B000C008D /* JobLogJobViewController.swift */,
+				3B5082C71F9FCE5300BFFCE9 /* Buttons.swift */,
 				3B144E251F802E130088A1D0 /* JobHistoryViewController.swift */,
+				3B5082BF1F9FC7A600BFFCE9 /* MyAPIClient.swift */,
+				3B5082C01F9FC7A600BFFCE9 /* PaymentContextFooterView.swift */,
+				3B5082C31F9FC7B600BFFCE9 /* SettingsViewController.swift */,
+				3B5082BD1F9FC53700BFFCE9 /* CheckoutRowView.swift */,
+				3B5082C91F9FD0AE00BFFCE9 /* CheckoutViewController.swift */,
 			);
 			name = "Job History/Log";
 			sourceTree = "<group>";
@@ -266,6 +292,8 @@
 				3B2007361F97EE9A000C008D /* Find Job */,
 				3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */,
 				3B200B511F86EF6800D40997 /* CalendarViewController.swift */,
+				3B2007981F9A7CE3000C008D /* ChatViewController.swift */,
+				3B2007991F9A7CE3000C008D /* ChatContainer.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -311,6 +339,8 @@
 				3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */,
 				3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */,
 				3B2007331F97B009000C008D /* ForgotPasswordViewController1.swift */,
+				3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */,
+				3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */,
 			);
 			name = CreateAccount/Login;
 			sourceTree = "<group>";
@@ -645,28 +675,36 @@
 			files = (
 				3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */,
 				3B2007341F97B009000C008D /* ForgotPasswordViewController1.swift in Sources */,
+				3B5082C81F9FCE5300BFFCE9 /* Buttons.swift in Sources */,
 				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
+				3B5082BE1F9FC53700BFFCE9 /* CheckoutRowView.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
+				3B20079B1F9A7CE3000C008D /* ChatContainer.swift in Sources */,
 				3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */,
 				3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */,
 				3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */,
 				3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */,
 				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
+				3B5A1A411FA9229700D55F80 /* CreateAccountStudent2ViewController.swift in Sources */,
 				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
 				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,
 				3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */,
+				3B5082CA1F9FD0AE00BFFCE9 /* CheckoutViewController.swift in Sources */,
 				3B200B4C1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift in Sources */,
 				3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */,
 				3B144E231F7ECD2D0088A1D0 /* ExperienceTableViewCell.swift in Sources */,
 				3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */,
 				3B144E261F802E130088A1D0 /* JobHistoryViewController.swift in Sources */,
 				3B200B521F86EF6800D40997 /* CalendarViewController.swift in Sources */,
+				3B5A1A431FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift in Sources */,
 				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
+				3B5082C41F9FC7B600BFFCE9 /* SettingsViewController.swift in Sources */,
 				3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */,
 				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,
 				3B2007311F96AF8B000C008D /* JobLogJobViewController.swift in Sources */,
 				3B9802471F66F49600F785C8 /* CreateAccountStudentViewController.swift in Sources */,
+				3B5082C11F9FC7A600BFFCE9 /* MyAPIClient.swift in Sources */,
 				3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */,
 				3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */,
 				3B18903B1F5F0A2C00F63ECA /* studentProfile.swift in Sources */,
@@ -675,8 +713,10 @@
 				3B200B501F86AB1C00D40997 /* FindAvailableWorkersViewController.swift in Sources */,
 				3B144E131F7983220088A1D0 /* JobPostTimeViewController.swift in Sources */,
 				3B9F21A31F6350540068D7EB /* Finalize.swift in Sources */,
+				3B5082C21F9FC7A600BFFCE9 /* PaymentContextFooterView.swift in Sources */,
 				3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */,
 				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
+				3B20079A1F9A7CE3000C008D /* ChatViewController.swift in Sources */,
 				3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

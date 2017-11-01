@@ -372,6 +372,104 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
             backButton.isHidden = true
             tabBar.isHidden = false
             // else if senderscreen == student
+            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots {
+                        if snap.key == "upcomingJobs"{
+                            self.upcomingJobs = snap.value as! [String]
+                        }
+                        
+                        if snap.key == "jobsCompleted"{
+                            self.jobsCompleted = snap.value  as! [String]
+                        }
+                        
+                    }
+                }
+                
+                Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        
+                        for snap in snapshots {
+                            if self.jobsCompleted.contains(snap.key){
+                                self.jobsCompletedObj.append(snap.value as! [String:Any])
+                                
+                            }
+                            if self.upcomingJobs.contains(snap.key){
+                                self.upcomingJobsObj.append(snap.value as! [String:Any])
+                                
+                            }
+                        }
+                    }
+                    
+                    for tempDict in self.jobsCompletedObj{
+                        let tempJob = JobPost()
+                        tempJob.additInfo = (tempDict["additInfo"] as! String)
+                        tempJob.category1 = (tempDict["category1"] as! String)
+                        tempJob.category2 = (tempDict["category2"] as! String)
+                        tempJob.posterName = (tempDict["posterName"] as! String)
+                        tempJob.date = (tempDict["date"] as! String)
+                        tempJob.payment = (tempDict["payment"] as! String)
+                        tempJob.time = (tempDict["time"] as! String)
+                        tempJob.jobID = (tempDict["jobID"] as! String)
+                        tempJob.posterID = (tempDict["posterID"] as! String)
+                        tempJob.completed = tempDict["completed"] as! Bool
+                        tempJob.workers = (tempDict["workers"] as! [String])
+                        self.tableViewData.append(tempJob)
+                        if self.calendarDict[tempJob.date!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                            tempJobArray.append(tempJob)
+                            self.calendarDict[tempJob.date!] = tempJobArray
+                        } else {
+                            self.calendarDict[tempJob.date!] = [tempJob]
+                        }
+                        
+                    }
+                    for (key, _) in self.calendarDict{
+                        self.datesArray.append(key)
+                    }
+                    //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
+                    var convertedArray: [Date] = []
+                    
+                    var dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "MMMM-dd-yyyy"
+                    
+                    for dat in self.datesArray {
+                        var date = dateFormatter.date(from: dat)
+                        convertedArray.append(date!)
+                    }
+                    
+                    //Approach : 1
+                    convertedArray.sort(){$0 < $1}
+                    self.datesArray.removeAll()
+                    for dat in convertedArray{
+                        let formatter = DateFormatter()
+                        // initially set the format based on your datepicker date
+                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        
+                        let myString = formatter.string(from: dat)
+                        // convert your string to date
+                        let yourDate = formatter.date(from: myString)
+                        //then again set the date format whhich type of output you need
+                        formatter.dateFormat = "MMMM-dd-yyyy"
+                        // again convert your date to string
+                        let dateString = formatter.string(from: yourDate!)
+                        self.datesArray.append(dateString)
+                    }
+                    
+                    
+                    
+                    self.jobHistoryTableView.delegate = self
+                    self.jobHistoryTableView.dataSource = self
+                    DispatchQueue.main.async{
+                        self.jobHistoryTableView.reloadData()
+                    }
+                    
+                })
+            })
+
         }
         
         

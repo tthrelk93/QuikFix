@@ -17,6 +17,10 @@ pod 'GooglePlaces'
 pod 'GoogleMaps’
 pod 'GooglePlacePicker’
 pod 'SwiftOverlays', '~> 3.0.0'
+pod 'JSQMessagesViewController'
+pod 'Stripe'
+pod 'IQKeyboardManagerSwift'
+pod ‘DropDown’
 
   target 'QuikFixTests' do
     inherit! :search_paths
@@ -32,6 +36,10 @@ pod 'GooglePlaces'
 pod 'GoogleMaps'
 pod 'GooglePlacePicker’
 pod 'SwiftOverlays', '~> 3.0.0'
+pod 'JSQMessagesViewController'
+pod 'Stripe'
+pod 'IQKeyboardManagerSwift'
+pod ‘DropDown’
   end
 
   target 'QuikFixUITests' do
@@ -47,6 +55,10 @@ pod "Koyomi"
 pod 'GoogleMaps’
 pod 'GooglePlacePicker’
 pod 'SwiftOverlays', '~> 3.0.0'
+pod 'JSQMessagesViewController'
+pod 'Stripe'
+pod 'IQKeyboardManagerSwift'
+pod ‘DropDown’
   end
 
 end

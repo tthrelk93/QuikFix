@@ -29,11 +29,12 @@ class JobPostCategoryViewController: UIViewController, UIPickerViewDelegate, UIP
     @IBOutlet weak var categoryPicker: UIPickerView!
     
     @IBOutlet weak var category2Picker: UIPickerView!
-    var categoryList1 = ["Select a Category","Lawn Care", "Installations", "Assembly","Moving", "Other"]
+    var categoryList1 = ["Select a Category","Lawn Care", "Installations", "Assembly","Moving", "Hauling Away", "Custom"]
     var LawnCareCategoryList = ["Mow", "Gardening", "Outdoor Maintenance(gutters)"]
     var installationsCategoryList = ["Electronics", "Decorations"]
     var assemblyCategoryList = ["Furniture"]
-    var movingCategoryList = ["In-Home","Hauling Away"]
+    var movingCategoryList = ["In-Home", "Home-To-Home"]
+    
     
     var categoryLists = [[String]]()
     

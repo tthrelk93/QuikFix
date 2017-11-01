@@ -13,7 +13,9 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     @IBAction func iAmStudentPressed(_ sender: Any) {
         if userPic.image == nil {
             let alert = UIAlertController(title: "Select profile image", message: "Press the profile icon to select a profile picture.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+                self.handleSelectProfileImageView()
+        }))
             self.present(alert, animated: true, completion: nil)
             return
 
@@ -28,7 +30,9 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
          if userPic.image == nil {
             //present alert to pick pic
             let alert = UIAlertController(title: "Select profile image", message: "Press the profile icon to select a profile picture.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+            self.handleSelectProfileImageView()
+            }))
             self.present(alert, animated: true, completion: nil)
             return
          } else {

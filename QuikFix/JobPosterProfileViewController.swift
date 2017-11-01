@@ -19,9 +19,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
    // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
    
-    @IBOutlet weak var postSuccessShadeView: UIView!
+    //@IBOutlet weak var postSuccessShadeView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
+    @IBAction func currentListingsButtonPressed(_ sender: Any) {
+        
+    }
     
     @IBAction func okayPressed(_ sender: Any) {
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -29,8 +32,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 for snap in snapshots{
                     if snap.key == "currentListings"{
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
-                        self.postSuccessShadeView.isHidden = true
-                        self.jobPostedView.isHidden = true
+                        //self.postSuccessShadeView.isHidden = true
+                        //self.jobPostedView.isHidden = true
                         self.postJobsButton.isHidden = false
                         break
                     }
@@ -42,7 +45,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
 
     }
     
-    @IBOutlet weak var jobPostedView: UIView!
+   // @IBOutlet weak var jobPostedView: UIView!
     @IBAction func responseBubblePressed(_ sender: Any) {
         
         
@@ -55,7 +58,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var jobsCompletedCount: UILabel!
     @IBOutlet weak var currentListingsCount: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    var showJobPostedView: Bool?
+    //var showJobPostedView: Bool?
     func menuSelected(_ sender: Any){
         
         
@@ -77,8 +80,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var curListBool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        jobPostedView.layer.cornerRadius = 12
-        postSuccessShadeView.layer.cornerRadius = 12
+        //jobPostedView.layer.cornerRadius = 12
+        //postSuccessShadeView.layer.cornerRadius = 12
         //let navBar = self.navigationController!.navigationBar
        // navBar.barTintColor = UIColor.white
        // navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)]
@@ -90,14 +93,14 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
         
         
-        if showJobPostedView == true{
+       /* if showJobPostedView == true{
             self.postSuccessShadeView.isHidden = false
             jobPostedView.isHidden = false
             postJobsButton.isHidden = true
             
-        }
+        }*/
         
-        jobPostedView.layer.cornerRadius = 10
+        //jobPostedView.layer.cornerRadius = 10
         responseBubble.layer.cornerRadius = responseBubble.frame.width/2
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.clipsToBounds = true

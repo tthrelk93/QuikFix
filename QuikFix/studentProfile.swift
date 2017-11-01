@@ -11,6 +11,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import SwiftOverlays
 
 class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate {
     
@@ -124,10 +125,12 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var backButtonForPoster: UIButton!
     func loadPageData(){
+        SwiftOverlays.removeAllOverlaysFromView(self.view)
+        SwiftOverlays.removeAllBlockingOverlays()
         tabBar.delegate = self
         if self.notUsersProfile == false{
-            availableForWorkLabel.isHidden = false
-            availableSwitch.isHidden = false
+            //availableForWorkLabel.isHidden = false
+            //availableSwitch.isHidden = false
             menuButton.isHidden = false
             backButtonForPoster.isHidden = true
             editButton.isHidden = false
@@ -358,6 +361,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         loadPageData()
+        scrollView.bounces = false
+        SwiftOverlays.removeAllBlockingOverlays()
             }
     
     override func didReceiveMemoryWarning() {

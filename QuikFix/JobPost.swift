@@ -24,6 +24,8 @@ class JobPost: NSObject {
     var location: String?
     var completed: Any?
     var workers: [String]?
+    var messages: [String:Any]?
+    var payments: [[String:Any]]?
     //var responses: [String]?
     
     

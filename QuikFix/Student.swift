@@ -25,6 +25,7 @@ class Student: NSObject {
     var totalEarned: Int?
     var city: String?
     var location: [String:Any]?
-    var available: Bool?
+    var tShirtSize: String?
+    var phone: String?
     
 }
