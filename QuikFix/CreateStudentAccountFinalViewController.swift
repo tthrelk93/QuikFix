@@ -20,6 +20,8 @@ import FirebaseStorage
 import DropDown
 import CoreLocation
 
+
+
 class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDelegate {
     
     var profPic = UIImage()
@@ -92,6 +94,9 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     }
     @IBOutlet weak var tShirtSizeDropDownTF: UITextField!
     @IBOutlet weak var relevantExperienceDropDownTF: UITextField!
+    
+    @IBOutlet weak var expLabel: UILabel!
+    
      let dropDown = DropDown()
     let dropDown2 = DropDown()
     override func viewDidLoad() {
@@ -100,10 +105,11 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         
         // The view to which the drop down will appear on
         dropDown.anchorView = view // UIView or UIBarButtonItem
-        
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
         // The list of items to display. Can be changed dynamically
         dropDown.dataSource = ["Lawncare", "Assembling Furniture", "Moving", "IT", "Electronics"]
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            self.expLabel.isHidden = true
             if self.experience.contains(item){
                 self.experience.remove(at: self.experience.index(of: item)!)
             } else {
@@ -130,7 +136,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         // The view to which the drop down will appear on
         dropDown2.anchorView = view // UIView or UIBarButtonItem
         
-        
+        dropDown2.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
         // The list of items to display. Can be changed dynamically
         dropDown2.dataSource = ["XS", "S", "M", "L", "XL", "XXL"]
         
@@ -149,12 +155,14 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         if textField == tShirtSizeDropDownTF{
             dropDown2.show()
         } else {
+            
             for item in dropDown.dataSource{
                 if experience.contains(item){
                     dropDown.selectRow(at: dropDown.dataSource.index(of: item))
                 }
             }
             dropDown.show()
+            expLabel.isHidden = false
         }
         
         

@@ -12,13 +12,24 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import SwiftOverlays
+import CoreLocation
 
-class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate {
+
+
+
+
+class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var availableForWorkLabel: UILabel!
-    @IBAction func availableSwitchActivated(_ sender: Any) {
-        var tempDict = [String:Any]()
-        if availableSwitch.isOn{
+    
+    
+
+    
+    
+    
+    //@IBOutlet weak var availableForWorkLabel: UILabel!
+    //@IBAction func availableSwitchActivated(_ sender: Any) {
+        //var tempDict = [String:Any]()
+        /*if availableSwitch.isOn{
             tempDict["available"] = true
             availableForWorkLabel.text = "Available for work"
         } else {
@@ -28,8 +39,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
         
         
-    }
-    @IBOutlet weak var availableSwitch: UISwitch!
+    }*/
+    //@IBOutlet weak var availableSwitch: UISwitch!
     var notUsersProfile = false
     var studentIDFromResponse = String()
     var job = JobPost()
@@ -47,19 +58,19 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     @IBOutlet weak var majorLabel: UILabel!
     @IBOutlet weak var educationLabel: UILabel!
     @IBOutlet weak var schoolLabel: UILabel!
-    @IBOutlet weak var studentBioLabel: UILabel!
+   // @IBOutlet weak var studentBioLabel: UILabel!
     @IBOutlet weak var jobCountLabel: UILabel!
     @IBOutlet weak var earnedLabel: UILabel!
-    @IBOutlet weak var studentBio: UITextView!
+  //  @IBOutlet weak var studentBio: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
     var jobsFinishedArray = [String]()
     var upcomingJobsArray = [String]()
     var experienceDict = [String:Any]()
-    
+    var location = CLLocation()
     //edit profile view
     var selectedImage = UIImage()
-    @IBOutlet weak var editProfView: UIView!
-    @IBAction func saveChangesPressed(_ sender: Any) {
+   // @IBOutlet weak var editProfView: UIView!
+   /* @IBAction func saveChangesPressed(_ sender: Any) {
         var values = [String: Any]()
         let imageName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child((Auth.auth().currentUser?.uid)!).child("\(imageName).jpg")
@@ -118,7 +129,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     
     
         
-    }
+    }*/
     
     @IBOutlet weak var menuButton: UIButton!
     
@@ -134,39 +145,39 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             menuButton.isHidden = false
             backButtonForPoster.isHidden = true
             editButton.isHidden = false
-        self.editProfPicImageView.layer.cornerRadius = 10
+        //self.editProfPicImageView.layer.cornerRadius = 10
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         picker.delegate = self
         profileImageView.clipsToBounds = true
-        editGradYearTextField.delegate = self
+        /*editGradYearTextField.delegate = self
         editMajorTextField.delegate = self
         editNameTextField.delegate = self
         editBioTextView.delegate = self
-        editSchoolTextField.delegate = self
+        editSchoolTextField.delegate = self*/
         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if snap.key == "name"{
                         self.nameLabel.text = snap.value as! String
-                        self.editNameTextField.placeholder = snap.value as! String
+                        //self.editNameTextField.placeholder = snap.value as! String
                         
                     }
-                        else if snap.key == "available"{
+                        /*else if snap.key == "available"{
                         if snap.value as! Bool == true{
                             self.availableSwitch.isOn = true
                         } else {
                             self.availableSwitch.isOn = false
-                        }
+                        }*/
                         
                         
-                    }
+                    //}
                     else if snap.key == "school"{
                         self.schoolLabel.text = snap.value as? String
-                        self.editSchoolTextField.placeholder = snap.value as! String
+                        //self.editSchoolTextField.placeholder = snap.value as! String
                     }
                     else if snap.key == "major"{
                         self.majorLabel.text = snap.value as? String
-                        self.editMajorTextField.placeholder = snap.value as! String
+                        //self.editMajorTextField.placeholder = snap.value as! String
                     }
                     else if snap.key == "jobsFinished"{
                         for job in snap.value as! [String]{
@@ -176,9 +187,35 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         
                         
                     }
-                        else if snap.key == "city"{
-                        self.cityLabel.text = snap.value as! String
-                        self.editCityTextField.placeholder = snap.value as! String
+                        else if snap.key == "location"{
+                        var tempDict = snap.value as! [String: Any]
+                        self.location = CLLocation(latitude: tempDict["lat"] as! CLLocationDegrees, longitude: tempDict["long"] as! CLLocationDegrees)
+                        
+                        let geoCoder = CLGeocoder()
+                        
+                        geoCoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) -> Void in
+                            
+                            // Place details
+                            var placeMark: CLPlacemark!
+                            placeMark = placemarks?[0]
+                            
+                            // Address dictionary
+                            print(placeMark.addressDictionary as Any)
+                            
+                                                        // City
+                            if let city = placeMark.addressDictionary!["City"] as? NSString {
+                                print(city)
+                            
+                        
+                        
+                        
+                        self.cityLabel.text = city as! String
+                            }
+                        })
+                        
+                    
+                    
+                        //self.editCityTextField.placeholder = snap.value as! String
                         
                         
                     }
@@ -191,11 +228,12 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         
                     else if snap.key == "gradYear"{
                         self.gradYearLabel.text = snap.value as! String
-                        self.editGradYearTextField.placeholder = snap.value as! String
+                       // self.editGradYearTextField.placeholder = snap.value as! String
                     }
                         
                     else if snap.key == "experience"{
                         self.expTableData = snap.value as! [String]
+                        
                     }
                         
                         
@@ -205,47 +243,52 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                 self.profileImageView.image = UIImage(data: imageData as Data)
-                                self.editProfPicImageView.image = UIImage(data: imageData as Data)
+                                //self.editProfPicImageView.image = UIImage(data: imageData as Data)
                             } }
                         //  loadImageUsingCacheWithUrlString(snap.value as! String)
                     }
-                    else if snap.key == "bio"{
-                        self.studentBio.text = snap.value as! String
-                        self.editBioTextView.text = snap.value as! String
-                    }
+                   /* else if snap.key == "bio"{
+                        //self.studentBio.text = snap.value as! String
+                        //self.editBioTextView.text = snap.value as! String
+                    }*/
                 }
+            }
+            self.expTableView.delegate = self
+            self.expTableView.dataSource = self
+            DispatchQueue.main.async{
+                self.expTableView.reloadData()
             }
         })
         } else {
-            availableForWorkLabel.isHidden = true
-            availableSwitch.isHidden = true
+           // availableForWorkLabel.isHidden = true
+            //availableSwitch.isHidden = true
             menuButton.isHidden = true
             backButtonForPoster.isHidden = false
             editButton.isHidden = true
-            self.editProfPicImageView.layer.cornerRadius = 10
+            //self.editProfPicImageView.layer.cornerRadius = 10
             profileImageView.layer.cornerRadius = profileImageView.frame.width/2
             picker.delegate = self
             profileImageView.clipsToBounds = true
-            editGradYearTextField.delegate = self
-            editMajorTextField.delegate = self
-            editNameTextField.delegate = self
-            editBioTextView.delegate = self
-            editSchoolTextField.delegate = self
+            //editGradYearTextField.delegate = self
+            //editMajorTextField.delegate = self
+            //editNameTextField.delegate = self
+            //editBioTextView.delegate = self
+            //editSchoolTextField.delegate = self
             Database.database().reference().child("students").child(self.studentIDFromResponse).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if snap.key == "name"{
                             self.nameLabel.text = snap.value as! String
-                            self.editNameTextField.placeholder = snap.value as! String
+                            //self.editNameTextField.placeholder = snap.value as! String
                             
                         }
                         else if snap.key == "school"{
                             self.schoolLabel.text = snap.value as? String
-                            self.editSchoolTextField.placeholder = snap.value as! String
+                            //self.editSchoolTextField.placeholder = snap.value as! String
                         }
                         else if snap.key == "major"{
                             self.majorLabel.text = snap.value as? String
-                            self.editMajorTextField.placeholder = snap.value as! String
+                            //self.editMajorTextField.placeholder = snap.value as! String
                         }
                         else if snap.key == "jobsFinished"{
                             for job in snap.value as! [String]{
@@ -255,9 +298,32 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             
                             
                         }
-                        else if snap.key == "city"{
-                            self.cityLabel.text = snap.value as! String
-                            self.editCityTextField.placeholder = snap.value as! String
+                        else if snap.key == "location"{
+                            var tempDict = snap.value as! [String: Any]
+                            self.location = CLLocation(latitude: tempDict["lat"] as! CLLocationDegrees, longitude: tempDict["long"] as! CLLocationDegrees)
+                            
+                            let geoCoder = CLGeocoder()
+                            
+                            geoCoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) -> Void in
+                                
+                                // Place details
+                                var placeMark: CLPlacemark!
+                                placeMark = placemarks?[0]
+                                
+                                // Address dictionary
+                                print(placeMark.addressDictionary as Any)
+                                
+                                // City
+                                if let city = placeMark.addressDictionary!["City"] as? NSString {
+                                    print(city)
+                                
+                                
+                                
+                                
+                                self.cityLabel.text = city as String
+                                }
+                            })
+                            //self.editCityTextField.placeholder = snap.value as! String
                             
                             
                         }
@@ -270,12 +336,13 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             
                         else if snap.key == "gradYear"{
                             self.gradYearLabel.text = snap.value as! String
-                            self.editGradYearTextField.placeholder = snap.value as! String
+                           // self.editGradYearTextField.placeholder = snap.value as! String
                         }
                             
                         else if snap.key == "experience"{
+                            print("yooo")
                             self.expTableData = snap.value as! [String]
-                        }
+                                                    }
                             
                             
                             
@@ -284,16 +351,22 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                                 
                                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                     self.profileImageView.image = UIImage(data: imageData as Data)
-                                    self.editProfPicImageView.image = UIImage(data: imageData as Data)
+                                    //self.//editProfPicImageView.image = UIImage(data: imageData as Data)
                                 } }
                             //  loadImageUsingCacheWithUrlString(snap.value as! String)
                         }
-                        else if snap.key == "bio"{
+                        /*else if snap.key == "bio"{
                             self.studentBio.text = snap.value as! String
-                            self.editBioTextView.text = snap.value as! String
-                        }
+                            //self.editBioTextView.text = snap.value as! String
+                        }*/
                     }
                 }
+                self.expTableView.delegate = self
+                self.expTableView.dataSource = self
+                DispatchQueue.main.async{
+                    self.expTableView.reloadData()
+                }
+                
             })
         }
         
@@ -303,27 +376,27 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
 
     }
     
-    @IBOutlet weak var editProfPicButton: UIButton!
+   // @IBOutlet weak var editProfPicButton: UIButton!
     
-    @IBOutlet weak var editProfPicImageView: UIImageView!
-    @IBAction func editProfPicPressed(_ sender: Any) {
+   // @IBOutlet weak var editProfPicImageView: UIImageView!
+   /* @IBAction func editProfPicPressed(_ sender: Any) {
         handleSelectProfileImageView()
         
         
-    }
-    @IBOutlet weak var editNameTextField: UITextField!
-    @IBOutlet weak var editCityTextField: UITextField!
+    }*/
+   // @IBOutlet weak var editNameTextField: UITextField!
+   // @IBOutlet weak var editCityTextField: UITextField!
     
-    @IBOutlet weak var editSchoolTextField: UITextField!
-    @IBOutlet weak var editMajorTextField: UITextField!
+   // @IBOutlet weak var editSchoolTextField: UITextField!
+   // @IBOutlet weak var editMajorTextField: UITextField!
     
-    @IBOutlet weak var editBioTextView: UITextView!
-    @IBOutlet weak var editExpTableView: UITableView!
+    //@IBOutlet weak var editBioTextView: UITextView!
+   // @IBOutlet weak var editExpTableView: UITableView!
     let picker = UIImagePickerController()
     
-    @IBOutlet weak var editGradYearTextField: UITextField!
+    //@IBOutlet weak var editGradYearTextField: UITextField!
     @IBAction func editProfilePressed(_ sender: Any) {
-        if self.editProfView.isHidden == true{
+       /* if self.editProfView.isHidden == true{
             if self.editCityTextField.placeholder == ""{
                 self.editCityTextField.placeholder = "City"
             }
@@ -342,9 +415,44 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             self.editProfView.isHidden = false
         } else {
             editProfView.isHidden = true
-        }
+        }*/
         
     }
+    
+    
+    @available(iOS 2.0, *)
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        print(expTableData)
+        print("expCount: \(expTableData.count)")
+        return self.expTableData.count
+    }
+    
+    
+    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+    
+    
+    @available(iOS 2.0, *)
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ExpTableViewCell",
+                                                 for: indexPath) as! ExpTableViewCell
+        
+        cell.expLabel.text = expTableData[indexPath.row]
+        print(expTableData)
+        //configureTableViewCell(tableView: tableView, cell: cell, indexPath: indexPath)
+        // (cell as! DateTableViewCell).cal.delegate = self
+        //(cell as! DateTableViewCell).jobsCollect.dataSource = self
+        
+        return cell
+    }
+    var sizingCell: ExpTableViewCell?
+    func configureTableViewCell(tableView: UITableView, cell: ExpTableViewCell, indexPath: IndexPath){
+        cell.expLabel.text = expTableData[indexPath.row]
+        
+            }
+
+    
+    
     @IBAction func addExpPressed(_ sender: Any) {
         
         
@@ -371,15 +479,15 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView == editBioTextView{
+        //if textView == editBioTextView{
             
-        }
+        //}
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView == editBioTextView{
+       // if textView == editBioTextView{
             
-        }
+        //}
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -414,7 +522,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             //selectProfilePic.setBackgroundImage(selectedImage, for: .normal)
             //self.editProfPicButton.setBackgroundImage(selectedImage, for: .normal)
             print("selectedImage: \(selectedImage)")
-            self.editProfPicImageView.image = selectedImage
+            //self.editProfPicImageView.image = selectedImage
             
             //profileImageViewButton.set
             // profileImageView.image = selectedImage

@@ -48,6 +48,7 @@
 		3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5238811F783518006DFDAE /* DateTableViewCell.xib */; };
 		3B5A1A411FA9229700D55F80 /* CreateAccountStudent2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */; };
 		3B5A1A431FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */; };
+		3B5A1A471FAA6E9300D55F80 /* ExpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A461FAA6E9300D55F80 /* ExpTableViewCell.swift */; };
 		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
 		3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */; };
 		3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */; };
@@ -131,6 +132,7 @@
 		3B5238811F783518006DFDAE /* DateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateTableViewCell.xib; sourceTree = "<group>"; };
 		3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountStudent2ViewController.swift; sourceTree = "<group>"; };
 		3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateStudentAccountFinalViewController.swift; sourceTree = "<group>"; };
+		3B5A1A461FAA6E9300D55F80 /* ExpTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpTableViewCell.swift; sourceTree = "<group>"; };
 		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
 		3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostDateAndTimeViewController.swift; sourceTree = "<group>"; };
 		3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountViewController.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				3B144E221F7ECD2C0088A1D0 /* ExperienceTableViewCell.xib */,
 				3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */,
 				3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */,
+				3B5A1A461FAA6E9300D55F80 /* ExpTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -716,6 +719,7 @@
 				3B5082C21F9FC7A600BFFCE9 /* PaymentContextFooterView.swift in Sources */,
 				3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */,
 				3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */,
+				3B5A1A471FAA6E9300D55F80 /* ExpTableViewCell.swift in Sources */,
 				3B20079A1F9A7CE3000C008D /* ChatViewController.swift in Sources */,
 				3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */,
 			);

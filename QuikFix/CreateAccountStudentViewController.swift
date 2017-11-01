@@ -40,7 +40,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
             }
             else {
                 student.bio = ""
-                student.name = "\(firstNameTextField!.text) \(nameTextField!.text)"
+                student.name = "\(firstNameTextField!.text!) \(nameTextField!.text!)"
                 student.email = emailTextField.text
                 student.password = passwordTextField.text
                 student.school = ""
@@ -62,6 +62,8 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
                         let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
                             (_) in
                             user?.sendEmailVerification(completion: nil)
+                            self.createAccountButton.setTitle("Continue Once Verified", for: .normal)
+                            
                         }
                         let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                         
@@ -96,6 +98,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
        createAccountButton.setTitle("Verify Email", for: .normal)
         passwordTextField.delegate = self
         nameTextField.delegate = self
+        firstNameTextField.delegate = self
         emailTextField.delegate = self
         confirmPasswordTextField.delegate = self
         locationManager.delegate = self
@@ -120,6 +123,11 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
         //ref.updateChildValues(locDict)
+    }
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == nameTextField || textField == firstNameTextField{
+        textField.text = textField.text?.capitalizingFirstLetter()
+        }
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -146,4 +154,15 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
     }
     
 
+}
+extension String {
+    func capitalizingFirstLetter() -> String {
+        let first = String(characters.prefix(1)).capitalized
+        let other = String(characters.dropFirst())
+        return first + other
+    }
+    
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
 }

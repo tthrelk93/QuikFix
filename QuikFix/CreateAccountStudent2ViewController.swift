@@ -20,7 +20,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     @IBAction func continuePressed(_ sender: Any) {
         if schoolDropDownTF.hasText && majorDropDownTF.hasText && cellPhoneNumberTF.hasText{
             if cellPhoneNumberTF.text?.characters.count != 10{
-                let alert = UIAlertController(title: "Select profile image", message: "Press the profile icon to select a profile picture.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Phone Number Error", message: "Please enter your valid 10 digit phone number.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler:nil))
                 self.present(alert, animated: true, completion: nil)
                 return
@@ -49,6 +49,8 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
         // The view to which the drop down will appear on
         dropDown.anchorView = view // UIView or UIBarButtonItem
         
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+        
         // The list of items to display. Can be changed dynamically
         dropDown.dataSource = ["Computer Science", "Communications", "Government/Political Science", "Business", "Economics", "English", "Psychology", "Nursing","Chemistry","Biology","Physics","Art","Engineering"]
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -64,7 +66,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
         
         // The view to which the drop down will appear on
         dropDown2.anchorView = view // UIView or UIBarButtonItem
-        
+        dropDown2.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
         
         // The list of items to display. Can be changed dynamically
         dropDown2.dataSource = ["Rhodes College", "Hendrix", "Sewanee", "CBU", "University of Memphis", "Southwest Community College"]
