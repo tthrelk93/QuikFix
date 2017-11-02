@@ -13,55 +13,29 @@ import CoreLocation
 
 class FindAvailableWorkersViewController: UIViewController {
 
-    @IBOutlet weak var innerPostSuccessView: UIView!
-    var jobUploadData = [String:Any]()
-    var jobRef = String()
-    var posterUploadData = [String:Any]()
-    @IBAction func firstToAcceptButtonPressed(_ sender: Any) {
-        var tempDict = [String:Any]()
-        tempDict[jobRef] = jobUploadData
-        print("jf \(jobRef)")
-        print("posterUploadData \(posterUploadData)")
-        Database.database().reference().child("jobs").updateChildValues(tempDict)
-        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(posterUploadData)
-        postSuccessView.isHidden = false
-        innerPostSuccessView.isHidden = false
-        
-        sleep(3)
-        performSegue(withIdentifier:"HireFirstToPosterProfile", sender: self)
-        
-    }
-    /*override func viewDidDisappear(_ animated: Bool){
-        viewDidDisappear(animated)
-        postSuccessView.isHidden = true
-        
-    }*/
-    @IBAction func handPickButtonPressed(_ sender: Any) {
-    }
-    @IBOutlet weak var workerNumbLabel: UILabel!
-    
-    var tempCoordinate: CLLocation?
-    var tempLong: CLLocationDegrees?
-    var tempLat: CLLocationDegrees?
-    var tempCoordinate2: CLLocation?
-    var tempLong2: CLLocationDegrees?
-    var tempLat2: CLLocationDegrees?
-    var tempDistInMeters: Double?
-
     @IBOutlet weak var postSuccessView: UIView!
-    var availableStudents = [[String:Any]]()
-    var studentsAfterDist = [[String:Any]]()
+    @IBOutlet weak var innerPostSuccessView: UIView!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        sleep(2)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         postSuccessView.layer.cornerRadius = 10
+        //sleep(3)
+        DispatchQueue.main.async{
+        self.performSegue(withIdentifier: "HireFirstToPosterProfile", sender: self)
+        }
         
-        Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        /*Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                 for snap in snapshots {
                     let snapDict = snap.value as! [String:Any]
-                    if snapDict["available"] as! Bool == true{
+                    
                         self.availableStudents.append(snapDict)
-                    }
+                    
                 }
                 let userID = Auth.auth().currentUser?.uid
                 Database.database().reference().child("jobPosters").child(userID!).child("location").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -91,10 +65,10 @@ class FindAvailableWorkersViewController: UIViewController {
                                 self.studentsAfterDist.append(student)
                         }
                     }
-                    self.workerNumbLabel.text = "We've found \(self.studentsAfterDist.count) available student(s) nearby!"
+                    //self.workerNumbLabel.text = "We've found \(self.studentsAfterDist.count) student(s) nearby!"
                 })
             }
-        })
+        })*/
     }
 
         // Do any additional setup after loading the view.
@@ -110,16 +84,16 @@ class FindAvailableWorkersViewController: UIViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "HireFirstToPosterProfile"{
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+       /* if segue.identifier == "HireFirstToPosterProfile"{
            /* let destinationNavigationController = segue.destination as! UINavigationController
             let targetController = destinationNavigationController.topViewController as! JobPosterProfileViewController
             targetController.showJobPostedView = true*/
         
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        }
-    }
+        }*/
+    }*/
     
 
 }

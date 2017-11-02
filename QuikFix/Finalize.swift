@@ -13,6 +13,21 @@ import Firebase
 
 class Finalize: UIViewController, UITextViewDelegate {
     
+    @IBOutlet weak var includeToolsLabel: UILabel!
+    @IBOutlet weak var haveToolsSwitch: UISwitch!
+    @IBAction func toolsSwitchToggled(_ sender: Any) {
+        if haveToolsSwitch.isOn{
+            haveToolsLabel.text = "I do have the tools"
+            includeToolsLabel.isHidden = true
+        } else {
+             haveToolsLabel.text = "I do not have the tools"
+            includeToolsLabel.isHidden = false
+        }
+        
+    }
+    
+    @IBOutlet weak var haveToolsLabel: UILabel!
+    
     @IBAction func locationEditPressed(_ sender: Any) {
     }
     @IBOutlet weak var locationEditButton: UIButton!
@@ -159,6 +174,11 @@ class Finalize: UIViewController, UITextViewDelegate {
         
         let endHours = Int(endArray[0])! * 60 // 0
         let endMinutes = Int(endArray[1])! + endHours // 1
+            
+            print("startHours: \(startHours)")
+            print("startMin: \(startMinutes)")
+            print("endHours: \(endHours)")
+            print("endMin: \(endMinutes)")
         
         var timeDifference = endMinutes - startMinutes // -1430
         
@@ -168,6 +188,9 @@ class Finalize: UIViewController, UITextViewDelegate {
             timeDifference += day // 10
         }
             print("td\(timeDifference)")
+            if timeDifference < 60{
+                timeDifference = 60
+            }
         
         var calcRate = ((25 * (timeDifference / 60)) * (jobPost.workerCount as! Int))
         
@@ -177,11 +200,12 @@ class Finalize: UIViewController, UITextViewDelegate {
         
         
         
-            rateLabel.text = "$\(calcRate)($25/hr * \(self.jobPost.workerCount!) worker(s))"
+            rateLabel.text = "$\(calcRate)($25/hr * number of workers)"
             categoryLabel.text = ("\(jobPost.category1!)/\(jobPost.category2!)")
             //convertTimeFormater(date: jobPost.time!)
             timeLabel.text = jobPost.time
             additInfoTextView.text = enterAdditInfoTextView.text
+            print(jobPost.location)
             locationLabel.text = jobPost.location
             
             
@@ -244,7 +268,7 @@ class Finalize: UIViewController, UITextViewDelegate {
         
         self.segueJobData = values
         self.jobRef = ref.key
-        //ref.updateChildValues(values)
+        ref.updateChildValues(values)
         var values2 = [String: Any]()
         //values2["currentListings"]
         
@@ -266,8 +290,8 @@ class Finalize: UIViewController, UITextViewDelegate {
             
             var tempDict = [String:Any]()
             tempDict["currentListings"] = self.listingsArray
-            self.seguePosterData = tempDict
-           // Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+            //self.seguePosterData = tempDict
+            Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
                 self.performSegue(withIdentifier: "FinalizeToFindWorkers", sender: self)
             }
             
@@ -321,7 +345,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.textColor = UIColor.black
-        if textView.text == "Tap here to add any additional information about the job."{
+        if textView.text == "Tap here to add any additional information about the job. (optional unless specifying tools)"{
             textView.text = ""
             
             
@@ -331,7 +355,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.textColor = qfGreen
         if textView.text == ""{
-            textView.text == "Tap here to add any additional information about the job."
+            textView.text == "Tap here to add any additional information about the job. (optional unless specifying tools)"
         }
         
     }
@@ -356,11 +380,11 @@ class Finalize: UIViewController, UITextViewDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("jsegPostData: \(self.seguePosterData)")
-        let vc = segue.destination as? FindAvailableWorkersViewController
-        vc?.jobUploadData = self.segueJobData
+        //print("jsegPostData: \(self.seguePosterData)")
+        //let vc = segue.destination as? FindAvailableWorkersViewController
+        /*vc?.jobUploadData = self.segueJobData
         vc?.posterUploadData = self.seguePosterData
-        vc?.jobRef = self.jobRef
+        vc?.jobRef = self.jobRef*/
     }
     
         

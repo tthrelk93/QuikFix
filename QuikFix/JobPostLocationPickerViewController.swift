@@ -10,6 +10,8 @@ import UIKit
 import GooglePlaces
 import GoogleMaps
 import GooglePlacePicker
+import FirebaseDatabase
+import FirebaseAuth
 
 class JobPostLocationPickerViewController: UIViewController {
     
@@ -25,7 +27,7 @@ class JobPostLocationPickerViewController: UIViewController {
 
     @IBAction func continuePressed(_ sender: Any) {
         
-        jobPost.location = self.place?.formattedAddress
+        //jobPost.location = self.place?.formattedAddress
         
         performSegue(withIdentifier: "Step5ToFinalize", sender: self)
         
@@ -33,6 +35,22 @@ class JobPostLocationPickerViewController: UIViewController {
     }
    
     
+    @IBAction func defaultAddressButtonPressed(_ sender: Any) {
+        
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    if snap.key == "address"{
+                        //print("snapVal:\((snap.value as! [String]).first)")
+                        
+                        self.locationLabel.text = (snap.value as! [String]).first as! String
+                        self.jobPost.location = (snap.value as! [String]).first as! String
+                       // print("loc: \(self.jobPost.location)")
+                    }
+                }
+            }
+        })
+    }
     
     
     override func viewDidLoad() {
@@ -76,6 +94,7 @@ extension JobPostLocationPickerViewController: GMSAutocompleteViewControllerDele
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         locationLabel.text = place.formattedAddress
+        jobPost.location = place.formattedAddress
         self.place = place
         dismiss(animated: true, completion: nil)
     }

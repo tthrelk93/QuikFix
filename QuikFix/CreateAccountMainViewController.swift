@@ -124,6 +124,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         } else {
             if let vc = segue.destination as? CreateAccountJobPosterViewController{
                 vc.profPic = self.userPic.image!
+                
             }
         }
         // Get the new view controller using segue.destinationViewController.
