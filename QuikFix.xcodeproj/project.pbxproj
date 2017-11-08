@@ -29,6 +29,7 @@
 		3B200B521F86EF6800D40997 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B200B511F86EF6800D40997 /* CalendarViewController.swift */; };
 		3B2D16F01F8573BB00C85C0F /* JobResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */; };
 		3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */; };
+		3B357CA11FB232300037E0BE /* StudentOrPosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */; };
 		3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */; };
 		3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */; };
 		3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C861F57653F001D8FEC /* AppDelegate.swift */; };
@@ -109,6 +110,7 @@
 		3B200B511F86EF6800D40997 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobResponseViewController.swift; sourceTree = "<group>"; };
 		3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentOrPosterViewController.swift; sourceTree = "<group>"; };
 		3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B468C831F57653F001D8FEC /* QuikFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuikFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,6 +257,26 @@
 			name = "Find Job";
 			sourceTree = "<group>";
 		};
+		3B357CA21FB265C40037E0BE /* student */ = {
+			isa = PBXGroup;
+			children = (
+				3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */,
+				3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */,
+				3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */,
+			);
+			name = student;
+			sourceTree = "<group>";
+		};
+		3B357CA31FB265F30037E0BE /* poster */ = {
+			isa = PBXGroup;
+			children = (
+				3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */,
+				3B5A1A481FAB740200D55F80 /* CreatePosterStep2.swift */,
+				3B5A1A4A1FAB764900D55F80 /* CreatePosterStep3ViewController.swift */,
+			);
+			name = poster;
+			sourceTree = "<group>";
+		};
 		3B468C7A1F57653E001D8FEC = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +322,7 @@
 				3B200B511F86EF6800D40997 /* CalendarViewController.swift */,
 				3B2007981F9A7CE3000C008D /* ChatViewController.swift */,
 				3B2007991F9A7CE3000C008D /* ChatContainer.swift */,
+				3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -340,15 +363,11 @@
 		3B98024C1F68831800F785C8 /* CreateAccount/Login */ = {
 			isa = PBXGroup;
 			children = (
+				3B357CA31FB265F30037E0BE /* poster */,
+				3B357CA21FB265C40037E0BE /* student */,
 				3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */,
 				3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */,
-				3B9802461F66F49600F785C8 /* CreateAccountStudentViewController.swift */,
-				3B98024A1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift */,
 				3B2007331F97B009000C008D /* ForgotPasswordViewController1.swift */,
-				3B5A1A401FA9229700D55F80 /* CreateAccountStudent2ViewController.swift */,
-				3B5A1A421FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift */,
-				3B5A1A481FAB740200D55F80 /* CreatePosterStep2.swift */,
-				3B5A1A4A1FAB764900D55F80 /* CreatePosterStep3ViewController.swift */,
 			);
 			name = CreateAccount/Login;
 			sourceTree = "<group>";
@@ -696,6 +715,7 @@
 				3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */,
 				3B9F21A11F630DF60068D7EB /* JobPost-Payment.swift in Sources */,
 				3B9802431F65B90D00F785C8 /* Student.swift in Sources */,
+				3B357CA11FB232300037E0BE /* StudentOrPosterViewController.swift in Sources */,
 				3B5A1A411FA9229700D55F80 /* CreateAccountStudent2ViewController.swift in Sources */,
 				3B98024B1F687FE700F785C8 /* CreateAccountJobPosterViewController.swift in Sources */,
 				3B98024E1F68837000F785C8 /* JobPosterProfileViewController.swift in Sources */,

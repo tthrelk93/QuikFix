@@ -18,14 +18,47 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     var profPic: UIImage?
     var poster = JobPoster()
     
+    @IBOutlet weak var cellPhoneTextField: UITextField!
+    
     
     @IBOutlet weak var lastNameTextField: UITextField!
-    
+    var phoneVerified = false
     var emailVerificationSent = false
     @IBOutlet weak var createAccountButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
+    
+    @IBOutlet weak var phoneVerifcationView: UIView!
+    var verCode = String()
+    var credent = FIRPhoneAuthCredential()
+    @IBAction func continueVerificaitonPressed(_ sender: Any) {
+        if ver1.hasText == true && ver2.hasText == true && ver3.hasText == true && ver4.hasText == true && ver5.hasText == true && ver6.hasText == true {
+            var verString = "\(ver1!)\(ver2)\(ver3)\(ver4)\(ver5)\(ver6)" as! String
+            self.credent = PhoneAuthProvider.provider().credential(
+                withVerificationID: self.verificationID,
+                verificationCode: verString)
+            
+            if verString == self.verificationID{
+                performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+            } else {
+                let alert = UIAlertController(title: "Incorrect Verification Code", message: "It appears you did not enter the correct verification code.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            let alert = UIAlertController(title: "Missing Field.", message: "Please fill in all six verification digits", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    @IBOutlet weak var ver1: UITextField!
+    @IBOutlet weak var ver2: UITextField!
+    @IBOutlet weak var ver3: UITextField!
+    @IBOutlet weak var ver4: UITextField!
+    @IBOutlet weak var ver5: UITextField!
+    @IBOutlet weak var ver6: UITextField!
+    
     @IBAction func createAccountPressed(_ sender: Any) {
-        if (nameTextField.text != "First Name" && nameTextField.hasText == true) && (lastNameTextField.text != "Last Name" && lastNameTextField.hasText == true) && (emailTextField.text != "Email" && emailTextField.hasText == true) && (passwordTextField.text != "Password" && passwordTextField.hasText == true) && (confirmPasswordTextField.text != "Confirm Password" && confirmPasswordTextField.hasText == true){
+        if (nameTextField.text != "First Name" && nameTextField.hasText == true) && (lastNameTextField.text != "Last Name" && lastNameTextField.hasText == true) && (emailTextField.text != "Email" && emailTextField.hasText == true) && (passwordTextField.text != "Password" && passwordTextField.hasText == true) && (confirmPasswordTextField.text != "Confirm Password" && confirmPasswordTextField.hasText == true) && cellPhoneTextField.hasText {
             if confirmPasswordTextField.text != passwordTextField.text{
                 //present error passwords don't match
                 let alert = UIAlertController(title: "Password Error", message: "Passwords do not match.", preferredStyle: UIAlertControllerStyle.alert)
@@ -45,7 +78,39 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                 poster.currentListings = [String]()
                // student.rating = Int()
                 poster.responses = [String:Any]()
-                if self.emailVerificationSent == false {
+                poster.phone = cellPhoneTextField.text!
+                
+                
+               /* print("phone#: \(cellPhoneTextField.text!)")
+                var strippedString = String()
+                for ch in (cellPhoneTextField.text!).characters{
+                    if ch != "(" && ch != ")" && ch != "-"{
+                        strippedString.characters.append(ch)
+                    }
+                    
+                }
+                
+                var tempString = "+1\(strippedString)" as! String
+                print("ts: \(tempString)")
+                PhoneAuthProvider.provider().verifyPhoneNumber(tempString, uiDelegate: nil) { (verificationID, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        return
+                    }
+                    UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+                    
+                    print("success!: \(verificationID)")
+                    self.verCode = verificationID as! String
+                    self.createAccountButton.isHidden = true
+                    self.phoneVerifcationView.isHidden = false
+                    
+                    // Sign in using the verificationID and the code sent to the user
+                    // ...
+                }*/
+                
+                
+                
+                
                     Auth.auth().createUser(withEmail: poster.email!, password: poster.password!, completion: { (user: User?, error) in
                         if error != nil {
                             let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -53,6 +118,10 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                             self.present(alert, animated: true, completion: nil)
                             return
                         }
+                        
+                        if !Auth.auth().currentUser.emailVerified {
+                        
+                        
                         print("emailVer == false")
                         let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.poster.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
                         let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
@@ -66,16 +135,18 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                         alertVC.addAction(alertActionOkay)
                         alertVC.addAction(alertActionCancel)
                         self.present(alertVC, animated: true, completion: nil)
-                        self.emailVerificationSent = true
+                        //self.emailVerificationSent = true
+                        } else {
+                            print("emailVer == true")
+                            self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                        }
                         
                         
                     })
+                
+                
                     
-                    
-                } else {
-                    print("emailVer == true")
-                    self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
-                }
+                
             }
         } else {
             
@@ -83,6 +154,8 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+           // }
+       // }
     }
     
     let locationManager = CLLocationManager()
@@ -105,6 +178,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
         passwordTextField.delegate = self
         emailTextField.delegate = self
         confirmPasswordTextField.delegate = self
+        cellPhoneTextField.delegate = self
+        nameTextField.delegate = self
+        lastNameTextField.delegate = self
         //addressTextField.delegate = self
         
         locationManager.delegate = self
@@ -124,12 +200,71 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
         self.view.endEditing(true)
         return false
     }
+    
+    /*public func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == cellPhoneTextField{
+            
+        }
+        
+    }*/
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        if (textField == cellPhoneTextField)
+        {
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            let components = newString.components(separatedBy: NSCharacterSet.decimalDigits.inverted as CharacterSet)  //componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            
+            let decimalString = components.joined(separator: "") as NSString
+            let length = decimalString.length
+            let hasLeadingOne = length > 0 && decimalString.character(at: 0) == (1 as unichar)
+            
+            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
+            {
+                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
+                
+                return (newLength > 10) ? false : true
+            }
+            var index = 0 as Int
+            let formattedString = NSMutableString()
+            
+            if hasLeadingOne
+            {
+                formattedString.append("1 ")
+                index += 1
+            }
+            if (length - index) > 3
+            {
+                let areaCode = decimalString.substring(with: NSMakeRange(index, 3))
+                formattedString.appendFormat("(%@)", areaCode)
+                index += 3
+            }
+            if length - index > 3
+            {
+                let prefix = decimalString.substring(with: NSMakeRange(index, 3))
+                formattedString.appendFormat("%@-", prefix)
+                index += 3
+            }
+            
+            let remainder = decimalString.substring(from: index)
+            formattedString.append(remainder)
+            textField.text = formattedString as String
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
+    
+    
     public func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == nameTextField || textField == lastNameTextField{
             textField.text = textField.text?.capitalizingFirstLetter()
         }
 
     }
+    let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
     
 
     

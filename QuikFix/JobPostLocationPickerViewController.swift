@@ -45,6 +45,7 @@ class JobPostLocationPickerViewController: UIViewController {
                         
                         self.locationLabel.text = (snap.value as! [String]).first as! String
                         self.jobPost.location = (snap.value as! [String]).first as! String
+                        self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
                        // print("loc: \(self.jobPost.location)")
                     }
                 }

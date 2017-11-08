@@ -9,6 +9,8 @@
 import UIKit
 
 class CreateAccountMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+    
+    var accountType = String()
 
     @IBAction func iAmStudentPressed(_ sender: Any) {
         if userPic.image == nil {
@@ -20,9 +22,14 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             return
 
         } else {
+            if self.accountType == "student"{
             performSegue(withIdentifier: "CreateStudent", sender: self)
+            } else {
+                performSegue(withIdentifier: "CreateJobPoster", sender: self)
+            }
         }
     }
+    @IBOutlet weak var studentPicLabel: UILabel!
     
     @IBOutlet weak var defaultPicImageView: UIImageView!
     @IBOutlet weak var userPic: UIImageView!
@@ -48,6 +55,13 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    
+        if accountType == "student"{
+            self.studentPicLabel.isHidden = false
+        } else {
+            self.studentPicLabel.isHidden = true
+        }
         
         picker.delegate = self
         //picker.delegate = self
@@ -97,7 +111,18 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             
         }
         
-        dismiss(animated: true, completion: nil)    }
+        dismiss(animated: true, completion: { (error) in
+            
+            if self.accountType == "student"{
+                self.performSegue(withIdentifier: "CreateStudent", sender: self)
+            } else {
+                self.performSegue(withIdentifier: "CreateJobPoster", sender: self)
+            }
+
+            
+        })
+        
+    }
     
     
     

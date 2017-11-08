@@ -69,6 +69,8 @@ class JobPostCategoryViewController: UIViewController, UIPickerViewDelegate, UIP
         }
     }
     
+    
+    //reload somewhere else b/c crashing when speed pick   
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == categoryPicker{
             category2Picker.reloadAllComponents()
