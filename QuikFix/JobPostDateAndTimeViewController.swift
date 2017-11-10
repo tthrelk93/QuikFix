@@ -25,6 +25,10 @@ class JobPostDateAndTimeViewController: UIViewController {
     @IBOutlet weak var timeAndDatePicker: UIDatePicker!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let todaysDate = Date()
+        
+        timeAndDatePicker.minimumDate = todaysDate
 
         // Do any additional setup after loading the view.
     }

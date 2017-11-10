@@ -14,10 +14,11 @@ import CoreLocation
 
 class CreatePosterStep3ViewController: UIViewController {
     
+    var crypt = String()
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {
-        
-        Auth.auth().signIn(withEmail: poster.email!, password: poster.password!, completion: { (user: User?, error) in
+        //var authData = Auth.auth().currentUser?.providerData["password"]
+        Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
             if error != nil {
                 // SwiftOverlays.removeAllBlockingOverlays()
                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -49,7 +50,7 @@ class CreatePosterStep3ViewController: UIViewController {
                         //values["bio"] = self.student.bio
                         values["name"] = self.poster.name
                         values["email"] = self.poster.email
-                        values["password"] = self.poster.password
+                       // values["password"] = self.poster.password
                         //values["school"] = self.poster.school
                         //values["major"] = self.student.major
                         values["jobsCompleted"] = self.poster.jobsCompleted

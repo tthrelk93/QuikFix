@@ -13,45 +13,9 @@ import Firebase
 
 class Finalize: UIViewController, UITextViewDelegate {
     
-    @IBOutlet weak var includeToolsLabel: UILabel!
-    @IBOutlet weak var haveToolsSwitch: UISwitch!
-    @IBAction func toolsSwitchToggled(_ sender: Any) {
-        if haveToolsSwitch.isOn{
-            haveToolsLabel.text = "I do have the tools"
-            includeToolsLabel.isHidden = true
-        } else {
-             haveToolsLabel.text = "I do not have the tools"
-            includeToolsLabel.isHidden = false
-        }
-        
-    }
-    
-    @IBOutlet weak var haveToolsLabel: UILabel!
-    
-    @IBAction func locationEditPressed(_ sender: Any) {
-    }
-    @IBOutlet weak var locationEditButton: UIButton!
-    @IBOutlet weak var locationLabel: UILabel!
-    
     var jobPost = JobPost()
+    var timeDifference = Int()
     
-    @IBAction func editAdditinfoPressed(_ sender: Any) {
-    }
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var editAdditInfo: UIButton!
-    @IBOutlet weak var editDatePressed: UIButton!
-    @IBOutlet weak var editPayment: UIButton!
-    
-    @IBOutlet weak var editTimeButton: UIButton!
-    
-    @IBAction func editTimePressed(_ sender: Any) {
-    }
-    @IBAction func editPaymentPressed(_ sender: Any) {
-    }
-    @IBOutlet weak var editCat: UIButton!
-    @IBAction func editCatPressed(_ sender: Any) {
-    }
-    @IBOutlet weak var editDate: UIButton!
     
      let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     
@@ -59,10 +23,14 @@ class Finalize: UIViewController, UITextViewDelegate {
     @IBAction func finalizedPressed(_ sender: Any) {
         
         //***setting the labels if the additional info textview isnt empty or placeholder text
-        if enterAdditInfoTextView.text != "Tap here to add any additional information about the job." && enterAdditInfoTextView.text != ""{
+        if enterAdditInfoTextView.text != ""{
+            if enterAdditInfoTextView.text == "Tap here to add any additional information about the job. (optional)"{
+                jobPost.additInfo = ""
+            } else {
             jobPost.additInfo = enterAdditInfoTextView.text
+            }
             //let timeInterval = someDate.timeIntervalSince1970
-            var timeString1 = jobPost.time!
+           /* var timeString1 = jobPost.time!
             var timeString = [String]()
             ///var timeString1 = [String]()
             
@@ -180,7 +148,7 @@ class Finalize: UIViewController, UITextViewDelegate {
             print("endHours: \(endHours)")
             print("endMin: \(endMinutes)")
         
-        var timeDifference = endMinutes - startMinutes // -1430
+        self.timeDifference = endMinutes - startMinutes // -1430
         
         let day = 24 * 60 // 1440
         
@@ -190,55 +158,38 @@ class Finalize: UIViewController, UITextViewDelegate {
             print("td\(timeDifference)")
             if timeDifference < 60{
                 timeDifference = 60
-            }
+            }*/
+            /*var durationInt = Int()
+            if jobPost.jobDuration?.characters.count == 2{
+                durationInt = 5
+            } else {
+                durationInt = Int(jobPost.jobDuration!)!
+            }*/
+ 
         
-        var calcRate = ((25 * (timeDifference / 60)) * (jobPost.workerCount as! Int))
+        var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
+            if jobPost.category1 == "Moving(Home-To-Home)"{
+                calcRate = calcRate + 10
+                
+            }
+            if jobPost.tools?.count != 0 && jobPost.tools?.count != nil {
+                calcRate = calcRate + 5
+                self.toolCount = (jobPost.tools?.count)!
+            } else {
+                self.toolCount = 0
+            }
+            self.jobPost.payment = String(describing:calcRate)
         
         
 
         
-        
-        
-        
-            rateLabel.text = "$\(calcRate)($25/hr * number of workers)"
-            categoryLabel.text = ("\(jobPost.category1!)/\(jobPost.category2!)")
-            //convertTimeFormater(date: jobPost.time!)
-            timeLabel.text = jobPost.time
-            additInfoTextView.text = enterAdditInfoTextView.text
-            print(jobPost.location)
-            locationLabel.text = jobPost.location
-            
-            
-            //***converting date back from string into Date()
-           /* let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "EEE, dd MMM yyyy hh:mm:ss +zzzz"
-            dateFormatter.locale = Locale.init(identifier: "en_GB")
-            let dateObj = dateFormatter.date(from: jobPost.date!)
-            dateFormatter.dateFormat = "MM-dd-yyyy"*/
-            dateLabel.text = jobPost.date//dateFormatter.string(from: dateObj!)
-            
-            blockView.isHidden = false
+                        performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
+            //blockView.isHidden = false
         }
         
     }
+    var toolCount = Int()
     @IBOutlet weak var enterAdditInfoTextView: UITextView!
-    @IBAction func editPressed(_ sender: Any) {
-        if editCat.isHidden == true{
-            editCat.isHidden = false
-            editDate.isHidden = false
-            editPayment.isHidden = false
-            editAdditInfo.isHidden = false
-            editTimeButton.isHidden = false
-            locationEditButton.isHidden = false
-        } else {
-            editCat.isHidden = true
-            editDate.isHidden = true
-            editPayment.isHidden = true
-            editAdditInfo.isHidden = true
-            editTimeButton.isHidden = true
-            locationEditButton.isHidden = true
-        }
-    }
     var listingsArray = [String]()
     
     
@@ -246,60 +197,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     var segueJobData = [String:Any]()
     var seguePosterData = [String:Any]()
     var jobRef = String()
-    @IBAction func postPressed(_ sender: Any) {
-        var values = [String:Any]()
-        var ref = Database.database().reference().child("jobs").childByAutoId()
-        values["posterName"] = self.posterName
-        values["posterID"] = Auth.auth().currentUser?.uid
-
-        values["category1"] = jobPost.category1
-        values["category2"] = jobPost.category2
-        //var formattedDate = convertDateFormater(date: jobPost.date!)
-        values["location"] = jobPost.location
-        values["date"] = jobPost.date
-        values["additInfo"] = jobPost.additInfo
-        values["payment"] = "$25 / hour"
-        values["time"] = jobPost.time
-        values["workerCount"] = jobPost.workerCount
-        values["acceptedCount"] = 0
-        //values["paymentType"] = jobPost.paymentType
-        values["jobID"] = ref.key
-        values["completed"] = false
-        
-        self.segueJobData = values
-        self.jobRef = ref.key
-        ref.updateChildValues(values)
-        var values2 = [String: Any]()
-        //values2["currentListings"]
-        
-        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            var tempBool = false
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                for snap in snapshots{
-                    if snap.key == "currentListings"{
-                        tempBool = true
-                        for val in snap.value as! [String]{
-                            self.listingsArray.append(val)
-                        }
-                    }
-                }
-                if tempBool == false{
-                    
-                }
-                self.listingsArray.append(ref.key)
-            
-            var tempDict = [String:Any]()
-            tempDict["currentListings"] = self.listingsArray
-            //self.seguePosterData = tempDict
-            Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
-                self.performSegue(withIdentifier: "FinalizeToFindWorkers", sender: self)
-            }
-            
-        })
-
-        
-        
-    }
+    
     @IBOutlet weak var additInfoTextView: UITextView!
     @IBOutlet weak var paymentTypeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -345,7 +243,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.textColor = UIColor.black
-        if textView.text == "Tap here to add any additional information about the job. (optional unless specifying tools)"{
+        if textView.text == "Tap here to add any additional information about the job. (optional)"{
             textView.text = ""
             
             
@@ -355,7 +253,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.textColor = qfGreen
         if textView.text == ""{
-            textView.text == "Tap here to add any additional information about the job. (optional unless specifying tools)"
+            textView.text == "Tap here to add any additional information about the job. (optional)"
         }
         
     }
@@ -380,11 +278,13 @@ class Finalize: UIViewController, UITextViewDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //print("jsegPostData: \(self.seguePosterData)")
-        //let vc = segue.destination as? FindAvailableWorkersViewController
-        /*vc?.jobUploadData = self.segueJobData
-        vc?.posterUploadData = self.seguePosterData
-        vc?.jobRef = self.jobRef*/
+        if let vc = segue.destination as? ActualFinalizeViewController{
+           
+            vc.jobPost = self.jobPost
+            vc.timeDifference = Int(jobPost.jobDuration!)!
+            vc.toolCount = self.toolCount
+            
+        }
     }
     
         

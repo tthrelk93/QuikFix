@@ -20,6 +20,8 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     
     @IBOutlet weak var cellPhoneTextField: UITextField!
     
+    var verificationTimer : Timer = Timer()    // Timer's  Global declaration
+    
     
     @IBOutlet weak var lastNameTextField: UITextField!
     var phoneVerified = false
@@ -29,8 +31,8 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     
     @IBOutlet weak var phoneVerifcationView: UIView!
     var verCode = String()
-    var credent = FIRPhoneAuthCredential()
-    @IBAction func continueVerificaitonPressed(_ sender: Any) {
+    //var credent = FIRPhoneAuthCredential()
+    /*@IBAction func continueVerificaitonPressed(_ sender: Any) {
         if ver1.hasText == true && ver2.hasText == true && ver3.hasText == true && ver4.hasText == true && ver5.hasText == true && ver6.hasText == true {
             var verString = "\(ver1!)\(ver2)\(ver3)\(ver4)\(ver5)\(ver6)" as! String
             self.credent = PhoneAuthProvider.provider().credential(
@@ -49,7 +51,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-    }
+    }*/
     @IBOutlet weak var ver1: UITextField!
     @IBOutlet weak var ver2: UITextField!
     @IBOutlet weak var ver3: UITextField!
@@ -58,6 +60,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     @IBOutlet weak var ver6: UITextField!
     
     @IBAction func createAccountPressed(_ sender: Any) {
+        
         if (nameTextField.text != "First Name" && nameTextField.hasText == true) && (lastNameTextField.text != "Last Name" && lastNameTextField.hasText == true) && (emailTextField.text != "Email" && emailTextField.hasText == true) && (passwordTextField.text != "Password" && passwordTextField.hasText == true) && (confirmPasswordTextField.text != "Confirm Password" && confirmPasswordTextField.hasText == true) && cellPhoneTextField.hasText {
             if confirmPasswordTextField.text != passwordTextField.text{
                 //present error passwords don't match
@@ -70,7 +73,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                 //student.bio = ""
                 poster.name = "\(nameTextField!.text!) \(lastNameTextField!.text!)"
                 poster.email = emailTextField.text
-                poster.password = passwordTextField.text
+               // poster.password = passwordTextField.text
                 //student.school = ""
                 //student.major = ""
                 poster.jobsCompleted = [String]()
@@ -110,16 +113,17 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                 
                 
                 
-                
-                    Auth.auth().createUser(withEmail: poster.email!, password: poster.password!, completion: { (user: User?, error) in
+                if !emailVerificationSent {
+                    Auth.auth().createUser(withEmail: poster.email!, password: passwordTextField.text!, completion: { (user: User?, error) in
                         if error != nil {
                             let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                             return
                         }
+                        self.crypt = self.passwordTextField.text!
                         
-                        if !Auth.auth().currentUser.emailVerified {
+                        if !(Auth.auth().currentUser?.isEmailVerified)! {
                         
                         
                         print("emailVer == false")
@@ -127,6 +131,49 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                         let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
                             (_) in
                             user?.sendEmailVerification(completion: nil)
+                            self.createAccountButton.setTitle("Re-send Verificaion Email", for: .normal)
+                            
+                            
+                            self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                            
+                        }
+                        let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                        
+                        alertVC.addAction(alertActionOkay)
+                        alertVC.addAction(alertActionCancel)
+                        self.present(alertVC, animated: true, completion: nil)
+                        self.emailVerificationSent = true
+                        } else {
+                            print("emailVer == true")
+                            self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                        }
+                        
+                        
+                    })
+                } else {
+                    let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.poster.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                    let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                        (_) in
+                        Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+                        self.createAccountButton.setTitle("Continue Once Verified", for: .normal)
+                        
+                    }
+                    let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                    
+                    alertVC.addAction(alertActionOkay)
+                    alertVC.addAction(alertActionCancel)
+                    self.present(alertVC, animated: true, completion: nil)
+                    self.emailVerificationSent = true
+                    
+                }
+               /* } else {
+                    print((Auth.auth().currentUser?.isEmailVerified)!)
+                     if !(Auth.auth().currentUser?.isEmailVerified)! {
+                        print("emailVer == falsee")
+                        let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.poster.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                        let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                            (_) in
+                            Auth.auth().currentUser?.sendEmailVerification(completion: nil)
                             self.createAccountButton.setTitle("Continue Once Verified", for: .normal)
                             
                         }
@@ -135,14 +182,14 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                         alertVC.addAction(alertActionOkay)
                         alertVC.addAction(alertActionCancel)
                         self.present(alertVC, animated: true, completion: nil)
-                        //self.emailVerificationSent = true
-                        } else {
-                            print("emailVer == true")
-                            self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
-                        }
+                        self.emailVerificationSent = true
                         
-                        
-                    })
+                     } else {
+                        print("emailVer == true")
+                        self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                    }
+
+                }*/
                 
                 
                     
@@ -157,6 +204,31 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
            // }
        // }
     }
+    
+    func checkIfTheEmailIsVerified(){
+        
+        Auth.auth().currentUser?.reload(completion: { (err) in
+            if err == nil{
+                
+                if Auth.auth().currentUser!.isEmailVerified{
+                    
+                    
+                    self.verificationTimer.invalidate()     //Kill the timer
+                    self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                } else {
+                    
+                    print("It aint verified yet")
+                    
+                }
+            } else {
+                
+                print(err?.localizedDescription)
+                
+            }
+        })
+        
+    }
+    
     
     let locationManager = CLLocationManager()
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -271,13 +343,14 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    
+    var crypt = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if let vc = segue.destination as? CreatePosterStep2{
             vc.poster = self.poster
             vc.profPic = self.profPic!
+            vc.crypt = self.crypt
         }
     }
     

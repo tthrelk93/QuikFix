@@ -11,10 +11,10 @@ import Foundation
 class JobPost: NSObject {
     
     var category1: String?
-    var category2: String?
     var payment: String?
     var date: String?
-    var time: String?
+    var startTime: String?
+    var jobDuration: String?
     var additInfo: String?
     var posterName: String?
     var jobID: String?
@@ -26,6 +26,10 @@ class JobPost: NSObject {
     var workers: [String]?
     var messages: [String:Any]?
     var payments: [[String:Any]]?
+    var pickupLocation: String?
+    var dropOffLocation: String?
+    var tools: [String]?
+    
     //var responses: [String]?
     
     

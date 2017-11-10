@@ -14,13 +14,13 @@ import GooglePlacePicker
 import CoreLocation
 
 class CreatePosterStep2: UIViewController, UITextFieldDelegate {
-    
+    var crypt = String()
     @IBAction func continueButtonPressed(_ sender: Any) {
         
-        if cellTextField.text != "Cell Phone Number" && cellTextField.hasText && addressTextField.text != "Address" && addressTextField.hasText {
+        if addressTextField.text != "Address" && addressTextField.hasText {
             
             poster.address = addressTextField.text
-            poster.phone = cellTextField.text
+            //poster.phone = cellTextField.text
             performSegue(withIdentifier: "PosterStep2ToStep3", sender: self)
             
             
@@ -28,7 +28,7 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
         
         performSegue(withIdentifier: "PosterStep2ToStep3", sender: self)
     }
-    @IBOutlet weak var cellTextField: UITextField!
+   // @IBOutlet weak var cellTextField: UITextField!
     
     @IBOutlet weak var addressTextField: UITextField!
     
@@ -59,6 +59,7 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
         if let vc = segue.destination as? CreatePosterStep3ViewController{
             vc.poster = self.poster
             vc.profPic = self.profPic
+            vc.crypt = self.crypt
             
         }
         // Get the new view controller using segue.destinationViewController.

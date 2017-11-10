@@ -17,21 +17,40 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
-import DropDown
+//import DropDown
 import CoreLocation
 
 
 
-class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDelegate {
+class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    @IBAction func addButtonPressed(_ sender: Any) {
+        if addButton.titleLabel?.text == "Add"{
+            experience.append(expData[curIndex])
+        } else {
+            experience.remove(at: experience.index(of: expData[ curIndex])!)
+        }
+        var tempString = ""
+        for str in experience {
+            tempString = tempString + str + ", "
+        }
+        
+        
+        relevantExperienceDropDownTF.text = tempString
+
+    }
+    
+    @IBOutlet weak var addButton: UIButton!
     var profPic = UIImage()
     var student = Student()
     var experience = [String]()
+    var crypt = String()
     
+    @IBOutlet weak var step3Picker: UIPickerView!
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {
         if relevantExperienceDropDownTF.hasText == true && tShirtSizeDropDownTF.hasText == true {
-            Auth.auth().signIn(withEmail: student.email!, password: student.password!, completion: { (user: User?, error) in
+            Auth.auth().signIn(withEmail: student.email!, password: self.crypt, completion: { (user: User?, error) in
                 if error != nil {
                 // SwiftOverlays.removeAllBlockingOverlays()
                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -63,7 +82,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                                 values["bio"] = self.student.bio
                                 values["name"] = self.student.name
                                 values["email"] = self.student.email
-                                values["password"] = self.student.password
+                                //values["password"] = self.student.password
                                 values["school"] = self.student.school
                                 values["major"] = self.student.major
                                 values["jobsFinished"] = self.student.jobsFinished
@@ -92,78 +111,92 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         
         
     }
+    var shirtData = ["XS", "S", "M", "L", "XL", "XXL"]
+    var expData = ["Mow", "Leaf Blowing", "Gardening", "Gutter Cleaning", "Weed-Wacking", "Hedge Clipping", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
     @IBOutlet weak var tShirtSizeDropDownTF: UITextField!
     @IBOutlet weak var relevantExperienceDropDownTF: UITextField!
     
     @IBOutlet weak var expLabel: UILabel!
     
-     let dropDown = DropDown()
-    let dropDown2 = DropDown()
+    // let dropDown = DropDown()
+    //let dropDown2 = DropDown()
     override func viewDidLoad() {
         super.viewDidLoad()
        
         
         // The view to which the drop down will appear on
-        dropDown.anchorView = view // UIView or UIBarButtonItem
-        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
-        // The list of items to display. Can be changed dynamically
-        dropDown.dataSource = ["Lawncare", "Assembling Furniture", "Moving", "IT", "Electronics"]
-        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            self.expLabel.isHidden = true
-            if self.experience.contains(item){
-                self.experience.remove(at: self.experience.index(of: item)!)
-            } else {
-                self.experience.append(item)
-            }
-            var tempString = ""
-            for str in self.experience{
-                if tempString == ""{
-                    tempString = str
-                } else {
-                    tempString = "\(tempString), \(str)"
-                }
-                
-            }
-            self.relevantExperienceDropDownTF.text = tempString
-            //dropDown.hide()
-        }
         
-        // Will set a custom width instead of the anchor view width
-       //DropDownCellll.width = 200
+       
         
-        
-        
-        // The view to which the drop down will appear on
-        dropDown2.anchorView = view // UIView or UIBarButtonItem
-        
-        dropDown2.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
-        // The list of items to display. Can be changed dynamically
-        dropDown2.dataSource = ["XS", "S", "M", "L", "XL", "XXL"]
-        
-        dropDown2.selectionAction = { [unowned self] (index: Int, item: String) in
-            self.student.tShirtSize = item
-            self.tShirtSizeDropDownTF.text = item
-            self.dropDown2.hide()
-        }
         tShirtSizeDropDownTF.delegate = self
         relevantExperienceDropDownTF.delegate = self
+        step3Picker.delegate = self
+        step3Picker.dataSource = self
+        
 
         // Do any additional setup after loading the view.
     }
     
+    
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if curPicker == "shirt"{
+            return shirtData.count
+            
+        } else {
+            return expData.count
+        }
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if curPicker == "shirt"{
+            return shirtData[row]
+            
+        } else {
+            return expData[row]
+        }
+        
+        
+    }
+    let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+    var curIndex = Int()
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        curIndex = row
+        if curPicker == "shirt"{
+            tShirtSizeDropDownTF.text = shirtData[row]
+            
+        } else {
+            if experience.contains(expData[row]){
+                addButton.setTitle("Remove", for: .normal)
+                addButton.backgroundColor = UIColor.red
+            } else {
+                addButton.setTitle("Add", for: .normal)
+                addButton.backgroundColor = qfGreen
+            }
+        }
+        //pickerView.isHidden = true
+    }
+    
+    
+    
+    var curPicker = String()
+    
     public func textFieldShouldBeginEditing(_ textField: UITextField) {
         if textField == tShirtSizeDropDownTF{
-            dropDown2.show()
+            curPicker = "shirt"
+            addButton.isHidden = true
         } else {
+            curPicker = "exp"
+            addButton.isHidden = false
             
-            for item in dropDown.dataSource{
-                if experience.contains(item){
-                    dropDown.selectRow(at: dropDown.dataSource.index(of: item))
-                }
-            }
-            dropDown.show()
-            expLabel.isHidden = false
         }
+        step3Picker.reloadAllComponents()
+        step3Picker.isHidden = false
         
         
     }

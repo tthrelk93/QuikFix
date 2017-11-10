@@ -19,7 +19,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        jobNameLabel.text = self.job.category2
+        jobNameLabel.text = self.job.category1
         Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {

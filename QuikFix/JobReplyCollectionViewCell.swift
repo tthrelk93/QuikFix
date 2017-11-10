@@ -30,7 +30,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
     var jobArray = [String]()
     var studentArray = [Student]()
     func dataInit(){
-        jobCatLabel.text = self.job.category2
+        jobCatLabel.text = self.job.category1
         Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {

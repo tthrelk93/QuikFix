@@ -30,6 +30,7 @@
 		3B2D16F01F8573BB00C85C0F /* JobResponseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */; };
 		3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */; };
 		3B357CA11FB232300037E0BE /* StudentOrPosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */; };
+		3B357CA51FB3BCD90037E0BE /* ActualFinalizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B357CA41FB3BCD80037E0BE /* ActualFinalizeViewController.swift */; };
 		3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */; };
 		3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */; };
 		3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C861F57653F001D8FEC /* AppDelegate.swift */; };
@@ -54,6 +55,8 @@
 		3B5A1A4B1FAB764900D55F80 /* CreatePosterStep3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A1A4A1FAB764900D55F80 /* CreatePosterStep3ViewController.swift */; };
 		3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */; };
 		3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */; };
+		3B9637941FB62C94007886E0 /* schoolData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9637931FB62C94007886E0 /* schoolData.swift */; };
+		3B9637961FB62D75007886E0 /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B9637951FB62D75007886E0 /* convertcsv.json */; };
 		3B98023F1F65B29300F785C8 /* LoginCreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */; };
 		3B9802411F65B7E100F785C8 /* CreateAccountMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */; };
 		3B9802431F65B90D00F785C8 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9802421F65B90D00F785C8 /* Student.swift */; };
@@ -111,6 +114,7 @@
 		3B2D16EF1F8573BB00C85C0F /* JobResponseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobResponseViewController.swift; sourceTree = "<group>"; };
 		3B2D9FBF1F6B21C3006C5BB5 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentOrPosterViewController.swift; sourceTree = "<group>"; };
+		3B357CA41FB3BCD80037E0BE /* ActualFinalizeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualFinalizeViewController.swift; sourceTree = "<group>"; };
 		3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B468C831F57653F001D8FEC /* QuikFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuikFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +145,8 @@
 		3B5A1A4A1FAB764900D55F80 /* CreatePosterStep3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePosterStep3ViewController.swift; sourceTree = "<group>"; };
 		3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostCategoryViewController.swift; sourceTree = "<group>"; };
 		3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostDateAndTimeViewController.swift; sourceTree = "<group>"; };
+		3B9637931FB62C94007886E0 /* schoolData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = schoolData.swift; sourceTree = "<group>"; };
+		3B9637951FB62D75007886E0 /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
 		3B98023E1F65B29300F785C8 /* LoginCreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountViewController.swift; sourceTree = "<group>"; };
 		3B9802401F65B7E100F785C8 /* CreateAccountMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountMainViewController.swift; sourceTree = "<group>"; };
 		3B9802421F65B90D00F785C8 /* Student.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
@@ -323,6 +329,7 @@
 				3B2007981F9A7CE3000C008D /* ChatViewController.swift */,
 				3B2007991F9A7CE3000C008D /* ChatContainer.swift */,
 				3B357CA01FB232300037E0BE /* StudentOrPosterViewController.swift */,
+				3B9637951FB62D75007886E0 /* convertcsv.json */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -356,6 +363,7 @@
 				3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */,
 				3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */,
 				3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */,
+				3B357CA41FB3BCD80037E0BE /* ActualFinalizeViewController.swift */,
 			);
 			name = JobPost;
 			sourceTree = "<group>";
@@ -375,6 +383,7 @@
 		3B9F21A61F6355B20068D7EB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3B9637931FB62C94007886E0 /* schoolData.swift */,
 				3B9F21A41F6354F10068D7EB /* JobPost.swift */,
 				3B9802421F65B90D00F785C8 /* Student.swift */,
 				3B9802441F65BA0F00F785C8 /* JobPoster.swift */,
@@ -536,6 +545,7 @@
 				3B4ED06F1F8A9E5A00939152 /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
+				3B9637961FB62D75007886E0 /* convertcsv.json in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
 				3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */,
@@ -709,7 +719,9 @@
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
 				3B5082BE1F9FC53700BFFCE9 /* CheckoutRowView.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
+				3B357CA51FB3BCD90037E0BE /* ActualFinalizeViewController.swift in Sources */,
 				3B20079B1F9A7CE3000C008D /* ChatContainer.swift in Sources */,
+				3B9637941FB62C94007886E0 /* schoolData.swift in Sources */,
 				3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */,
 				3B9802451F65BA0F00F785C8 /* JobPoster.swift in Sources */,
 				3B1DDB0D1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift in Sources */,

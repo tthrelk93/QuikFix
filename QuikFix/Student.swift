@@ -12,7 +12,7 @@ class Student: NSObject {
     var name: String?
     var studentID: String?
     var email: String?
-    var password: String?
+    
     var bio: String?
     var pic: String?
     var school: String?

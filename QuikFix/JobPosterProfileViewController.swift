@@ -179,11 +179,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     let tempJob = JobPost()
                     tempJob.additInfo = (tempDict["additInfo"] as! String)
                     tempJob.category1 = (tempDict["category1"] as! String)
-                    tempJob.category2 = (tempDict["category2"] as! String)
+                    //tempJob.category2 = (tempDict["category2"] as! String)
                     tempJob.posterName = (tempDict["posterName"] as! String)
                     tempJob.date = (tempDict["date"] as! String)
                     tempJob.payment = (tempDict["payment"] as! String)
-                    tempJob.time = (tempDict["time"] as! String)
+                    tempJob.startTime = (tempDict["startTime"] as! String)
+                    tempJob.jobDuration = tempDict["jobDuration"] as! String
                     tempJob.jobID = (tempDict["jobID"] as! String)
                     tempJob.posterID = (tempDict["posterID"] as! String)
                     tempJob.completed = tempDict["completed"] as! Bool

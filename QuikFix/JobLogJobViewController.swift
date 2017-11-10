@@ -268,9 +268,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         groupChatButton.layer.cornerRadius = 10
         posterLabel.text = "Poster: \(job.posterName!)"
         cellSelectedPic.layer.cornerRadius = cellSelectedPic.frame.width/2
-        jobCatLabel.text = job.category2!
+        jobCatLabel.text = job.category1!
         dateLabel.text = "Date: \(job.date!)"
-        timeLabel.text = "Time: \(job.time!)"
+        timeLabel.text = "Time: \(job.startTime!)"
         detailsTextView.text = "Details: \(job.additInfo!)"
         if job.workers != nil{
         numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
