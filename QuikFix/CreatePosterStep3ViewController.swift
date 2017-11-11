@@ -14,6 +14,70 @@ import CoreLocation
 
 class CreatePosterStep3ViewController: UIViewController {
     
+    @IBAction func skipButton(_ sender: Any) {
+        
+        //var authData = Auth.auth().currentUser?.providerData["password"]
+        Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
+            if error != nil {
+                // SwiftOverlays.removeAllBlockingOverlays()
+                let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            else{
+                print("Successful Login")
+                //self.poster.experience = self.experience
+                
+                let imageName = NSUUID().uuidString
+                let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
+                
+                let profileImage = self.profPic
+                let uploadData = UIImageJPEGRepresentation(profileImage, 0.1)
+                storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                    
+                    if error != nil {
+                        print(error as Any)
+                        return
+                    }
+                    
+                    if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                        
+                        var values = Dictionary<String, Any>()
+                        
+                        //values["posterID"] = Auth.auth().currentUser!.uid
+                        //values["bio"] = self.student.bio
+                        values["name"] = self.poster.name
+                        values["email"] = self.poster.email
+                        // values["password"] = self.poster.password
+                        //values["school"] = self.poster.school
+                        //values["major"] = self.student.major
+                        values["jobsCompleted"] = self.poster.jobsCompleted
+                        //values["totalEarned"] = 0
+                        values["address"] = [self.poster.address]
+                        values["phone"] = self.poster.phone
+                        
+                        values["upcomingJobs"] = self.poster.upcomingJobs
+                        //values["experience"] = self.student.experience
+                        //values["rating"] =  self.student.rating
+                        
+                        values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                        values["pic"] = profileImageUrl
+                        var tempDict = [String: Any]()
+                        tempDict[(user?.uid)!] = values
+                        Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                        self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
+                        
+                    }
+                })
+                
+            }
+            
+        })
+
+        
+    }
+    
     var crypt = String()
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {

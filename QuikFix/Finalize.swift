@@ -222,6 +222,7 @@ class Finalize: UIViewController, UITextViewDelegate {
             for snap in snapshots {
                 if snap.key as! String == "name"{
                     self.posterName = snap.value as! String
+                    self.jobPost.posterName = snap.value as! String
                     break
                 }
             }

@@ -57,6 +57,7 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let vc = segue.destination as? CreatePosterStep3ViewController{
+            
             vc.poster = self.poster
             vc.profPic = self.profPic
             vc.crypt = self.crypt
