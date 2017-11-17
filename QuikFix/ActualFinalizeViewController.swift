@@ -131,12 +131,15 @@ class ActualFinalizeViewController: UIViewController {
                 }
                 
             })
-        print("ps: \(self.promoSender)")
-        self.creditCount = self.creditCount + 1
-        self.promoSenderArray.append((Auth.auth().currentUser?.uid)!)
-        Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
-        Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
-            
+        if promoSuccess == true{
+            print("ps: \(self.promoSender)")
+            self.creditCount = self.creditCount + 1
+            self.promoSenderArray.append((Auth.auth().currentUser?.uid)!)
+        
+            Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
+            Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
+        }
+        
             
             
         

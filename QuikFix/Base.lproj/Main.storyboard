@@ -1526,7 +1526,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KmL-tu-fCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4416.8000000000002" y="804.64767616191909"/>
+            <point key="canvasLocation" x="4289" y="805"/>
         </scene>
         <!--Job Response View Controller-->
         <scene sceneID="xGk-PO-1FD">
@@ -1765,7 +1765,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QhY-pH-E2c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5224.8000000000002" y="854.1229385307347"/>
+            <point key="canvasLocation" x="5225" y="805"/>
         </scene>
         <!--Calendar View Controller-->
         <scene sceneID="RUW-dq-Unw">
@@ -2317,7 +2317,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TBF-bo-xlL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5224.8000000000002" y="-790.25487256371821"/>
+            <point key="canvasLocation" x="5225" y="-746"/>
         </scene>
         <!--Job Log Job View Controller-->
         <scene sceneID="3KX-XC-so4">
@@ -2587,7 +2587,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iPD-l0-bdu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6900" y="-790.25487256371821"/>
+            <point key="canvasLocation" x="7319" y="-790"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="5P3-fp-l5Q">
@@ -2781,7 +2781,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xsd-ib-ix9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5224.8000000000002" y="52.623688155922046"/>
+            <point key="canvasLocation" x="5225" y="28"/>
         </scene>
         <!--Forgot Password View Controller1-->
         <scene sceneID="nto-j6-DzQ">
@@ -4274,15 +4274,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="OkZ-OU-Pdq"/>
-        <segue reference="7E9-rS-zYa"/>
-        <segue reference="rWP-ri-CCk"/>
+        <segue reference="zeB-RM-kRr"/>
         <segue reference="gk5-NV-fgS"/>
         <segue reference="ZMl-xc-gKO"/>
         <segue reference="2X6-Kb-AMt"/>
-        <segue reference="7vZ-JH-c6D"/>
-        <segue reference="IUm-cv-lwi"/>
-        <segue reference="c4J-tm-xDg"/>
+        <segue reference="rWP-ri-CCk"/>
+        <segue reference="gWe-8G-cok"/>
         <segue reference="bkn-AC-g8g"/>
+        <segue reference="TvP-Ai-L0J"/>
+        <segue reference="IUm-cv-lwi"/>
         <segue reference="Jm6-wN-c6A"/>
     </inferredMetricsTieBreakers>
 </document>
