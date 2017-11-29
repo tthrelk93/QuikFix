@@ -23,6 +23,7 @@ class JobPoster: NSObject{
     var city: String?
     var paymentVerified: Bool?
     var stripeToken: String?
+    var stripeCustomer: String?
     var phone: String?
     var promoCode: [String:Any]?
     var availableCredits: Int?

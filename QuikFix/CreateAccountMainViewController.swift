@@ -77,6 +77,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                     for snap in snapshots{
                         if let tempDict = snap.value as? [String:Any]{
                             var promo = (tempDict["promoCode"] as! [String:Any])
+                            print("promo: \(promo)")
                             for (key, val) in promo{
                                 if key == self.promoCodeTF.text{
                                    var tempArray = val as! [String]
@@ -89,7 +90,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                     }
                                     self.promoSender[snap.key] = key
                                     self.promoSuccess = true
-                                    self.promoCredit = tempDict["creditAmount"] as! Int
+                                    //self.promoCredit = tempDict["availableCredits"] as! Int
                                     
                                     self.promoCredit = 10
                                     
@@ -98,7 +99,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                 
                             }
                             var uploadDict = [String:Any]()
-                            uploadDict["creditAmount"] =
+                            uploadDict["availableCredits"] =
                                 self.promoCredit
                             var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
                             tempArray.append((self.promoSender.first?.key)!)
@@ -128,22 +129,29 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     var promoCredit = Int()
         
     @IBAction func skipPressed(_ sender: Any) {
+        if self.sender == "step2"{
+            performSegue(withIdentifier: "PromoToStep4", sender: self)
+        } else {
         promoView.isHidden = true
         promoCredit = 5
+        }
     }
     @IBOutlet weak var skipButton: UIButton!
     
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    print(accountType)
+        if self.sender == "step2"{
+            promoView.isHidden = false
+        } else {
+            promoView.isHidden = true
+    
         if accountType == "student"{
             self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
             self.promoView.isHidden = true
         } else {
             promoCodeTF.delegate = self
-            self.promoView.isHidden = false
+            self.promoView.isHidden = true
             self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
         }
         
@@ -153,6 +161,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         defaultPicImageView.layer.cornerRadius = defaultPicImageView.frame.width/2
         selectProfilePic.layer.cornerRadius = selectProfilePic.frame.width/2
        selectProfilePic.clipsToBounds = true
+        }
         //userPic.layer.cornerRadius = userPic.frame.width/2
 
         // Do any additional setup after loading the view.
@@ -224,7 +233,20 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var poster = JobPoster()
+    var profPic = UIImage()
+    var crypt = String()
+    var locDict = [String:Any]()
+    var sender = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PromoToStep4"{
+            if let vc = segue.destination as? CreatePosterStep3ViewController{
+                vc.poster = self.poster
+                vc.profPic = self.profPic
+                vc.crypt = self.crypt
+                vc.locDict = self.locDict
+            }
+        }
         if segue.identifier == "CreateStudent"{
             if let vc = segue.destination as? CreateAccountStudentViewController{
                 vc.profPic = self.userPic.image!

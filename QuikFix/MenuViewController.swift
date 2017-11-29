@@ -78,8 +78,12 @@ class MenuViewController: UIViewController, GuillotineMenu {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBAction func editProfile(_ sender: Any) {
+    }
     
-       @IBAction func calendarPressed(_ sender: Any) {
+    @IBAction func dealsPressed(_ sender: Any) {
+    }
+    @IBAction func calendarPressed(_ sender: Any) {
         performSegue(withIdentifier: "PosterMenuToCalendar", sender: self)
             }
 

@@ -19,33 +19,34 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
     // the instructions (don't worry, it's free). Replace nil on the line below with your
     // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
-    let backendBaseURL: String? = "com.shitapps.QuikFix"
+    let backendBaseURL: String? = "https://quikfix.herokuapp.com"
 
     // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
     // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
     let appleMerchantID: String? = nil
     
     // These values will be shown to the user when they purchase with Apple Pay.
-    let companyName = "Emoji Apparel"
+    let companyName = "QuikFix"
     let paymentCurrency = "usd"
 
     let paymentContext: STPPaymentContext
 
     let theme: STPTheme
     let paymentRow: CheckoutRowView
-    let shippingRow: CheckoutRowView
+    //let shippingRow: CheckoutRowView
     let totalRow: CheckoutRowView
     let buyButton: BuyButton
     let rowHeight: CGFloat = 44
     let productImage = UILabel()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     let numberFormatter: NumberFormatter
-    let shippingString: String
+    //let shippingString: String
     var product = ""
     var paymentInProgress: Bool = false {
         didSet {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
                 if self.paymentInProgress {
+                    print("paymentInProgress")
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
                     self.buyButton.alpha = 0
@@ -60,6 +61,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     init(product: String, price: Int, settings: Settings) {
+        print("init")
 
         let stripePublishableKey = self.stripePublishableKey
         let backendBaseURL = self.backendBaseURL
@@ -78,8 +80,8 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         config.appleMerchantIdentifier = self.appleMerchantID
         config.companyName = self.companyName
         config.requiredBillingAddressFields = settings.requiredBillingAddressFields
-        config.requiredShippingAddressFields = settings.requiredShippingAddressFields
-        config.shippingType = settings.shippingType
+        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
+       // config.shippingType = settings.shippingType
         config.additionalPaymentMethods = settings.additionalPaymentMethods
 
         let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
@@ -95,24 +97,24 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         paymentSelectionFooter.theme = settings.theme
         
         //paymentContext.paymentMethodsViewControllerFooterView
-        //paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
+        paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
 
         let addCardFooter = PaymentContextFooterView(text: "You can add custom footer views to the add card screen.")
         addCardFooter.theme = settings.theme
-        //paymentContext.addCardViewControllerFooterView = addCardFooter
+        paymentContext.addCardViewControllerFooterView = addCardFooter
 
         self.paymentContext = paymentContext
 
         self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
                                           theme: settings.theme)
-        var shippingString = "Contact"
-        if config.requiredShippingAddressFields.contains(.postalAddress) {
+        //var shippingString = "Contact"
+        /*if config.requiredShippingAddressFields.contains(.postalAddress) {
             shippingString = config.shippingType == .shipping ? "Shipping" : "Delivery"
         }
         self.shippingString = shippingString
         self.shippingRow = CheckoutRowView(title: self.shippingString,
                                            detail: "Enter \(self.shippingString) Info",
-                                           theme: settings.theme)
+                                           theme: settings.theme)*/
         self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
                                         theme: settings.theme)
         self.buyButton = BuyButton(enabled: true, theme: settings.theme)
@@ -141,12 +143,12 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         var red: CGFloat = 0
         self.theme.primaryBackgroundColor.getRed(&red, green: nil, blue: nil, alpha: nil)
         self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
-        self.navigationItem.title = "Emoji Apparel"
+        self.navigationItem.title = "Payment"
 
         self.productImage.font = UIFont.systemFont(ofSize: 70)
         self.view.addSubview(self.totalRow)
         self.view.addSubview(self.paymentRow)
-        self.view.addSubview(self.shippingRow)
+        //self.view.addSubview(self.shippingRow)
         self.view.addSubview(self.productImage)
         self.view.addSubview(self.buyButton)
         self.view.addSubview(self.activityIndicator)
@@ -156,9 +158,9 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.paymentRow.onTap = { [weak self] _ in
             self?.paymentContext.pushPaymentMethodsViewController()
         }
-        self.shippingRow.onTap = { [weak self] _ in
+        /*self.shippingRow.onTap = { [weak self] _ in
             self?.paymentContext.pushShippingViewController()
-        }
+        }*/
     }
 
     override func viewDidLayoutSubviews() {
@@ -169,9 +171,9 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
                                            y: self.productImage.bounds.height/2.0 + rowHeight)
         self.paymentRow.frame = CGRect(x: 0, y: self.productImage.frame.maxY + rowHeight,
                                        width: width, height: rowHeight)
-        self.shippingRow.frame = CGRect(x: 0, y: self.paymentRow.frame.maxY,
-                                        width: width, height: rowHeight)
-        self.totalRow.frame = CGRect(x: 0, y: self.shippingRow.frame.maxY,
+       // self.shippingRow.frame = CGRect(x: 0, y: self.paymentRow.frame.maxY,
+                                       // width: width, height: rowHeight)
+        self.totalRow.frame = CGRect(x: 0, y: self.paymentRow.frame.maxY,
                                      width: width, height: rowHeight)
         self.buyButton.frame = CGRect(x: 0, y: 0, width: 88, height: 44)
         self.buyButton.center = CGPoint(x: width/2.0, y: self.totalRow.frame.maxY + rowHeight*1.5)
@@ -179,6 +181,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     func didTapBuy() {
+        print("buy")
         self.paymentInProgress = true
         self.paymentContext.requestPayment()
     }
@@ -186,14 +189,16 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     // MARK: STPPaymentContextDelegate
     
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
+        print("didCreatePaymentResult")
         MyAPIClient.sharedClient.completeCharge(paymentResult,
                                                 amount: self.paymentContext.paymentAmount,
-                                                shippingAddress: self.paymentContext.shippingAddress,
-                                                shippingMethod: self.paymentContext.selectedShippingMethod,
+                                                shippingAddress: nil,
+                                                shippingMethod: nil,
                                                 completion: completion)
     }
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
+        print("finishedWith")
         self.paymentInProgress = false
         let title: String
         let message: String
@@ -215,22 +220,24 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
 
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         self.paymentRow.loading = paymentContext.loading
+        print("paymentContextDidChange")
         if let paymentMethod = paymentContext.selectedPaymentMethod {
             self.paymentRow.detail = paymentMethod.label
         }
         else {
             self.paymentRow.detail = "Select Payment"
         }
-        if let shippingMethod = paymentContext.selectedShippingMethod {
+        /*if let shippingMethod = paymentContext.selectedShippingMethod {
             self.shippingRow.detail = shippingMethod.label
         }
         else {
             self.shippingRow.detail = "Enter \(self.shippingString) Info"
-        }
+        }*/
         self.totalRow.detail = self.numberFormatter.string(from: NSNumber(value: Float(self.paymentContext.paymentAmount)/100))!
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
+        print("paymentContextFailedToLoad")
         let alertController = UIAlertController(
             title: "Error",
             message: error.localizedDescription,

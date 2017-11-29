@@ -25,22 +25,22 @@ class ActualFinalizeViewController: UIViewController {
     @IBOutlet weak var mainEditButton: UIButton!
     @IBAction func mainEditPressed(_ sender: Any) {
         if editCat.isHidden == true{
-            //mainEditButton.titleLabel?.text = "Done"
-           // mainEditButton.setTitleColor(qfGreen, for: .normal)
+            mainEditButton.setTitle("Done", for: .normal)
+            mainEditButton.setTitleColor(qfGreen, for: .normal)
             editCat.isHidden = false
             editDate.isHidden = false
-            editPayment.isHidden = false
+            //editPayment.isHidden = false
             editAdditInfo.isHidden = false
             editTimeButton.isHidden = false
             locationEditButton.isHidden = false
             editDropoff.isHidden = false
             editPickup.isHidden = false
         } else {
-            //mainEditButton.setTitleColor(UIColor.red, for: .normal)
-            //mainEditButton.titleLabel?.text = "Edit"
+            mainEditButton.setTitleColor(UIColor.red, for: .normal)
+            mainEditButton.setTitle("Edit", for: .normal)
             editCat.isHidden = true
             editDate.isHidden = true
-            editPayment.isHidden = true
+            //editPayment.isHidden = true
             editAdditInfo.isHidden = true
             editTimeButton.isHidden = true
             locationEditButton.isHidden = true
@@ -54,14 +54,14 @@ class ActualFinalizeViewController: UIViewController {
     @IBOutlet weak var locationEditButton: UIButton!
     @IBOutlet weak var editAdditInfo: UIButton!
     
-    @IBOutlet weak var editPayment: UIButton!
+   // @IBOutlet weak var editPayment: UIButton!
     
     @IBOutlet weak var editTimeButton: UIButton!
     
     @IBAction func editTimePressed(_ sender: Any) {
     }
-    @IBAction func editPaymentPressed(_ sender: Any) {
-    }
+   // @IBAction func editPaymentPressed(_ sender: Any) {
+    //}
     @IBOutlet weak var editCat: UIButton!
     @IBAction func editCatPressed(_ sender: Any) {
     }

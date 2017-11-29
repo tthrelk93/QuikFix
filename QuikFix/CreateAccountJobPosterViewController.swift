@@ -149,33 +149,6 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                     self.emailVerificationSent = true
                     
                 }
-               /* } else {
-                    print((Auth.auth().currentUser?.isEmailVerified)!)
-                     if !(Auth.auth().currentUser?.isEmailVerified)! {
-                        print("emailVer == falsee")
-                        let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.poster.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
-                        let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
-                            (_) in
-                            Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                            self.createAccountButton.setTitle("Continue Once Verified", for: .normal)
-                            
-                        }
-                        let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                        
-                        alertVC.addAction(alertActionOkay)
-                        alertVC.addAction(alertActionCancel)
-                        self.present(alertVC, animated: true, completion: nil)
-                        self.emailVerificationSent = true
-                        
-                     } else {
-                        print("emailVer == true")
-                        self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
-                    }
-
-                }*/
-                
-                
-                    
                 
             }
         } else {
@@ -246,7 +219,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        sepView3.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
 
         // Do any additional setup after loading the view.
     }

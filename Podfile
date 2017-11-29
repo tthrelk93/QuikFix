@@ -21,6 +21,7 @@ pod 'JSQMessagesViewController'
 pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
+pod 'Alamofire', '~> 4.5'
 
   target 'QuikFixTests' do
     inherit! :search_paths
@@ -40,6 +41,8 @@ pod 'JSQMessagesViewController'
 pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
+pod 'Alamofire', '~> 4.5'
+
   end
 
   target 'QuikFixUITests' do
@@ -59,6 +62,8 @@ pod 'JSQMessagesViewController'
 pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
+pod 'Alamofire', '~> 4.5'
+
   end
 
 end

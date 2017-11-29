@@ -40,9 +40,10 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func submitTokenToBackend(token: STPToken, completionHandler: (Error) -> ()){
         var tempDict = [String:Any]()
-        tempDict["tokenID"] = token.tokenId
-        tempDict["paymentAmount"] = job.payment
-        tempDict["description"] = job.description
+        tempDict["stripeToken"] = token.tokenId
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        //tempDict["paymentAmount"] = job.payment
+        //tempDict["description"] = job.description
         
     }
     
@@ -51,6 +52,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         submitTokenToBackend(token: token, completionHandler: { (error: Error?) in
             if let error = error {
                 // Show error in add card view controller
+                print("error: \(error.localizedDescription)")
                 completion(error)
             }
             else {
@@ -214,17 +216,17 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 var paymentVer = false
                 
                 for snap in snapshots {
-                    if snap.key == "paymentVerified"{
+                    /*if snap.key == "paymentVerified"{
                         if snap.value as! Bool == true{
                             paymentVer = true
                         }
-                    }
+                    }*/
                     if snap.key == "stripeToken"{
                         self.stripeToken = snap.value as! String
                     }
 
                 }
-                if paymentVer == true{
+                //if paymentVer == true{
                     let checkoutViewController = CheckoutViewController(product: self.stripeToken,
                                                                         price: 1200,
                                                                         settings: self.settingsVC.settings)
@@ -232,10 +234,10 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                     let navigationController = UINavigationController(rootViewController: checkoutViewController)
                     self.present(navigationController, animated: true)
 
-                } else {
-                    print("else")
-                    self.handleAddPaymentMethodButtonTapped()
-                }
+               // } //else {
+                   // print("else")
+                   // self.handleAddPaymentMethodButtonTapped()
+                //}
             }
         })
         

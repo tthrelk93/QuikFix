@@ -8,6 +8,7 @@
 
 import Foundation
 import Stripe
+import Alamofire
 
 
 class MyAPIClient: NSObject, STPEphemeralKeyProvider {
@@ -32,7 +33,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "source": result.source.stripeID,
             "amount": amount
         ]
-        /*params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
+        //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
         Alamofire.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in
@@ -42,12 +43,13 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 case .failure(let error):
                     completion(error)
                 }
-        }*/
+        }
     }
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
+        print("createCustomerKey")
         let url = self.baseURL.appendingPathComponent("ephemeral_keys")
-        /*Alamofire.request(url, method: .post, parameters: [
+        Alamofire.request(url, method: .post, parameters: [
             "api_version": apiVersion,
             ])
             .validate(statusCode: 200..<300)
@@ -57,8 +59,8 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     completion(json as? [String: AnyObject], nil)
                 case .failure(let error):
                     completion(nil, error)
-                }*/
-    //}
+                }
+    }
     }
 
 }

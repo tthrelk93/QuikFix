@@ -66,7 +66,7 @@ class CreatePosterStep3ViewController: UIViewController {
                         //values["experience"] = self.student.experience
                         //values["rating"] =  self.student.rating
                         print("locDict: \(self.locDict)")
-                        values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                        values["location"] = self.locDict
                         values["pic"] = profileImageUrl
                         var tempDict = [String: Any]()
                         tempDict[(user?.uid)!] = values

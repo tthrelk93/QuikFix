@@ -25,6 +25,7 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
             performSegue(withIdentifier: "PosterStep2ToStep3", sender: self)
             
             
+            
         } 
         
         performSegue(withIdentifier: "PosterStep2ToStep3", sender: self)
@@ -57,12 +58,13 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
     var poster = JobPoster()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let vc = segue.destination as? CreatePosterStep3ViewController{
+        if let vc = segue.destination as? CreateAccountMainViewController{
             
             vc.poster = self.poster
             vc.profPic = self.profPic
             vc.crypt = self.crypt
             vc.locDict = self.locDict
+            vc.sender = "step2"
             
         }
         // Get the new view controller using segue.destinationViewController.
