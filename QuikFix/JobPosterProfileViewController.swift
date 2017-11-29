@@ -35,10 +35,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         currentListingsView.isHidden = true
     }
     @IBOutlet weak var currentListingsButton: UIButton!
+    var promo = String()
     @IBAction func okayPressed(_ sender: Any) {
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
+                    
                     if snap.key == "currentListings"{
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
                         //self.postSuccessShadeView.isHidden = true
@@ -93,16 +95,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var curListBool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        //jobPostedView.layer.cornerRadius = 12
-        //postSuccessShadeView.layer.cornerRadius = 12
-        //let navBar = self.navigationController!.navigationBar
-       // navBar.barTintColor = UIColor.white
-       // navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)]
-       // navBar.backgroundColor = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
-        
-        
-        
-        profileImageView.layer.shadowColor = UIColor.black.cgColor
+         profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
         
         
@@ -122,6 +115,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
+                    if snap.key == "promoCode"{
+                        var tempDict = snap.value as! [String:Any]
+                        self.promo = tempDict.first?.key as! String
+                    }
                     if snap.key == "name"{
                         //(self.navigationBar as UINavigationBar). //
                         self.nameLabel.text = snap.value as! String
@@ -287,7 +284,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 
                 cell.calCollect.dataSource = cell
                 cell.calCollect.delegate = cell
-                cell.calCollect.heightAnchor.constraint(equalToConstant: (145.0 * CGFloat(jobsForDate.count)) + 37).isActive = true
+                cell.calCollect.heightAnchor.constraint(equalToConstant: (147.0 * CGFloat(jobsForDate.count)) + 37).isActive = true
+                
                 cell.delegate = self
                 cell.category = self.categoryType
                 break
@@ -333,15 +331,23 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }*/
     
 
-    /*
+    @IBAction func menuPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PosterToMenu", sender: self)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PosterToMenu"{
+            if let vc = segue.destination as? MenuViewController{
+                vc.promo = self.promo
+            }
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
 /*extension JobPosterProfileViewController: UIViewControllerTransitioningDelegate {

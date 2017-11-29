@@ -43,8 +43,8 @@ class JobPostLocationPickerViewController: UIViewController {
                     if snap.key == "address"{
                         //print("snapVal:\((snap.value as! [String]).first)")
                         
-                        self.locationLabel.text = (snap.value as! [String]).first as! String
-                        self.jobPost.location = (snap.value as! [String]).first as! String
+                        self.locationLabel.text = (snap.value as! [String]).first!
+                        self.jobPost.location = (snap.value as! [String]).first!
                         self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
                        // print("loc: \(self.jobPost.location)")
                     }

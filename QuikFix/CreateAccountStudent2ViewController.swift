@@ -18,7 +18,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     @IBOutlet weak var gradYearTF: UITextField!
     var crypt = String()
     var profPic = UIImage()
-    var gradData = ["2016", "2017", "2018", "2019", "2020", "2021","2022","2023","2024"]
+    var gradData = ["2017", "2018", "2019", "2020", "2021","2022","2023","2024"]
     @IBAction func continuePressed(_ sender: Any) {
         if schoolDropDownTF.hasText && majorDropDownTF.hasText && gradYearTF.hasText{
             let date = Date()

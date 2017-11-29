@@ -66,6 +66,7 @@ class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectio
         cell.category = self.category
         cell.jobID = self.jobsForDate[indexPath.row].jobID!
         cell.job = self.jobsForDate[indexPath.row]
+        cell.widthAnchor.constraint(equalToConstant: self.dateLabel.frame.width)
         
         cell.delegate = self
         

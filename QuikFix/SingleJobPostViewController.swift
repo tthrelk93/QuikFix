@@ -121,6 +121,7 @@ class SingleJobPostViewController: UIViewController {
     
     }
     
+    @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var detailsTextView: UITextView!
     var jobID = String()
     var studentsWhoHaveAppliedForJobArray = [String]()
@@ -142,10 +143,19 @@ class SingleJobPostViewController: UIViewController {
         Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                let tempDict = snapshot.value as! [String:Any]
+                
                 for snap in snapshots{
+                    
                     if snap.key == "payment"{
-                        self.rateLabel.text = snap.value as! String
-                    } else if snap.key == "time"{
+                        var tempPayString = snap.value as! String
+                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                        tempPayString = "$\(tempPayDouble)"
+                        self.rateLabel.text = tempPayString
+                        
+                       // self.rateLabel.text = tempPayString
+                    } else if snap.key == "startTime"{
                         self.timeLabel.text = (snap.value as! String)
                     }else if snap.key == "additInfo"{
                         self.detailsTextView.text = snap.value as! String
@@ -154,6 +164,8 @@ class SingleJobPostViewController: UIViewController {
                         self.posterID = snap.value as! String
                     } else if snap.key == "date"{
                         self.dateLabel.text = snap.value as! String
+                    } else if snap.key == "jobDuration"{
+                        self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
                     }
                     
                 }
@@ -166,7 +178,7 @@ class SingleJobPostViewController: UIViewController {
                 for snap in snapshots{
                     var tempArray = [String]()
                     if snap.key == "address"{
-                        self.addressLabel.text = snap.value as! String
+                        self.addressLabel.text = (snap.value as! [String]).first
                     } else if snap.key == "pic"{
                         if let messageImageUrl = URL(string: snap.value as! String) {
                             

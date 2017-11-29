@@ -21,12 +21,12 @@ class ActualFinalizeViewController: UIViewController {
     @IBAction func editDropoffPressed(_ sender: Any) {
     }
     @IBOutlet weak var editDropoff: UIButton!
-    
+    var promoSuccess = Bool()
     @IBOutlet weak var mainEditButton: UIButton!
     @IBAction func mainEditPressed(_ sender: Any) {
         if editCat.isHidden == true{
-            mainEditButton.titleLabel?.text = "Done"
-            mainEditButton.setTitleColor(qfGreen, for: .normal)
+            //mainEditButton.titleLabel?.text = "Done"
+           // mainEditButton.setTitleColor(qfGreen, for: .normal)
             editCat.isHidden = false
             editDate.isHidden = false
             editPayment.isHidden = false
@@ -36,8 +36,8 @@ class ActualFinalizeViewController: UIViewController {
             editDropoff.isHidden = false
             editPickup.isHidden = false
         } else {
-            mainEditButton.setTitleColor(UIColor.red, for: .normal)
-            mainEditButton.titleLabel?.text = "Edit"
+            //mainEditButton.setTitleColor(UIColor.red, for: .normal)
+            //mainEditButton.titleLabel?.text = "Edit"
             editCat.isHidden = true
             editDate.isHidden = true
             editPayment.isHidden = true
@@ -75,7 +75,7 @@ class ActualFinalizeViewController: UIViewController {
     @IBAction func postJobPressed(_ sender: Any) {
             var values = [String:Any]()
             var ref = Database.database().reference().child("jobs").childByAutoId()
-            values["posterName"] = self.posterName
+            values["posterName"] = self.tempPosterName
             values["posterID"] = Auth.auth().currentUser?.uid
             
             values["category1"] = jobPost.category1
@@ -131,11 +131,20 @@ class ActualFinalizeViewController: UIViewController {
                 }
                 
             })
-            
+        if promoSuccess == true{
+            print("ps: \(self.promoSender)")
+            self.creditCount = self.creditCount + 1
+            self.promoSenderArray.append((Auth.auth().currentUser?.uid)!)
+        
+            Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
+            Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
+        }
+        
             
             
         
     }
+    var creditCount = Int()
     @IBOutlet weak var detailsTextView: UITextView!
     @IBOutlet weak var totalFinalCost: UILabel!
     @IBOutlet weak var totalHaulingFee: UILabel!
@@ -158,15 +167,39 @@ class ActualFinalizeViewController: UIViewController {
     var jobRef = String()
     var timeDifference = Int()
     var toolCount = Int()
+    var tempPosterName = String()
+    var promoSenderArray = [String]()
+    var promoSender = String()
+    var promoCode = String()
     
     @IBOutlet weak var pickupLabel: UILabel!
     @IBOutlet weak var homeToHomeView: UIView!
 
+    @IBOutlet weak var totalPromoDisc: UILabel!
     @IBOutlet weak var dropoffLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainEditButton.setTitle("Edit", for: .normal)
+        mainEditButton.setTitle("Done", for: .selected)
+        mainEditButton.setTitleColor(qfGreen, for: .selected)
+        mainEditButton.setTitleColor(UIColor.red, for: .normal)
+        
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    if snap.key == "name"{
+                        self.tempPosterName = snap.value as! String
+                    }
+                }
+            }
+        })
         
         self.categoryLabel.text = self.jobPost.category1
+        if promoSuccess == true {
+            self.totalPromoDisc.text = "- $5 Promo Discount"
+        } else {
+            self.totalPromoDisc.text = "- $0 Promo Discount"
+        }
         if jobPost.category1 == "Moving(Home-To-Home)"{
             self.homeToHomeView.isHidden = false
             self.pickupLabel.text = jobPost.pickupLocation

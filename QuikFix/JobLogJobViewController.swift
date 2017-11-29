@@ -271,6 +271,8 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         jobCatLabel.text = job.category1!
         dateLabel.text = "Date: \(job.date!)"
         timeLabel.text = "Time: \(job.startTime!)"
+        durationLabel.text = "Duration: \(job.jobDuration)"
+        totalCostLabel.text = job.payment
         detailsTextView.text = "Details: \(job.additInfo!)"
         if job.workers != nil{
         numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
@@ -319,9 +321,17 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     @IBAction func viewProfilePressed(_ sender: Any) {
+        performSegue(withIdentifier: "JobLogViewJobToStudentProfile", sender: self)
+        
     }
+    @IBOutlet weak var durationLabel: UILabel!
+    
+    @IBOutlet weak var totalCostLabel: UILabel!
+    
+    
     
     @IBAction func closeSelectedViewPressed(_ sender: Any) {
+        cellSelectedView.isHidden = true
     }
     @IBOutlet weak var cellSelectedPic: UIImageView!
     @IBAction func sendDMPressed(_ sender: Any) {
@@ -398,6 +408,13 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 vc.senderScreen = self.senderScreen
                 vc.job = self.job
             }
+        } else if segue.identifier == "JobLogViewJobToStudentProfile"{
+            if let vc = segue.destination as? studentProfile{
+                vc.sender = "JobLogSingleJobPoster"
+                vc.notUsersProfile = true
+                vc.job = self.job
+            }
+            
         } else {
             
         

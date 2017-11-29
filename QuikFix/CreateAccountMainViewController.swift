@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class CreateAccountMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -46,21 +48,103 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             performSegue(withIdentifier: "CreateJobPoster", sender: self)
         }
     }
+    
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var promoSuccessLabel: UILabel!
     @IBAction func selectProfilePicPressed(_ sender: Any) {
         handleSelectProfileImageView()
         
     }
     @IBOutlet weak var selectProfilePic: UIButton!
     
+    @IBOutlet weak var promoView: UIView!
+    
+    @IBOutlet weak var promoCodeTF: UITextField!
+    
+    @IBOutlet weak var redeemButton: UIButton!
+    var existingPromoCodes = [String]()
+    var promoSender = [String: String]()
+    var promoSuccess = false
+    @IBAction func redeemPressed(_ sender: Any) {
+        if promoCodeTF.hasText == false{
+            let alert = UIAlertController(title: "Invalid Code Error", message: "It appears that the promo code you are entering does not exist.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if let tempDict = snap.value as? [String:Any]{
+                            var promo = (tempDict["promoCode"] as! [String:Any])
+                            for (key, val) in promo{
+                                if key == self.promoCodeTF.text{
+                                   var tempArray = val as! [String]
+                                    if tempArray.contains(Auth.auth().currentUser!.uid){
+                                        let alert = UIAlertController(title: "Promo Code Reuse Error", message: "It appears that you have already used this promo code.", preferredStyle: UIAlertControllerStyle.alert)
+                                        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
+                                        return
+                                        
+                                    }
+                                    self.promoSender[snap.key] = key
+                                    self.promoSuccess = true
+                                    self.promoCredit = tempDict["creditAmount"] as! Int
+                                    
+                                    self.promoCredit = 10
+                                    
+                                    break
+                                }
+                                
+                            }
+                            var uploadDict = [String:Any]()
+                            uploadDict["creditAmount"] =
+                                self.promoCredit
+                            var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
+                            tempArray.append((self.promoSender.first?.key)!)
+                            promo[(self.promoSender.first?.value)!] = tempArray
+                            uploadDict["promoCode"] = promo
+                            Database.database().reference().child("jobPosters").child((self.promoSender.first?.key)!).updateChildValues(uploadDict)
+                            //Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["promoCredit": 5] as [String:Any])
+                            self.topLabel.text = "Success!"
+                            self.promoSuccessLabel.isHidden = false
+                            self.promoCodeTF.isHidden = true
+                            self.redeemButton.isHidden = true
+                            self.skipButton.isHidden = true
+                            sleep(3)
+                            self.self.promoView.isHidden = true
+                            
+                        }
+                    }
+                }
+                    
+            })
+            
+            
+        }
+        
+    }
+        
+    var promoCredit = Int()
+        
+    @IBAction func skipPressed(_ sender: Any) {
+        promoView.isHidden = true
+        promoCredit = 5
+    }
+    @IBOutlet weak var skipButton: UIButton!
+    
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
+    print(accountType)
         if accountType == "student"{
-            self.studentPicLabel.isHidden = false
+            self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
+            self.promoView.isHidden = true
         } else {
-            self.studentPicLabel.isHidden = true
+            promoCodeTF.delegate = self
+            self.promoView.isHidden = false
+            self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
         }
         
         picker.delegate = self
@@ -149,6 +233,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         } else {
             if let vc = segue.destination as? CreateAccountJobPosterViewController{
                 vc.profPic = self.userPic.image!
+                vc.promoBool = self.promoSuccess
                 
             }
         }

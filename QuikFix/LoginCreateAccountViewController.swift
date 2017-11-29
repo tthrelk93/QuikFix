@@ -78,6 +78,9 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBAction func forgotPasswordPressed(_ sender: Any) {
         
     }
+    var handle: AuthStateDidChangeListenerHandle?
+    
+    
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -86,35 +89,72 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
         
         userNameTextField.delegate = self
         passwordTextField.delegate = self
+        var studentBool = false
+        var posterBool = false
         
-        Auth.auth().addStateDidChangeListener { auth, user in
+        
+        handle = Auth.auth().addStateDidChangeListener { auth, user in
             if let user = user {
                 // User is signed in.
-                var studentBool = false
+                
                 Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         for snap in snapshots{
                             if snap.key == Auth.auth().currentUser?.uid{
                                 studentBool = true
-                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                                posterBool = false
+                                
                                 //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
                                 
                             }
                         }
-                        if studentBool == false{
-                            //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                        /*if studentBool == false{
+                            //
                             self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
-                        }
+                        }*/
                     }
+                    Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots{
+                                if snap.key == Auth.auth().currentUser?.uid{
+                                    studentBool = false
+                                    posterBool = true
+                                    
+                                    
+                                    //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                    
+                                }
+                            }
+                            if posterBool == false && studentBool == false{
+                                Auth.auth().currentUser?.delete(completion: { (error) in
+                                    if error != nil {
+                                        print("Error unable to delete user")
+                                        
+                                    }
+                                })
+                            
+                            } else if posterBool == false {
+                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                            } else if studentBool == false{
+                            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
+                            }
+                        }
+                    })
                 })
 
             } else {
                 // No user is signed in.
+                //Auth.auth().removeStateDidChangeListener(<#T##listenerHandle: AuthStateDidChangeListenerHandle##AuthStateDidChangeListenerHandle#>)
             }
         }
         //userNameTextField.color
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        Auth.auth().removeStateDidChangeListener(handle!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -135,6 +175,7 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
             }

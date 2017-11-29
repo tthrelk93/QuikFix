@@ -11,17 +11,19 @@ import FirebaseDatabase
 import FirebaseAuth
 import Firebase
 
-class Finalize: UIViewController, UITextViewDelegate {
+class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     
+    @IBOutlet weak var promoView: UIView!
     var jobPost = JobPost()
     var timeDifference = Int()
     
+    @IBOutlet weak var finalizeButton: UIButton!
     
      let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     
 
     @IBAction func finalizedPressed(_ sender: Any) {
-        
+        finalizeButton.isHidden = true
         //***setting the labels if the additional info textview isnt empty or placeholder text
         if enterAdditInfoTextView.text != ""{
             if enterAdditInfoTextView.text == "Tap here to add any additional information about the job. (optional)"{
@@ -165,34 +167,95 @@ class Finalize: UIViewController, UITextViewDelegate {
             } else {
                 durationInt = Int(jobPost.jobDuration!)!
             }*/
+            promoView.isHidden = false
  
         
-        var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
-            if jobPost.category1 == "Moving(Home-To-Home)"{
-                calcRate = calcRate + 10
-                
-            }
-            if jobPost.tools?.count != 0 && jobPost.tools?.count != nil {
-                calcRate = calcRate + 5
-                self.toolCount = (jobPost.tools?.count)!
-            } else {
-                self.toolCount = 0
-            }
-            self.jobPost.payment = String(describing:calcRate)
         
-        
-
-        
-                        performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
             //blockView.isHidden = false
         }
         
     }
+    @IBOutlet weak var promoField: UITextField!
     var toolCount = Int()
     @IBOutlet weak var enterAdditInfoTextView: UITextView!
     var listingsArray = [String]()
+    var promoSuccess = Bool()
+    var promoSender = String()
+    var promoSenderArray = [String]()
+    var invalidCodeBool = true
     
-    
+    @IBAction func applyPromoPressed(_ sender: Any) {
+        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    if let tempDict = snap.value as? [String:Any]{
+                        var promo = (tempDict["promoCode"] as! [String:Any])
+                        for (key, val) in promo{
+                            if key as! String == self.promoField.text{
+                                self.invalidCodeBool = false
+                                if (val as! [String]).contains((Auth.auth().currentUser?.uid)!){
+                                    //show error
+                                    let alert = UIAlertController(title: "Promo Error", message: "You have already redeemed this promo code.", preferredStyle: UIAlertControllerStyle.alert)
+                                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                                    self.present(alert, animated: true, completion: nil)
+                                    self.promoSuccess = false
+                                } else {
+                                    var calcRate = (((25 * (Int(self.jobPost.jobDuration!)!)) * (self.jobPost.workerCount as! Int)) - 5)
+                                    self.promoSenderArray = val as! [String]
+                                    self.promoSuccess = true
+                                    self.promoCode = self.promoField.text!
+                                    self.promoSender = snap.key as! String
+                                    print("ps1: \(self.promoSender)")
+                                    self.creditCount = tempDict["availableCredits"] as! Int
+                                    if self.jobPost.category1 == "Moving(Home-To-Home)"{
+                                        calcRate = calcRate + 10
+                                        
+                                    }
+                                    if self.jobPost.tools?.count != 0 && self.jobPost.tools?.count != nil {
+                                        calcRate = calcRate + 5
+                                        self.toolCount = (self.jobPost.tools?.count)!
+                                    } else {
+                                        self.toolCount = 0
+                                    }
+                                    self.jobPost.payment = String(describing:calcRate)
+                                    self.performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
+                                    
+                                }
+                            }
+                        }
+                        if self.invalidCodeBool == true{
+                            let alert = UIAlertController(title: "Promo Error", message: "Invalid Promo Code", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+        
+        })
+    }
+    var creditCount = Int()
+    var promoCode = String()
+    @IBAction func skipPressed(_ sender: Any) {
+        var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
+        if jobPost.category1 == "Moving(Home-To-Home)"{
+            calcRate = calcRate + 10
+            
+        }
+        if jobPost.tools?.count != 0 && jobPost.tools?.count != nil {
+            calcRate = calcRate + 5
+            self.toolCount = (jobPost.tools?.count)!
+        } else {
+            self.toolCount = 0
+        }
+        self.jobPost.payment = String(describing:calcRate)
+        
+        
+        
+        
+        performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
+        
+    }
     
     var segueJobData = [String:Any]()
     var seguePosterData = [String:Any]()
@@ -208,6 +271,7 @@ class Finalize: UIViewController, UITextViewDelegate {
     var posterName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
+        promoField.delegate = self
         enterAdditInfoTextView.delegate = self
         enterAdditInfoTextView.textColor = qfGreen
         /*if jobPost.paymentType == 1{
@@ -227,6 +291,8 @@ class Finalize: UIViewController, UITextViewDelegate {
                 }
             }
         })
+        
+
         //jobPost.category = "Babysitting"
         
         
@@ -242,6 +308,13 @@ class Finalize: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text == ""{
+            textField.placeholder = "Type Promo Code or Press Skip"
+            
+        }
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.textColor = UIColor.black
         if textView.text == "Tap here to add any additional information about the job. (optional)"{
@@ -253,8 +326,8 @@ class Finalize: UIViewController, UITextViewDelegate {
    
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.textColor = qfGreen
-        if textView.text == ""{
-            textView.text == "Tap here to add any additional information about the job. (optional)"
+        if textView.text == "" || textView.text == nil{
+            textView.text = "Tap here to add any additional information about the job. (optional)"
         }
         
     }
@@ -284,6 +357,13 @@ class Finalize: UIViewController, UITextViewDelegate {
             vc.jobPost = self.jobPost
             vc.timeDifference = Int(jobPost.jobDuration!)!
             vc.toolCount = self.toolCount
+            vc.promoSuccess = self.promoSuccess
+            vc.promoSender = self.promoSender
+            vc.promoSenderArray = self.promoSenderArray
+            vc.promoCode = self.promoCode
+            vc.creditCount = self.creditCount
+            
+            
             
         }
     }

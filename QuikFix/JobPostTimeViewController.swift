@@ -52,7 +52,7 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
     }
     var durString = ["1", "2", "3", "4", "5"]
-    var durationData = ["1 hour", "2 hours", "3 hours", "4 hours", "5+ hours"]
+    var durationData = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours"]
 
     
     
@@ -63,6 +63,9 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         super.viewDidLoad()
         durationPicker.delegate = self
         durationPicker.dataSource = self
+        durationPicker.layer.cornerRadius = 7
+        startTimePicker.layer.cornerRadius = 7
+        
 
         // Do any additional setup after loading the view.
     }

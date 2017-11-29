@@ -12,8 +12,10 @@ import FirebaseAuth
 
 class MenuViewController: UIViewController, GuillotineMenu {
 
+    @IBOutlet weak var promoCode: UILabel!
+    @IBOutlet weak var promoCodeView: UIView!
     @IBOutlet weak var menuButtonPressed: UIButton!
-    
+    var promo = String()
     @IBAction func logoutPressed(_ sender: Any) {
         
         do {
@@ -32,7 +34,8 @@ class MenuViewController: UIViewController, GuillotineMenu {
     var titleLabel: UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        promoCodeView.layer.cornerRadius = 7
+        promoCode.text = self.promo
        
 
         dismissButton = {

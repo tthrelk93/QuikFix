@@ -132,6 +132,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     }*/
     
     @IBOutlet weak var menuButton: UIButton!
+    var sender = String()
     
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var backButtonForPoster: UIButton!
@@ -452,6 +453,16 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             }
 
     
+   // var job = JobPost()
+    @IBAction func backButtonPressed(_ sender: Any) {
+        if self.sender == "JobLogSingleJobPoster"{
+            performSegue(withIdentifier: "StudentProfileBackToJobLogJob", sender: self)
+            
+        } else {
+            performSegue(withIdentifier: "StudentProfileBackToResponse", sender: self)
+            
+        }
+    }
     
     @IBAction func addExpPressed(_ sender: Any) {
         
@@ -554,6 +565,12 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                 vc.jobArray = self.jobArray
             }
         
+        } else if segue.identifier == "StudentProfileBackToJobLogJob"{
+            if let vc = segue.destination as? JobLogJobViewController{
+                vc.job = self.job
+                vc.senderScreen = "studentProfile"
+            }
+            
         }
     }
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){

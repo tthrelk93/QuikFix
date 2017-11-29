@@ -26,9 +26,36 @@ class JobPostDateAndTimeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        //let calendar = Calendar.current
+        //let year = calendar.component(.year, from: Date())
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        var yearString = dateFormatter.string(from: Date())
+        
+        var tempDateString = "12-31-\(yearString)"
+        dateFormatter.dateFormat = "MMMM-dd-yyyy"
+        var tempDate = dateFormatter.date(from: tempDateString)
+        
+        
+        //timeAndDatePicker.maximumDate = tempDate
+        let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let currentDate: NSDate = NSDate()
+        let components: NSDateComponents = NSDateComponents()
+        
+        //components.year = -18
+        //let minDate: NSDate = gregorian.dateByAddingComponents(components, toDate: currentDate, options: NSCalendarOptions(rawValue: 0))!
+        
+        //components.year = -0
+       // let maxDate: NSDate = gregorian.date(byAdding: components as DateComponents, to: currentDate as Date, options: NSCalendar.Options(rawValue: 0))! as NSDate
+        
+        //self.datePicker.minimumDate = maxDate
         let todaysDate = Date()
         
         timeAndDatePicker.minimumDate = todaysDate
+        //timeAndDatePicker.maximumDate = //Calendar.current.date(byAdding: .year, value: -1, to: Date())
+        //self.timeAndDatePicker.maximumDate = tempDate
 
         // Do any additional setup after loading the view.
     }

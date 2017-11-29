@@ -15,6 +15,7 @@ import CoreLocation
 
 class CreatePosterStep2: UIViewController, UITextFieldDelegate {
     var crypt = String()
+    var locDict = [String:Any]()
     @IBAction func continueButtonPressed(_ sender: Any) {
         
         if addressTextField.text != "Address" && addressTextField.hasText {
@@ -61,6 +62,7 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
             vc.poster = self.poster
             vc.profPic = self.profPic
             vc.crypt = self.crypt
+            vc.locDict = self.locDict
             
         }
         // Get the new view controller using segue.destinationViewController.

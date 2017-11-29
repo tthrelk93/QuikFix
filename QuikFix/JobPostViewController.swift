@@ -58,7 +58,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //tempJob.category2 = (tempDict["category2"] as! String)
                     tempJob.posterName = (tempDict["posterName"] as! String)
                     tempJob.date = (tempDict["date"] as! String)
-                    tempJob.payment = (tempDict["payment"] as! String)
+                    var tempPayString = tempDict["payment"] as! String
+                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                    tempPayString = "$\(tempPayDouble)"
+                    tempJob.payment = tempPayString
                     tempJob.startTime = (tempDict["startTime"] as! String)
                     tempJob.jobDuration = tempDict["jobDuration"] as! String
                     tempJob.jobID = (tempDict["jobID"] as! String)
@@ -78,7 +82,12 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //tempJob.category2 = (tempDict["category2"] as! String)
                     tempJob.posterName = (tempDict["posterName"] as! String)
                     tempJob.date = (tempDict["date"] as! String)
-                    tempJob.payment = (tempDict["payment"] as! String)
+                    var tempPayString = tempDict["payment"] as! String
+                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                    tempPayString = "$\(tempPayDouble)"
+                    tempJob.payment = tempPayString
+                    print("studentPayment: \(tempPayString)")
                     tempJob.startTime = (tempDict["startTime"] as! String)
                     tempJob.jobDuration = tempDict["jobDuration"] as! String
                     tempJob.jobID = (tempDict["jobID"] as! String)
@@ -195,6 +204,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.calCollect.dataSource = cell
                 cell.calCollect.delegate = cell
                 cell.calCollect.heightAnchor.constraint(equalToConstant: (145.0 * CGFloat(jobsForDate.count)) + 37).isActive = true
+                
                 cell.delegate = self
                 cell.category = self.categoryType
                 break

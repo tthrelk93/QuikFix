@@ -19,9 +19,10 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     var poster = JobPoster()
     
     @IBOutlet weak var cellPhoneTextField: UITextField!
-    
+    var promoBool = Bool()
     var verificationTimer : Timer = Timer()    // Timer's  Global declaration
     
+    @IBOutlet weak var sepView3: UIView!
     
     @IBOutlet weak var lastNameTextField: UITextField!
     var phoneVerified = false
@@ -82,34 +83,14 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                // student.rating = Int()
                 poster.responses = [String:Any]()
                 poster.phone = cellPhoneTextField.text!
-                
-                
-               /* print("phone#: \(cellPhoneTextField.text!)")
-                var strippedString = String()
-                for ch in (cellPhoneTextField.text!).characters{
-                    if ch != "(" && ch != ")" && ch != "-"{
-                        strippedString.characters.append(ch)
-                    }
-                    
+                if self.promoBool == true{
+                    poster.creditAmount = 5
+                } else {
+                    poster.creditAmount = 0
                 }
                 
-                var tempString = "+1\(strippedString)" as! String
-                print("ts: \(tempString)")
-                PhoneAuthProvider.provider().verifyPhoneNumber(tempString, uiDelegate: nil) { (verificationID, error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        return
-                    }
-                    UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
-                    
-                    print("success!: \(verificationID)")
-                    self.verCode = verificationID as! String
-                    self.createAccountButton.isHidden = true
-                    self.phoneVerifcationView.isHidden = false
-                    
-                    // Sign in using the verificationID and the code sent to the user
-                    // ...
-                }*/
+                
+               
                 
                 
                 
@@ -139,8 +120,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                         }
                         let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                         
-                        alertVC.addAction(alertActionOkay)
-                        alertVC.addAction(alertActionCancel)
+                            alertVC.addAction(alertActionCancel)
+                            
+                            alertVC.addAction(alertActionOkay)
                         self.present(alertVC, animated: true, completion: nil)
                         self.emailVerificationSent = true
                         } else {
@@ -160,8 +142,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                     }
                     let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                     
-                    alertVC.addAction(alertActionOkay)
                     alertVC.addAction(alertActionCancel)
+                    
+                    alertVC.addAction(alertActionOkay)
                     self.present(alertVC, animated: true, completion: nil)
                     self.emailVerificationSent = true
                     
@@ -230,10 +213,13 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     }
     
     
+    
+    //sepView.heightAnchor.constraint
+    var locDict = [String:Any]()
     let locationManager = CLLocationManager()
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         var locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
+        self.locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
         //ref.updateChildValues(locDict)
@@ -258,7 +244,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        sepView3.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         // Do any additional setup after loading the view.
     }
@@ -351,6 +339,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
             vc.poster = self.poster
             vc.profPic = self.profPic!
             vc.crypt = self.crypt
+            vc.locDict = self.locDict
         }
     }
     

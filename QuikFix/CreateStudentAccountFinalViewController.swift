@@ -19,20 +19,32 @@ import FirebaseDatabase
 import FirebaseStorage
 //import DropDown
 import CoreLocation
+import MapKit
+
 
 
 
 class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBAction func addButtonPressed(_ sender: Any) {
-        if addButton.titleLabel?.text == "Add"{
+        if experience.contains(expData[curIndex]) == false {
             experience.append(expData[curIndex])
+            addButton.setTitle("Remove", for: .normal)
+            addButton.backgroundColor = UIColor.red
         } else {
             experience.remove(at: experience.index(of: expData[ curIndex])!)
+            addButton.setTitle("Add", for: .normal)
+            addButton.backgroundColor = qfGreen
         }
         var tempString = ""
         for str in experience {
-            tempString = tempString + str + ", "
+            if str == experience.last{
+                tempString = tempString + str
+                
+            } else {
+                tempString = tempString + str + ", "
+            }
+            
         }
         
         
@@ -90,7 +102,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                                 values["upcomingJobs"] = self.student.upcomingJobs
                                 values["experience"] = self.student.experience
                                 values["rating"] =  self.student.rating
-                                
+                                values["tShirtSize"] = self.tShirtSizeDropDownTF.text
                                 values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                                 values["pic"] = profileImageUrl
                                 var tempDict = [String: Any]()
@@ -132,6 +144,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         relevantExperienceDropDownTF.delegate = self
         step3Picker.delegate = self
         step3Picker.dataSource = self
+        
         
 
         // Do any additional setup after loading the view.
@@ -200,7 +213,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         
         
     }
-
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -14,8 +14,7 @@ import CoreLocation
 
 class CreatePosterStep3ViewController: UIViewController {
     
-    @IBAction func skipButton(_ sender: Any) {
-        
+    @IBAction func skipButtonPressed(_ sender: Any) {
         //var authData = Auth.auth().currentUser?.providerData["password"]
         Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
             if error != nil {
@@ -56,11 +55,17 @@ class CreatePosterStep3ViewController: UIViewController {
                         //values["totalEarned"] = 0
                         values["address"] = [self.poster.address]
                         values["phone"] = self.poster.phone
+                        var tempPromo = self.randomString(length: 6)
                         
+                        while self.existingPromoCodes.contains(tempPromo){
+                            tempPromo = self.randomString(length: 6)
+                        }
+                        values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                        values["availableCredits"] = 0
                         values["upcomingJobs"] = self.poster.upcomingJobs
                         //values["experience"] = self.student.experience
                         //values["rating"] =  self.student.rating
-                        
+                        print("locDict: \(self.locDict)")
                         values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                         values["pic"] = profileImageUrl
                         var tempDict = [String: Any]()
@@ -74,10 +79,18 @@ class CreatePosterStep3ViewController: UIViewController {
             }
             
         })
+        
 
+    }
+    @IBAction func skipButton(_ sender: Any) {
+        
         
     }
     
+    @IBAction func creditPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var creditButton: UIButton!
+    @IBOutlet weak var skip: UIButton!
     var crypt = String()
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {
@@ -121,11 +134,18 @@ class CreatePosterStep3ViewController: UIViewController {
                         //values["totalEarned"] = 0
                         values["address"] = [self.poster.address]
                         values["phone"] = self.poster.phone
+                        var tempPromo = self.randomString(length: 6)
+                        
+                        while self.existingPromoCodes.contains(tempPromo){
+                            tempPromo = self.randomString(length: 6)
+                        }
+                        values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                        values["availableCredits"] = 0
                         
                         values["upcomingJobs"] = self.poster.upcomingJobs
                         //values["experience"] = self.student.experience
                         //values["rating"] =  self.student.rating
-                        
+                        print("locDict: \(self.locDict)")
                         values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                         values["pic"] = profileImageUrl
                         var tempDict = [String: Any]()
@@ -145,11 +165,46 @@ class CreatePosterStep3ViewController: UIViewController {
     }
     var poster = JobPoster()
     var profPic = UIImage()
+    var existingPromoCodes = [String]()
+    func randomString(length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
+    }
+
+    var locDict = [String:Any]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        skip.layer.cornerRadius = 7
+        creditButton.layer.cornerRadius = 7
+        
+        
+        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    if let tempDict = snap.value as? [String:Any]{
+                        var promo = (tempDict["promoCode"] as! [String:Any])
+                        for (key, val) in promo{
+                            self.existingPromoCodes.append(key)
+                        }
+                    }
+                    
 
         // Do any additional setup after loading the view.
+                }
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -157,6 +212,7 @@ class CreatePosterStep3ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+        
 
     /*
     // MARK: - Navigation

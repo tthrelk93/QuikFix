@@ -101,8 +101,9 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
                     }
                     let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                     
-                    alertVC.addAction(alertActionOkay)
                     alertVC.addAction(alertActionCancel)
+                    
+                    alertVC.addAction(alertActionOkay)
                     self.present(alertVC, animated: true, completion: nil)
                     self.emailVerificationSent = true
                     
@@ -185,6 +186,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
 
 
@@ -198,7 +200,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
     
     var tempDict = [String: Any]()
     let locationManager = CLLocationManager()
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         var locValue:CLLocationCoordinate2D = manager.location!.coordinate
         var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
         print("locations = \(locValue.latitude) \(locValue.longitude)")
