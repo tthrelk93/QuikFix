@@ -11,9 +11,66 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 import CoreLocation
+import SwiftOverlays
+import Stripe
 
-class CreatePosterStep3ViewController: UIViewController {
+class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet var orLabel: UILabel!
+    @IBOutlet var step4Label: UILabel!
+    @IBOutlet var topLabel: UILabel!
+    var customer = STPCustomer()
+    @IBAction func savePressed(_ sender: Any) {
+        if creditCardNumberTF.hasText && creditCardNumberTF.text?.count == 19 && expDate.hasText && expDate.text?.count == 5 && cvvTF.hasText && cvvTF.text?.count == 3 {
+            var cardParams = STPCardParams()
+            cardParams.cvc = cvvTF.text
+            
+            let expMonth = expDate.text?.substring(to: 2)
+            cardParams.expMonth = UInt(expMonth as! String)! //as! UInt
+            
+            let expYear = expDate.text?.substring(from: 3)
+            print("month: \(expMonth) year: \(expYear)")
+            cardParams.expYear = UInt(expYear as! String)!
+            var cardNumb = creditCardNumberTF.text
+            
+            cardParams.number = cardNumb
+            print("cardNumber: \(cardParams.number)")
+            let sourceParams = STPSourceParams.cardParams(withCard: cardParams)
+            STPAPIClient.shared().createSource(with: sourceParams, completion: { (source, error) in
+                
+               /* let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared)
+                //STPCustomerContext(
+                //var temp = STPEphemeralKeyProvider()
+                //STPAPIClient.shared().
+                
+                
+                
+                /*if let token = source as? STPToken, let card = token.card {
+                    customer.defaultSource = card
+                }*/
+                
+                
+                customerContext.attachSource(toCustomer: source!, completion: { (error) in
+                    if error != nil{
+                        print("source error: \(String(describing: error?.localizedDescription))")
+                    }
+                    
+                })*/
+                
+            })
+            
+            
+        }
+    }
+    
+    
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var expDate: UITextField!
+    @IBOutlet weak var cvvTF: UITextField!
+    @IBOutlet weak var creditCardNumberTF: UITextField!
+    @IBOutlet weak var sepAndCreditInfoPosition2: UIView!
+    @IBOutlet weak var enterInfoView: UIView!
+    @IBOutlet weak var enterCreditPosition2: UIView!
     @IBAction func skipButtonPressed(_ sender: Any) {
         //var authData = Auth.auth().currentUser?.providerData["password"]
         Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
@@ -27,7 +84,7 @@ class CreatePosterStep3ViewController: UIViewController {
             else{
                 print("Successful Login")
                 //self.poster.experience = self.experience
-                
+                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
                 let imageName = NSUUID().uuidString
                 let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
                 
@@ -71,6 +128,7 @@ class CreatePosterStep3ViewController: UIViewController {
                         var tempDict = [String: Any]()
                         tempDict[(user?.uid)!] = values
                         Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                        
                         self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
                         
                     }
@@ -86,8 +144,52 @@ class CreatePosterStep3ViewController: UIViewController {
         
         
     }
-    
+    fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+    var creditViewFrame = CGRect()
+    var creditButtonFrame = CGRect()
+    var creditShowing = false
     @IBAction func creditPressed(_ sender: Any) {
+        if creditShowing == false{
+            topLabel.isHidden = false
+            sepAndCreditInfoPosition2.isHidden = true
+            orLabel.isHidden = true
+            skip.isHidden = true
+            enterInfoView.isHidden = false
+            step4Label.isHidden = true
+        UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
+            self.creditButton.bounds = self.enterCreditPosition2.bounds
+            self.creditButton.frame.origin = self.enterCreditPosition2.frame.origin
+            
+            self.enterInfoView.bounds = self.creditViewFrame
+            self.enterInfoView.frame.origin = self.creditViewOrigin
+            self.creditButton.setTitle("Cancel", for: .normal)
+            
+            
+        })
+            creditShowing = true
+           
+        } else {
+            topLabel.isHidden = false
+            sepAndCreditInfoPosition2.isHidden = false
+            orLabel.isHidden = false
+            skip.isHidden = false
+            step4Label.isHidden = false
+            
+            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
+                self.creditButton.bounds = self.creditButtonFrame
+                self.creditButton.frame.origin = self.creditButtonOrigin
+                
+                self.enterInfoView.bounds = self.sepAndCreditInfoPosition2.bounds
+                self.enterInfoView.frame.origin = self.sepAndCreditInfoPosition2.frame.origin
+                
+                self.enterInfoView.isHidden = true
+                self.creditButton.setTitle("Connect Credit Card to QuikFix", for: .normal)
+                
+                
+            })
+            creditShowing = false
+        }
+        
     }
     @IBOutlet weak var creditButton: UIButton!
     @IBOutlet weak var skip: UIButton!
@@ -183,11 +285,21 @@ class CreatePosterStep3ViewController: UIViewController {
     }
 
     var locDict = [String:Any]()
-
+    var creditButtonOrigin = CGPoint()
+    var creditViewOrigin = CGPoint()
     override func viewDidLoad() {
         super.viewDidLoad()
+        enterInfoView.layer.cornerRadius = 7
+        saveButton.layer.cornerRadius = 7
         skip.layer.cornerRadius = 7
+       creditCardNumberTF.delegate = self
+        expDate.delegate = self
+        cvvTF.delegate = self
         creditButton.layer.cornerRadius = 7
+        creditButtonFrame = creditButton.bounds
+        creditButtonOrigin = creditButton.frame.origin
+        creditViewFrame = enterInfoView.bounds
+        creditViewOrigin = enterInfoView.frame.origin
         
         
         Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -223,5 +335,27 @@ class CreatePosterStep3ViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
 
+}
+extension String {
+    func index(from: Int) -> Index {
+        return self.index(startIndex, offsetBy: from)
+    }
+    
+    func substring(from: Int) -> String {
+        let fromIndex = index(from: from)
+        return substring(from: fromIndex)
+    }
+    
+    func substring(to: Int) -> String {
+        let toIndex = index(from: to)
+        return substring(to: toIndex)
+    }
+    
+    func substring(with r: Range<Int>) -> String {
+        let startIndex = index(from: r.lowerBound)
+        let endIndex = index(from: r.upperBound)
+        return substring(with: startIndex..<endIndex)
+    }
 }

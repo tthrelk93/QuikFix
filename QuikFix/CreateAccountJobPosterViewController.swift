@@ -137,7 +137,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                     let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
                         (_) in
                         Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                        self.createAccountButton.setTitle("Continue Once Verified", for: .normal)
+                        self.createAccountButton.setTitle("Resend Email Verification", for: .normal)
                         
                     }
                     let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)

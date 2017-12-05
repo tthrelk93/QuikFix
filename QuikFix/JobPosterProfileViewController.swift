@@ -55,13 +55,115 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
 
     }
+    @IBOutlet weak var sharePromo: UIButton!
+    var extended = false
+    fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+    @IBAction func popoutMenuPressed(_ sender: Any) {
+        
+        if extended == true{
+            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
+                self.sharePromo.isHidden = false
+                self.myJobs.isHidden = false
+                self.dealsButton.isHidden = false
+                self.sharePromo.bounds = self.menuButton2ExtendedFrame
+                self.sharePromo.frame.origin = self.menuButton2ExtendedOrigin
+                
+                self.dealsButton.bounds = self.menuButton2ExtendedFrame
+                self.dealsButton.frame.origin = self.menuButton2ExtendedOrigin
+                
+                self.myJobs.bounds = self.menuButton2ExtendedFrame
+                self.myJobs.frame.origin = self.menuButton2ExtendedOrigin
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            })
+            DispatchQueue.main.async{
+            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                self.sharePromo.bounds = self.menuButton1ExtendedFrame
+                self.sharePromo.frame.origin = self.menuButton1ExtendedOrigin
+                
+                self.dealsButton.bounds = self.menuButton3ExtendedFrame
+                self.dealsButton.frame.origin = self.menuButton3ExtendedOrigin
+                
+                self.extended = true
+                
+                
+            })
+        }
+    } else {
+            
+           print("extendedFalse")
+            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
+                self.sharePromo.isHidden = false
+                self.myJobs.isHidden = false
+                self.dealsButton.isHidden = false
+                self.sharePromo.bounds = self.menuButton1ExtendedFrame
+                self.sharePromo.frame.origin = self.menuButton1ExtendedOrigin
+                
+                self.dealsButton.bounds = self.menuButton3ExtendedFrame
+                self.dealsButton.frame.origin = self.menuButton3ExtendedOrigin
+                
+                self.myJobs.bounds = self.menuButton2ExtendedFrame
+                self.myJobs.frame.origin = self.menuButton2ExtendedOrigin
+                
+                
+            })
+            /*DispatchQueue.main.async{
+                UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                    self.sharePromo.bounds = self.popoutMenuButton.bounds
+                    self.sharePromo.frame.origin = self.popoutMenuButton.frame.origin
+                    
+                    self.dealsButton.bounds = self.popoutMenuButton.bounds
+                    self.dealsButton.frame.origin = self.popoutMenuButton.frame.origin
+                    self.myJobs.bounds = self.popoutMenuButton.bounds
+                    self.myJobs.frame.origin = self.popoutMenuButton.frame.origin
+                    self.hideMenuButton.isHidden = true
+                    self.extended = false
+                    self.view.bringSubview(toFront: self.popoutMenuButton)
+                    
+                    //self.sharePromo.isHidden = true
+                    //self.myJobs.isHidden = true
+                    //self.dealsButton.isHidden = true
+                    
+                })*/
+            //}
+            self.hideMenuButton.isHidden = true
+            self.extended = false
+            
+            
     
+    }
+}
+    @IBOutlet weak var popoutMenuButton: UIButton!
+    @IBAction func sharePromoPressed(_ sender: Any) {
+        
+    }
+    @IBOutlet weak var myJobs: UIButton!
+    
+    @IBAction func myJobsPressed(_ sender: Any) {
+        performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
+        
+    }
     @IBOutlet weak var currentListingsView: UIView!
    // @IBOutlet weak var jobPostedView: UIView!
     @IBAction func responseBubblePressed(_ sender: Any) {
         
         
     }
+    
+    @IBAction func dealsPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var dealsButton: UIButton!
+    
+    
+    
+    
     @IBOutlet weak var responseBubble: UIButton!
     @IBOutlet weak var postJobsButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
@@ -93,10 +195,74 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
    // @IBOutlet weak var menuBounds: UIBarButtonItem!
     //var actualMenuBounds
     var curListBool = false
+    let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+    let qfRed = UIColor(colorLiteralRed: 160/255, green: 25/255, blue: 9/255, alpha: 1.0)
+    var menuButton1ExtendedFrame = CGRect()
+    var menuButton1ExtendedOrigin = CGPoint()
+    var menuButton2ExtendedFrame = CGRect()
+    var menuButton2ExtendedOrigin = CGPoint()
+    var menuButton3ExtendedFrame = CGRect()
+    var menuButton3ExtendedOrigin = CGPoint()
+    
+    @IBAction func hideMenuPressed(_ sender: Any) {
+        UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
+            self.sharePromo.bounds = self.myJobs.bounds
+            self.sharePromo.frame.origin = self.myJobs.frame.origin
+            
+            self.dealsButton.bounds = self.myJobs.bounds
+            self.dealsButton.frame.origin = self.myJobs.frame.origin
+            
+        })
+        DispatchQueue.main.async{
+            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                self.sharePromo.bounds = self.popoutMenuButton.bounds
+                self.sharePromo.frame.origin = self.popoutMenuButton.frame.origin
+                
+                self.dealsButton.bounds = self.popoutMenuButton.bounds
+                self.dealsButton.frame.origin = self.popoutMenuButton.frame.origin
+                self.myJobs.bounds = self.popoutMenuButton.bounds
+                self.myJobs.frame.origin = self.popoutMenuButton.frame.origin
+                self.hideMenuButton.isHidden = true
+                
+                //self.sharePromo.isHidden = true
+                //self.myJobs.isHidden = true
+                //self.dealsButton.isHidden = true
+                
+            })
+        }
+        
+        
+    }
+    @IBOutlet weak var metalBar: UIImageView!
+    @IBOutlet weak var hideMenuButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //metalBar.layer.cornerRadius = 8
+       // metalBar.layer.borderWidth = 1
+       // metalBar.layer.borderColor = qfRed.cgColor
+        menuButton1ExtendedFrame = sharePromo.bounds
+        menuButton1ExtendedOrigin = sharePromo.frame.origin
+        menuButton2ExtendedFrame = myJobs.bounds
+        menuButton2ExtendedOrigin = myJobs.frame.origin
+        
+        menuButton3ExtendedFrame = dealsButton.bounds
+        menuButton3ExtendedOrigin = dealsButton.frame.origin
          profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
+        //sharePromo.layer.cornerRadius = sharePromo.frame.width/2
+        //sharePromo.layer.borderColor = qfRed.cgColor
+        //sharePromo.layer.borderWidth = 1
+        
+       // myJobs.layer.cornerRadius = sharePromo.frame.width/2
+        //myJobs.layer.borderColor = qfRed.cgColor
+        
+       // myJobs.layer.borderWidth = 1
+        
+        //dealsButton.layer.cornerRadius = sharePromo.frame.width/2
+        //dealsButton.layer.borderColor = qfRed.cgColor
+        //dealsButton.layer.borderWidth = 1
+        
+        
         
         
        /* if showJobPostedView == true{
@@ -137,22 +303,17 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         self.curListBool = true
                         self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
                     }
-                    else if snap.key == "responses"{
-                        responseBool = true
-                        if (snap.value as! [String:Any]).count == 0{
-                            self.responseBubble.isHidden = true
-                        } else {
-                    self.responseBubble.isHidden = false
-                            self.responseBubble.titleLabel?.text = String(describing:(snap.value as! [String:Any]).count)
-                        }
+                    else if snap.key == "upcomingJobs"{
+                        self.jobsCompletedCount.text = String(describing: (snap.value as! [String]).count)
+                        
                         
                     }
                 }
-                if responseBool == false{
+                /*if responseBool == false{
                     self.responseBubble.isHidden = true
                 } else {
                     self.responseBubble.isHidden = false
-                }
+                }*/
                 if self.curListBool == false{
                     self.currentListingsCount.text = "0"
                 }
@@ -344,6 +505,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 vc.promo = self.promo
             }
         }
+        if segue.identifier == "MyJobsToJobLog"{
+                if let vc = segue.destination as? JobHistoryViewController{
+                    vc.senderScreen = "posterProf"
+                }
+            }
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }

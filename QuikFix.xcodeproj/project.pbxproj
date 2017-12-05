@@ -10,6 +10,7 @@
 		089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */; };
 		314C313C1FCC8C6B00345E8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
+		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
 		323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */; };
 		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
 		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
@@ -36,7 +37,6 @@
 		3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43315F1F75CA9E00121AA0 /* DateCollectionViewCell.swift */; };
 		3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */; };
 		3B468C871F57653F001D8FEC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C861F57653F001D8FEC /* AppDelegate.swift */; };
-		3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8A1F57653F001D8FEC /* Main.storyboard */; };
 		3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8D1F57653F001D8FEC /* Assets.xcassets */; };
 		3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */; };
 		3B468C9C1F57653F001D8FEC /* QuikFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B468C9B1F57653F001D8FEC /* QuikFixTests.swift */; };
@@ -95,6 +95,7 @@
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
+		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobTypePickerViewController.swift; sourceTree = "<group>"; };
 		3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleJobPostViewController.swift; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		3B4331601F75CA9E00121AA0 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B468C831F57653F001D8FEC /* QuikFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuikFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B468C861F57653F001D8FEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B468C8B1F57653F001D8FEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3B468C8D1F57653F001D8FEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B468C901F57653F001D8FEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B468C921F57653F001D8FEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -310,8 +310,8 @@
 			children = (
 				3B144E161F7B34700088A1D0 /* QuikFix.entitlements */,
 				3B468C861F57653F001D8FEC /* AppDelegate.swift */,
-				3B468C8A1F57653F001D8FEC /* Main.storyboard */,
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
+				31D994DC1FD0B6070038C9C0 /* Main.storyboard */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
 				314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */,
@@ -544,11 +544,11 @@
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
 				314C313C1FCC8C6B00345E8E /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
+				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
 				314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
-				3B468C8C1F57653F001D8FEC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,14 +902,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3B468C8A1F57653F001D8FEC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3B468C8B1F57653F001D8FEC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

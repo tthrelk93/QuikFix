@@ -83,13 +83,17 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
        // config.shippingType = settings.shippingType
         config.additionalPaymentMethods = settings.additionalPaymentMethods
+        
+        
 
         let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
         let paymentContext = STPPaymentContext(customerContext: customerContext,
                                                configuration: config,
                                                theme: settings.theme)
         let userInformation = STPUserInformation()
+        
         paymentContext.prefilledInformation = userInformation
+        
         paymentContext.paymentAmount = price
         paymentContext.paymentCurrency = self.paymentCurrency
 
@@ -184,6 +188,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         print("buy")
         self.paymentInProgress = true
         self.paymentContext.requestPayment()
+       
     }
 
     // MARK: STPPaymentContextDelegate

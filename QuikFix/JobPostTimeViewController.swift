@@ -10,6 +10,9 @@ import UIKit
 
 class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    @IBOutlet weak var amPMPicker: UIPickerView!
+    @IBOutlet weak var minutePicker: UIPickerView!
+    @IBOutlet weak var hourPicker: UIPickerView!
     func timeFormatter(time: Date) -> String{
         let timeFormatter = DateFormatter()
         timeFormatter.dateStyle = .none
@@ -21,9 +24,17 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     }
     
     @IBAction func continueButtonPressed(_ sender: Any) {
-        var startTime = timeFormatter(time: startTimePicker.date)
+        var hourData = [String]()
+        if amPMPicker.selectedRow(inComponent: 0) == 0{
+            hourData = hourDataAM
+        } else {
+            hourData = hourDataPM
+        }
+        var tempString = "\(hourData[hourPicker.selectedRow(inComponent: 0)]): \(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        //var startTime = timeFormatter(time: startTimePicker.date)
         //var endTime = timeFormatter(time: endTimePicker.date)
-        jobPost.startTime = "\(startTime)"
+        print("tmepString: \(tempString)")
+        jobPost.startTime = tempString
         jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
         print(durString[durationPicker.selectedRow(inComponent: 0)])
         
@@ -40,31 +51,72 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         return 1
     }
     
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        if pickerView == amPMPicker{
+            hourPicker.reloadAllComponents()
+        }
+    }
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
-        return durationData.count
+        if pickerView == durationPicker{
+            return durationData.count
+        } else if pickerView == amPMPicker{
+            return amPMData.count
+        } else if pickerView == hourPicker{
+            if amPMPicker.selectedRow(inComponent: 0) == 0 {
+                    return hourDataAM.count
+            } else {
+                return hourDataPM.count
+            }
+        } else {
+            return minuteData.count
+        }
         
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
-        return durationData[row]
+        if pickerView == durationPicker{
+            return durationData[row]
+        } else if pickerView == amPMPicker{
+            return amPMData[row]
+        } else if pickerView == hourPicker{
+            if amPMPicker.selectedRow(inComponent: 0) == 0 {
+                return hourDataAM[row]
+            } else {
+                return hourDataPM[row]
+            }
+        } else {
+            return minuteData[row]
+        }
         
     }
+    var hourDataPM = ["12","1","2","3","4","5", "6"]
+    var hourDataAM = ["8","9","10","11"]
+    var minuteData = ["00","15","30","45"]
+    var amPMData = ["AM", "PM"]
+    
     var durString = ["1", "2", "3", "4", "5"]
     var durationData = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours"]
 
     
     
     //@IBOutlet weak var endTimePicker: UIDatePicker!
-    @IBOutlet weak var startTimePicker: UIDatePicker!
+   // @IBOutlet weak var startTimePicker: UIDatePicker!
     var jobPost = JobPost()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        amPMPicker.delegate = self
+        amPMPicker.dataSource = self
+        hourPicker.delegate = self
+        hourPicker.dataSource = self
+        minutePicker.delegate = self
+        minutePicker.dataSource = self
+        
         durationPicker.delegate = self
         durationPicker.dataSource = self
         durationPicker.layer.cornerRadius = 7
-        startTimePicker.layer.cornerRadius = 7
+        //startTimePicker.layer.cornerRadius = 7
         
 
         // Do any additional setup after loading the view.

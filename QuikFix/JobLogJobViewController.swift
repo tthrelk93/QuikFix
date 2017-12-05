@@ -77,6 +77,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         print("handlemethodstouched")
         let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared as! STPEphemeralKeyProvider)
         
+        
+        
+        
         // Setup payment methods view controller
         let paymentMethodsViewController = STPPaymentMethodsViewController(configuration: STPPaymentConfiguration.shared(), theme: STPTheme.default(), customerContext: customerContext, delegate: self)
         

@@ -36,7 +36,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var jobHistoryTableView: UITableView!
     
     @IBAction func backButtonPressed(_ sender: Any) {
-                performSegue(withIdentifier: "JobLogBackToPosterMenu", sender: self)
+        
+                performSegue(withIdentifier: "JobHistoryToPosterProf", sender: self)
         
     }
     @IBAction func segmentChanged(_ sender: Any) {
