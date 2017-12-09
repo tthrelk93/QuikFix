@@ -51,58 +51,61 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
             for snap in snapshots {
                 
                 var tempDict = snap.value as! [String:Any]
-                if tempDict["category1"] as! String == self.categoryType{
-                    let tempJob = JobPost()
-                    tempJob.additInfo = (tempDict["additInfo"] as! String)
-                    tempJob.category1 = (tempDict["category1"] as! String)
-                    //tempJob.category2 = (tempDict["category2"] as! String)
-                    tempJob.posterName = (tempDict["posterName"] as! String)
-                    tempJob.date = (tempDict["date"] as! String)
-                    var tempPayString = tempDict["payment"] as! String
-                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
-                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
-                    tempPayString = "$\(tempPayDouble)"
-                    tempJob.payment = tempPayString
-                    tempJob.startTime = (tempDict["startTime"] as! String)
-                    tempJob.jobDuration = tempDict["jobDuration"] as! String
-                    tempJob.jobID = (tempDict["jobID"] as! String)
-                    tempJob.posterID = (tempDict["posterID"] as! String)
-                    //tempJob.paymentType = tempDict["paymentType"] as! Int
-                    if self.calendarDict[tempJob.date!] != nil {
-                        var tempJobArray = self.calendarDict[tempJob.date!]!
-                        tempJobArray.append(tempJob)
-                        self.calendarDict[tempJob.date!] = tempJobArray
-                    } else {
-                        self.calendarDict[tempJob.date!] = [tempJob]
+                if (tempDict["acceptedCount"] as! Int) == (tempDict["workerCount"] as! Int) {
+                    
+                } else {
+                    if tempDict["category1"] as! String == self.categoryType{
+                        let tempJob = JobPost()
+                        tempJob.additInfo = (tempDict["additInfo"] as! String)
+                        tempJob.category1 = (tempDict["category1"] as! String)
+                        //tempJob.category2 = (tempDict["category2"] as! String)
+                        tempJob.posterName = (tempDict["posterName"] as! String)
+                        tempJob.date = (tempDict["date"] as! String)
+                        var tempPayString = tempDict["payment"] as! String
+                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                        tempPayString = "$\(tempPayDouble)"
+                        tempJob.payment = tempPayString
+                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.jobDuration = tempDict["jobDuration"] as! String
+                        tempJob.jobID = (tempDict["jobID"] as! String)
+                        tempJob.posterID = (tempDict["posterID"] as! String)
+                        //tempJob.paymentType = tempDict["paymentType"] as! Int
+                        if self.calendarDict[tempJob.date!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!]!
+                            tempJobArray.append(tempJob)
+                            self.calendarDict[tempJob.date!] = tempJobArray
+                        } else {
+                            self.calendarDict[tempJob.date!] = [tempJob]
+                            }
+                    } else if self.categoryType == "All"{
+                        let tempJob = JobPost()
+                        tempJob.additInfo = (tempDict["additInfo"] as! String)
+                        tempJob.category1 = (tempDict["category1"] as! String)
+                        //tempJob.category2 = (tempDict["category2"] as! String)
+                        tempJob.posterName = (tempDict["posterName"] as! String)
+                        tempJob.date = (tempDict["date"] as! String)
+                        var tempPayString = tempDict["payment"] as! String
+                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                        tempPayString = "$\(tempPayDouble)"
+                        tempJob.payment = tempPayString
+                        print("studentPayment: \(tempPayString)")
+                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.jobDuration = tempDict["jobDuration"] as! String
+                        tempJob.jobID = (tempDict["jobID"] as! String)
+                        tempJob.posterID = (tempDict["posterID"] as! String)
+                        //tempJob.paymentType = tempDict["paymentType"] as! Int
+                        if self.calendarDict[tempJob.date!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!]!
+                            tempJobArray.append(tempJob)
+                            self.calendarDict[tempJob.date!] = tempJobArray
+                        } else {
+                            self.calendarDict[tempJob.date!] = [tempJob]
                         }
-                } else if self.categoryType == "All"{
-                    let tempJob = JobPost()
-                    tempJob.additInfo = (tempDict["additInfo"] as! String)
-                    tempJob.category1 = (tempDict["category1"] as! String)
-                    //tempJob.category2 = (tempDict["category2"] as! String)
-                    tempJob.posterName = (tempDict["posterName"] as! String)
-                    tempJob.date = (tempDict["date"] as! String)
-                    var tempPayString = tempDict["payment"] as! String
-                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
-                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
-                    tempPayString = "$\(tempPayDouble)"
-                    tempJob.payment = tempPayString
-                    print("studentPayment: \(tempPayString)")
-                    tempJob.startTime = (tempDict["startTime"] as! String)
-                    tempJob.jobDuration = tempDict["jobDuration"] as! String
-                    tempJob.jobID = (tempDict["jobID"] as! String)
-                    tempJob.posterID = (tempDict["posterID"] as! String)
-                    //tempJob.paymentType = tempDict["paymentType"] as! Int
-                    if self.calendarDict[tempJob.date!] != nil {
-                        var tempJobArray = self.calendarDict[tempJob.date!]!
-                        tempJobArray.append(tempJob)
-                        self.calendarDict[tempJob.date!] = tempJobArray
-                    } else {
-                        self.calendarDict[tempJob.date!] = [tempJob]
-                    }
 
+                    }
                 }
-                
             }
             for (key, _) in self.calendarDict{
                 self.datesArray.append(key)
@@ -244,6 +247,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 vc.jobID = self.selectedJobID
                 vc.posterID = self.selectedJob.posterID!
                 vc.categoryType = self.categoryType
+                vc.job1 = self.selectedJob
                 
             }
             

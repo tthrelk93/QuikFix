@@ -11,6 +11,7 @@ target 'QuikFix' do
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
+pod 'Firebase/Messaging'
 pod 'GuillotineMenu', '~> 3.0'	
 pod "Koyomi"
 pod 'GooglePlaces'
@@ -22,6 +23,8 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'Fabric', '~> 1.7.2'
+pod 'Crashlytics', '~> 3.9.3'
 
   target 'QuikFixTests' do
     inherit! :search_paths
@@ -31,6 +34,7 @@ pod 'Alamofire', '~> 4.5'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'	
 pod 'Firebase/Storage'
+pod 'Firebase/Messaging'
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
 pod 'GooglePlaces'
@@ -42,6 +46,8 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'Fabric', '~> 1.7.2'
+pod 'Crashlytics', '~> 3.9.3'
 
   end
 
@@ -52,7 +58,8 @@ pod 'Alamofire', '~> 4.5'
     pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
-pod 'Firebase/Storage'	
+pod 'Firebase/Storage'
+pod 'Firebase/Messaging'	
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
 pod 'GoogleMaps’
@@ -63,6 +70,8 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'Fabric', '~> 1.7.2'
+pod 'Crashlytics', '~> 3.9.3'
 
   end
 

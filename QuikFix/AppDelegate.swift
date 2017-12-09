@@ -10,9 +10,14 @@ import UIKit
 import GooglePlaces
 import GoogleMaps
 import GooglePlacePicker
+import FirebaseCore
+import FirebaseAuth
+import FirebaseMessaging
+import UserNotifications
 import Firebase
 import Stripe
 import IQKeyboardManagerSwift
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +32,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyDvw0LOBxWRxlY56O3sbE5nCqs3T3K1u-M")
         GMSServices.provideAPIKey("AIzaSyADVDZNEDAirfuVo92hECXnvCvTay8gXqo")
         STPPaymentConfiguration.shared().publishableKey = "pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+        
+        
+            // iOS 10 support
+        if #available(iOS 10, *) {
+            //UNUserNotificationCenter.current().delegate = (self as! UNUserNotificationCenterDelegate)
+            // For iOS 10 data message (sent via FCM)
+            //Messaging.messaging().remoteMessageDelegate = (self as! MessagingDelegate)
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            application.registerForRemoteNotifications()
+        }
+            // iOS 9 support
+        else if #available(iOS 9, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 8 support
+        else if #available(iOS 8, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 7 support
+        else {
+            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
+        }
         
         return true
     }
@@ -51,6 +80,98 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    var token: String?
+    func connectToFBMessaging()
+    {
+        Messaging.messaging().shouldEstablishDirectChannel = true
+        /*Messaging.messaging().connect { (error) in
+         if (error != nil)
+         {
+         print("unable to connect lol \(error)")
+         }
+         else
+         {
+         print("connected to firebase")
+         }
+         }*/
+    }
+    
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        self.token = Messaging.messaging().fcmToken
+        
+        //let refreshedToken = FIRInstanceID.instanceID().token()
+        // print("InstanceID token: \(refreshedToken)")
+        connectToFBMessaging()
+        
+    }
+    
+    func tokenRefreshNotification(notification: NSNotification)
+    {
+        self.token = Messaging.messaging().fcmToken
+        //let refreshedToken = FIRInstanceID.instanceID().token()
+        // print("InstanceID token: \(refreshedToken)")
+        connectToFBMessaging()
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("MessageID: \(userInfo["gcm_message_id"]!)")
+        
+        if let aps = userInfo["aps"] as? NSDictionary {
+            if let alert = aps["alert"] as? NSDictionary {
+                if let message = alert["message"] as? NSString {
+                    //Do stuff
+                    var notifiAlert = UIAlertView()
+                    //var NotificationMessage : AnyObject? =  userInfo["alert"]
+                    notifiAlert.title = "One Night Band Invite"
+                    notifiAlert.message = message as? String
+                    notifiAlert.addButton(withTitle: "OK")
+                    notifiAlert.show()
+                }
+            } else if let alert = aps["alert"] as? NSString {
+                //Do stuff
+                var notifiAlert = UIAlertView()
+                //var NotificationMessage : AnyObject? =  userInfo["alert"]
+                notifiAlert.title = "One Night Band Invite"
+                notifiAlert.message = alert as? String
+                notifiAlert.addButton(withTitle: "OK")
+                notifiAlert.show()
+            }
+        }
+        // NotificationCenter.
+        
+        print(userInfo)
+    }
+    var deviceToken: String?
+    // Called when APNs has assigned the device a unique token
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Convert token to string
+        Messaging.messaging().shouldEstablishDirectChannel = true
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        self.deviceToken = deviceTokenString
+        
+        // Print it to console
+        print("APNs device token: \(deviceTokenString)")
+        
+        // Persist it in your backend in case it's new
+    }
+    
+    // Called when APNs failed to register the device for push notifications
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Print the error to console (you should alert the user that registration failed)
+        print("APNs registration failed: \(error)")
+    }
+    
+    // Push notification received
+    //Make use of the data object which will contain any data that you send from your application backend, such as the chat ID, in the messenger app example.
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
+        // Print notification payload data
+        // let alert = UIAlertController(title: "Tapped the alert banner", message: "Popups are a terrible user experience, eh?", preferredStyle: .Alert)
+        //self.showViewController(alert, sender: nil)
+        print("Push notification received: \(data)")
+        
     }
 
 

@@ -42,8 +42,9 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     @IBAction func segmentChanged(_ sender: Any) {
         self.tableViewData.removeAll()
+        self.calendarDict.removeAll()
         jobsForDate.removeAll()
-        if self.senderScreen == "poster"{
+        //if self.senderScreen == "poster"{
         switch jobTypeSegment.selectedSegmentIndex
         {
         case 0:
@@ -55,7 +56,15 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 //tempJob.category2 = (tempDict["category2"] as! String)
                 tempJob.posterName = (tempDict["posterName"] as! String)
                 tempJob.date = (tempDict["date"] as! String)
-                tempJob.payment = (tempDict["payment"] as! String)
+                if self.senderScreen == "student"{
+                    var tempPayString = tempDict["payment"] as! String
+                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                    tempPayString = "$\(tempPayDouble)"
+                    tempJob.payment = tempPayString
+                } else {
+                    tempJob.payment = (tempDict["payment"] as! String)
+                }
                 tempJob.startTime = (tempDict["startTime"] as! String)
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
@@ -120,7 +129,15 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 //tempJob.category2 = (tempDict["category2"] as! String)
                 tempJob.posterName = (tempDict["posterName"] as! String)
                 tempJob.date = (tempDict["date"] as! String)
-                tempJob.payment = (tempDict["payment"] as! String)
+                if self.senderScreen == "student"{
+                    var tempPayString = tempDict["payment"] as! String
+                    tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                    let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                    tempPayString = "$\(tempPayDouble)"
+                    tempJob.payment = tempPayString
+                } else {
+                    tempJob.payment = (tempDict["payment"] as! String)
+                }
                 tempJob.startTime = (tempDict["startTime"] as! String)
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
@@ -178,7 +195,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
 
             
             
-        case 2:
+       /* case 2:
             for tempDict in self.currentListingsObj{
                 let tempJob = JobPost()
                 tempJob.additInfo = (tempDict["additInfo"] as! String)
@@ -240,15 +257,15 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
             
             DispatchQueue.main.async{
                 self.jobHistoryTableView.reloadData()
-            }
+            }*/
 
             
         default:
             break;
         }
-        } else {
+        //} else {
             
-        }
+        //}
     }
     @IBOutlet weak var tabBar: UITabBar!
     
@@ -265,8 +282,9 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     var upcomingJobsObj = [[String:Any]]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("senderScreen = \(self.senderScreen)")
         if self.senderScreen == "poster"{
+            print("in poster")
             self.backButton.isHidden = false
             self.tabBar.isHidden = true
             Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -305,7 +323,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             }
                         }
                     }
-                    
+                    print("im hereeee")
                     for tempDict in self.jobsCompletedObj{
                         let tempJob = JobPost()
                         tempJob.additInfo = (tempDict["additInfo"] as! String)
@@ -313,6 +331,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
+                        
                         tempJob.payment = (tempDict["payment"] as! String)
                         tempJob.startTime = (tempDict["startTime"] as! String)
                         tempJob.jobDuration = tempDict["jobDuration"] as! String
@@ -373,10 +392,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 })
             })
         } else {
+            print("in student")
             tabBar.delegate = self
             backButton.isHidden = true
             tabBar.isHidden = false
             // else if senderscreen == student
+            print("jobHistViewLoad: in student")
             Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -416,7 +437,11 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
-                        tempJob.payment = (tempDict["payment"] as! String)
+                        var tempPayString = tempDict["payment"] as! String
+                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                        tempPayString = "$\(tempPayDouble)"
+                        tempJob.payment = tempPayString
                         tempJob.startTime = (tempDict["startTime"] as! String)
                         tempJob.jobDuration = tempDict["jobDuration"] as! String
                         tempJob.jobID = (tempDict["jobID"] as! String)
@@ -538,6 +563,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     var selectedJob = JobPost()
     
     func performSegueToSingleJob(category: String, jobID: String, job: JobPost){
+        print("performSegueFunc")
         self.selectedJobID = jobID
         self.selectedJob = job
         
@@ -554,8 +580,10 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "JobLogToJob"{
             if let vc = segue.destination as? JobLogJobViewController{
+                print("senderScreen hist To job: \(senderScreen)")
                 vc.senderScreen = self.senderScreen
                 vc.job = self.selectedJob
+                
             }
         }
         // Get the new view controller using segue.destinationViewController.

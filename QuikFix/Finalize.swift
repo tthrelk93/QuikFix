@@ -31,6 +31,23 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             } else {
             jobPost.additInfo = enterAdditInfoTextView.text
             }
+            var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
+            if jobPost.category1 == "Moving(Home-To-Home)"{
+                calcRate = calcRate + 10
+                
+            }
+            if jobPost.tools?.count != 0 && jobPost.tools?.count != nil {
+                calcRate = calcRate + 5
+                self.toolCount = (jobPost.tools?.count)!
+            } else {
+                self.toolCount = 0
+            }
+            self.jobPost.payment = String(describing:calcRate)
+            
+            
+            
+            
+            performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
             //let timeInterval = someDate.timeIntervalSince1970
            /* var timeString1 = jobPost.time!
             var timeString = [String]()
@@ -167,7 +184,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             } else {
                 durationInt = Int(jobPost.jobDuration!)!
             }*/
-            promoView.isHidden = false
+            //promoView.isHidden = false
  
         
         
@@ -175,7 +192,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         }
         
     }
-    @IBOutlet weak var promoField: UITextField!
+    //@IBOutlet weak var promoField: UITextField!
     var toolCount = Int()
     @IBOutlet weak var enterAdditInfoTextView: UITextView!
     var listingsArray = [String]()
@@ -184,7 +201,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     var promoSenderArray = [String]()
     var invalidCodeBool = true
     
-    @IBAction func applyPromoPressed(_ sender: Any) {
+    /*@IBAction func applyPromoPressed(_ sender: Any) {
         Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
@@ -233,7 +250,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             }
         
         })
-    }
+    }*/
     var creditCount = Int()
     var promoCode = String()
     @IBAction func skipPressed(_ sender: Any) {
@@ -271,7 +288,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     var posterName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
-        promoField.delegate = self
+        //promoField.delegate = self
         enterAdditInfoTextView.delegate = self
         enterAdditInfoTextView.textColor = qfGreen
         /*if jobPost.paymentType == 1{
@@ -357,11 +374,11 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             vc.jobPost = self.jobPost
             vc.timeDifference = Int(jobPost.jobDuration!)!
             vc.toolCount = self.toolCount
-            vc.promoSuccess = self.promoSuccess
-            vc.promoSender = self.promoSender
-            vc.promoSenderArray = self.promoSenderArray
-            vc.promoCode = self.promoCode
-            vc.creditCount = self.creditCount
+            //vc.promoSuccess = self.promoSuccess
+            //vc.promoSender = self.promoSender
+            //vc.promoSenderArray = self.promoSenderArray
+            //vc.promoCode = self.promoCode
+            //vc.creditCount = self.creditCount
             
             
             

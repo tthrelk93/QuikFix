@@ -25,12 +25,10 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     @IBAction func continueButtonPressed(_ sender: Any) {
         var hourData = [String]()
-        if amPMPicker.selectedRow(inComponent: 0) == 0{
-            hourData = hourDataAM
-        } else {
-            hourData = hourDataPM
-        }
-        var tempString = "\(hourData[hourPicker.selectedRow(inComponent: 0)]): \(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+       
+            hourData = self.hourData
+        
+        let tempString = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
         //var startTime = timeFormatter(time: startTimePicker.date)
         //var endTime = timeFormatter(time: endTimePicker.date)
         print("tmepString: \(tempString)")
@@ -52,8 +50,14 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        if pickerView == amPMPicker{
-            hourPicker.reloadAllComponents()
+        if pickerView == hourPicker {
+            if row >= 4 {
+                amPMPicker.selectRow(1, inComponent: 0, animated: true)
+            amPMPicker.reloadAllComponents()
+            } else {
+                amPMPicker.selectRow(0, inComponent: 0, animated: true)
+                amPMPicker.reloadAllComponents()
+            }
         }
     }
     
@@ -63,11 +67,7 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         } else if pickerView == amPMPicker{
             return amPMData.count
         } else if pickerView == hourPicker{
-            if amPMPicker.selectedRow(inComponent: 0) == 0 {
-                    return hourDataAM.count
-            } else {
-                return hourDataPM.count
-            }
+            return hourData.count
         } else {
             return minuteData.count
         }
@@ -80,18 +80,17 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         } else if pickerView == amPMPicker{
             return amPMData[row]
         } else if pickerView == hourPicker{
-            if amPMPicker.selectedRow(inComponent: 0) == 0 {
-                return hourDataAM[row]
-            } else {
-                return hourDataPM[row]
-            }
+            
+                return hourData[row]
+            
+            
         } else {
             return minuteData[row]
         }
         
     }
-    var hourDataPM = ["12","1","2","3","4","5", "6"]
-    var hourDataAM = ["8","9","10","11"]
+    var hourData = ["8","9","10","11","12","1","2","3","4","5","6","7","8"]
+   // var hourDataAM = ["8","9","10","11"]
     var minuteData = ["00","15","30","45"]
     var amPMData = ["AM", "PM"]
     
@@ -108,6 +107,7 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         amPMPicker.delegate = self
         amPMPicker.dataSource = self
+        amPMPicker.isUserInteractionEnabled = false
         hourPicker.delegate = self
         hourPicker.dataSource = self
         minutePicker.delegate = self

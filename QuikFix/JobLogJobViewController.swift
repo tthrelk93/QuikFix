@@ -257,9 +257,10 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     @IBOutlet weak var posterLabel: UILabel!
-    
+    var sender = String()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         paymentCardTextField.delegate = self
         /*buyButton.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
@@ -271,16 +272,28 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
        // view.addSubview(buyButton)
         
         groupChatButton.layer.cornerRadius = 10
-        posterLabel.text = "Poster: \(job.posterName!)"
+        posterLabel.text = job.posterName!
         cellSelectedPic.layer.cornerRadius = cellSelectedPic.frame.width/2
         jobCatLabel.text = job.category1!
-        dateLabel.text = "Date: \(job.date!)"
-        timeLabel.text = "Time: \(job.startTime!)"
-        durationLabel.text = "Duration: \(job.jobDuration)"
-        totalCostLabel.text = job.payment
-        detailsTextView.text = "Details: \(job.additInfo!)"
+        dateLabel.text = job.date!
+        timeLabel.text = job.startTime!
+        durationLabel.text = "\(job.jobDuration!) hour estimated completion time"
+        totalCostLabel.text = "\(job.payment!)"
+        detailsTextView.text = job.additInfo!
+       /* posterLabel.textAlignment = .center
+        dateLabel.textAlignment = .center
+        timeLabel.textAlignment = .center
+        durationLabel.textAlignment = .center
+        totalCostLabel.textAlignment = .center
+        detailsTextView.textAlignment = .center*/
         if job.workers != nil{
-        numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
+            if self.sender != "student"{
+                if job.workers?.count as! Int > 1{
+                    numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
+                } else {
+                 numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix student"
+                }
+            }
         }
         if (job.completed! as! Bool) == true{
             jobCompletedButton.setTitle("Job Completed/Students Paid", for: .normal)
@@ -291,28 +304,60 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
             jobCompletedButton.isEnabled = true
         }
         
-        Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+        if self.sender == "student"{
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                for snap in snapshots {
-                    if self.job.workers != nil && self.job.workers!.contains(snap.key){
-                        var tempDict = [String:Any]()
-                        tempDict[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String]
-                        self.workers.append(tempDict)
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots {
+                        if self.job.workers != nil && self.job.workers!.contains(snap.key){
+                            var tempDict = [String:Any]()
+                            tempDict[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String, "studentID": (snap.value as! [String:Any])["studentID"] as! String]
+                            self.workers.append(tempDict)
+                        }
                     }
+                    
+                }
+                if self.job.workers == nil{
+                    
+                } else {
+                    self.workersCollect.delegate = self
+                    self.workersCollect.dataSource = self
                 }
                 
-            }
-            if self.job.workers == nil{
                 
-            } else {
-                self.workersCollect.delegate = self
-                self.workersCollect.dataSource = self
-            }
-            
-            
-        })
+            })
+        } else {
+            Database.database().reference().child("jobPosters").child(self.job.posterID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    var tempDict2 = [String:Any]()
+                    var tempDict = [String:Any]()
+                    
+                    for snap in snapshots {
+                        if snap.key == "name"{
+                            tempDict["name"] = snap.value as! String
+                            
+                        }
+                        if snap.key == "pic"{
+                            tempDict["pic"] = snap.value as! String
+                            
+                        }
+                        if snap.key == "posterID"{
+                            tempDict["posterID"] = snap.value as! String
+                           
+                        }
+                      
+                    }
+                    tempDict2[(tempDict["posterID"] as! String)] = tempDict
+                    self.workers.append(tempDict2)
+                    self.workersCollect.delegate = self
+                    self.workersCollect.dataSource = self
+                    
+                }
+                
+            })
+        }
         
         
         
@@ -326,6 +371,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     @IBAction func viewProfilePressed(_ sender: Any) {
+       // self.studentIDFromResponse =
         performSegue(withIdentifier: "JobLogViewJobToStudentProfile", sender: self)
         
     }
@@ -352,7 +398,8 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         
         cell.layer.cornerRadius = cell.frame.width/2
         //print((workers[indexPath.row].values.first as! [String:Any])["name"] as! String)
-       cell.studentLabel.text = (workers[indexPath.row].values.first as! [String:Any])["name"] as? String
+        
+        cell.studentLabel.text = (workers[indexPath.row].values.first as! [String:Any])["name"] as! String
         
         if let messageImageUrl = URL(string: (workers[indexPath.row].values.first as! [String:Any])["pic"] as! String) {
             
@@ -365,7 +412,13 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        cellSelectedView.isHidden = false
+        
+        if self.sender == "student"{
+            cellSelectedView.isHidden = false
+            self.studentIDFromResponse = (workers[indexPath.row].values.first as! [String:Any])["studentID"] as! String
+        } else {
+            
+        }
     }
 
     
@@ -374,11 +427,12 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     // MARK: - Navigation
     var name = String()
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var studentIDFromResponse = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "JobLogJobToChat"{
             if let vc = segue.destination as? ChatContainer{
                 self.jobID = self.job.jobID!
-                if self.senderScreen == "student"{
+                if self.sender == "student"{
                     Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                         
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -389,6 +443,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                                 }
                             }
                         }
+                        
                     })
                 } else {
                     Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -401,10 +456,10 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                                 }
                             }
                         }
+                        
                     })
                     
                 }
-
                 vc.name = self.name
                 vc.jobID = self.job.jobID!
                 vc.userID = (Auth.auth().currentUser?.uid)!
@@ -412,12 +467,15 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 //vc.sender = self.sender
                 vc.senderScreen = self.senderScreen
                 vc.job = self.job
+
+                
             }
         } else if segue.identifier == "JobLogViewJobToStudentProfile"{
             if let vc = segue.destination as? studentProfile{
                 vc.sender = "JobLogSingleJobPoster"
                 vc.notUsersProfile = true
                 vc.job = self.job
+                vc.studentIDFromResponse = self.studentIDFromResponse
             }
             
         } else {

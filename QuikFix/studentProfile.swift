@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FirebaseDatabase
+import FirebaseMessaging
 import FirebaseAuth
 import FirebaseStorage
 import SwiftOverlays
@@ -18,7 +19,7 @@ import CoreLocation
 
 
 
-class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RemoveDelegate, UITabBarDelegate, UITableViewDelegate, UITableViewDataSource, MessagingDelegate {
     
     
     
@@ -266,6 +267,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             menuButton.isHidden = true
             backButtonForPoster.isHidden = false
             editButton.isHidden = true
+            tabBar.isHidden = true
             //self.editProfPicImageView.layer.cornerRadius = 10
             profileImageView.layer.cornerRadius = profileImageView.frame.width/2
             picker.delegate = self
@@ -475,14 +477,23 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     }
     
     
-    
+    var mToken = String()
     var expTableData = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         loadPageData()
         scrollView.bounces = false
         SwiftOverlays.removeAllBlockingOverlays()
-            }
+        if sender == "student"{
+        Messaging.messaging().delegate = self
+        self.mToken = Messaging.messaging().fcmToken!
+        //appDelegate.deviceToken
+        var tokenDict = [String: Any]()
+        tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
+        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+        }
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -568,9 +579,14 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         } else if segue.identifier == "StudentProfileBackToJobLogJob"{
             if let vc = segue.destination as? JobLogJobViewController{
                 vc.job = self.job
-                vc.senderScreen = "studentProfile"
+                vc.senderScreen = "student"
             }
             
+        } else if segue.identifier == "StudentProfileTabBarToJobHistory"{
+            if let vc = segue.destination as? JobHistoryViewController{
+                vc.senderScreen = "student"
+                print("profile: senderScreen = student")
+            }
         }
     }
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){

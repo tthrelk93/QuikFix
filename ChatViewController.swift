@@ -304,7 +304,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         // 2
         let messageItem = [
             "senderId": senderId!,
-            "senderName": self.senderName,
+            "senderName": self.senderDisplayName,
             "text": text!,
             ]
         
@@ -325,7 +325,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         let messageItem = [
             "photoURL": imageURLNotSetKey,
             "senderId": senderId!,
-            //"senderName":
+            "senderName": self.senderDisplayName
             ]
         
         itemRef.setValue(messageItem)

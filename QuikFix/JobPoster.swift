@@ -11,7 +11,7 @@ import Foundation
 class JobPoster: NSObject{
     var name: String?
     var email: String?
-    //var password: String?
+    var posterID: String?
     var pic: String?
     var currentListings: [String]?
     var upcomingJobs: [String]?
@@ -28,6 +28,7 @@ class JobPoster: NSObject{
     var promoCode: [String:Any]?
     var availableCredits: Int?
     var creditAmount: Int?
+    var deviceToken: [String: Any]?
     
     //var city: String?
     //var state: String?

@@ -117,6 +117,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
                         while self.existingPromoCodes.contains(tempPromo){
                             tempPromo = self.randomString(length: 6)
                         }
+                        values["posterID"] = Auth.auth().currentUser!.uid
                         values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
                         values["availableCredits"] = 0
                         values["upcomingJobs"] = self.poster.upcomingJobs
@@ -243,6 +244,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
                         }
                         values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
                         values["availableCredits"] = 0
+                        values["deviceToken"] = ""
                         
                         values["upcomingJobs"] = self.poster.upcomingJobs
                         //values["experience"] = self.student.experience
@@ -250,9 +252,11 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
                         print("locDict: \(self.locDict)")
                         values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                         values["pic"] = profileImageUrl
-                        var tempDict = [String: Any]()
-                        tempDict[(user?.uid)!] = values
-                        Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                        //var tempDict = [String: Any]()
+                        //tempDict[(user?.uid)!] = values
+                        //var uploadData = [String: Any]()
+                       // uploadData["jobPosters"] = tempDict
+                        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser!.uid)).updateChildValues(values)
                         self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
                         
                     }

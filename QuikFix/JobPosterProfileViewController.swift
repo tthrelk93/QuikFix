@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseMessaging
 import FirebaseDatabase
 import SwiftOverlays
 
@@ -15,7 +16,7 @@ import SwiftOverlays
 
 
 
-class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController {
+class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate {
     
    // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
    
@@ -140,13 +141,39 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
     }
 }
+    
+    @IBOutlet weak var currentListingsLabel: UILabel!
+    
+    @IBOutlet weak var upcomingJobsLabel: UILabel!
+    
     @IBOutlet weak var popoutMenuButton: UIButton!
     @IBAction func sharePromoPressed(_ sender: Any) {
+        if promoCodeView.isHidden == true{
+            promoCodeView.isHidden = false
+            currentListingsLabel.isHidden = true
+            upcomingJobsLabel.isHidden = true
+            currentListingsCount.isHidden = true
+            jobsCompletedCount.isHidden = true
+            sepLineVertical.isHidden = true
+        } else {
+            promoCodeView.isHidden = true
+            currentListingsLabel.isHidden = false
+            upcomingJobsLabel.isHidden = false
+            currentListingsCount.isHidden = false
+            jobsCompletedCount.isHidden = false
+            sepLineVertical.isHidden = false
+        }
         
     }
     @IBOutlet weak var myJobs: UIButton!
     
     @IBAction func myJobsPressed(_ sender: Any) {
+        promoCodeView.isHidden = true
+        currentListingsLabel.isHidden = false
+        upcomingJobsLabel.isHidden = false
+        currentListingsCount.isHidden = false
+        jobsCompletedCount.isHidden = false
+        sepLineVertical.isHidden = false
         performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
         
     }
@@ -158,6 +185,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }
     
     @IBAction func dealsPressed(_ sender: Any) {
+        promoCodeView.isHidden = true
+        currentListingsLabel.isHidden = false
+        upcomingJobsLabel.isHidden = false
+        currentListingsCount.isHidden = false
+        jobsCompletedCount.isHidden = false
+        sepLineVertical.isHidden = false
     }
     @IBOutlet weak var dealsButton: UIButton!
     
@@ -233,13 +266,30 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         
     }
+    
+    @IBOutlet weak var promoCodeView: UIView!
+    
+    @IBOutlet weak var sepLineVertical: UIView!
+    @IBOutlet weak var promoCode: UILabel!
+    
     @IBOutlet weak var metalBar: UIImageView!
     @IBOutlet weak var hideMenuButton: UIButton!
+    var mToken = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         //metalBar.layer.cornerRadius = 8
        // metalBar.layer.borderWidth = 1
        // metalBar.layer.borderColor = qfRed.cgColor
+        responseBubble.isHidden = true
+        Messaging.messaging().delegate = self
+        self.mToken = Messaging.messaging().fcmToken!
+        //appDelegate.deviceToken
+        var tokenDict = [String: Any]()
+        
+        
+        tokenDict["deviceToken"] = [mToken: true] as [String: Any]?
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+        
         menuButton1ExtendedFrame = sharePromo.bounds
         menuButton1ExtendedOrigin = sharePromo.frame.origin
         menuButton2ExtendedFrame = myJobs.bounds
@@ -281,13 +331,16 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
-                    if snap.key == "promoCode"{
-                        var tempDict = snap.value as! [String:Any]
-                        self.promo = tempDict.first?.key as! String
-                    }
+                   
                     if snap.key == "name"{
                         //(self.navigationBar as UINavigationBar). //
                         self.nameLabel.text = snap.value as! String
+                        
+                    }
+                    else if snap.key == "promoCode"{
+                        let tempDict = snap.value as! [String:Any]
+                        self.promoCode.text = tempDict.keys.first
+                        
                         
                     }
                         
@@ -507,7 +560,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         }
         if segue.identifier == "MyJobsToJobLog"{
                 if let vc = segue.destination as? JobHistoryViewController{
-                    vc.senderScreen = "posterProf"
+                    vc.senderScreen = "poster"
                 }
             }
         

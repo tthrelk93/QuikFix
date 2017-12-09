@@ -9,17 +9,20 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseMessaging
 
-class SingleJobPostViewController: UIViewController {
+class SingleJobPostViewController: UIViewController, MessagingDelegate {
     @IBOutlet weak var posterImage: UIImageView!
     
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var categoryText: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var posterCity: UILabel!
     @IBOutlet weak var posterName: UILabel!
-    
+    var job1 = JobPost()
     @IBAction func backPressed(_ sender: Any) {
         performSegue(withIdentifier: "SingleJobToJobPosts", sender: self)
     }
@@ -35,6 +38,7 @@ class SingleJobPostViewController: UIViewController {
         } else {
         self.applySuccessView.isHidden = false
         print("posterID: \(self.posterID)")
+            
         
         Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -42,6 +46,10 @@ class SingleJobPostViewController: UIViewController {
                 var containsUpcomingJobs = false
                
                 for snap in snapshots{
+                   /* if snap.key == "deviceToken"{
+                        var deviceToken = (snap.value as! [String:Any]).keys.first
+                        
+                    }*/
                     if snap.key == "currentListings"{
                         containsCurrentListings = true
                         var tempJobArray = snap.value as! [String]
@@ -139,6 +147,25 @@ class SingleJobPostViewController: UIViewController {
                     }
                 }
                  self.applySuccessView.isHidden = true
+                var date = self.job1.date!
+                var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
+                var timeHours = timeComp[0]
+                print("timeHours: \(timeHours)")
+                var timeHoursInt = Int(timeHours)
+                var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
+                var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                print("triggerTime: \(triggerTimeString)")
+                var dateToFormat = "\(date) \(triggerTimeString)"
+                
+                
+                
+                var dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                let triggerDate = dateFormatter.date(from: dateToFormat)
+                
+                
+                let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
+                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             
             })
             
@@ -152,6 +179,11 @@ class SingleJobPostViewController: UIViewController {
         
     
     }
+    
+    func chargePoster(){
+        print("charge the poster")
+    }
+    
     var job = [String: Any]()
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var detailsTextView: UITextView!
@@ -166,7 +198,7 @@ class SingleJobPostViewController: UIViewController {
         
         
         
-      
+     
         posterImage.layer.cornerRadius = posterImage.frame.width/2
         posterImage.clipsToBounds = true
         shadowView.dropShadow()
@@ -205,6 +237,8 @@ class SingleJobPostViewController: UIViewController {
                         self.dateLabel.text = snap.value as! String
                     } else if snap.key == "jobDuration"{
                         self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
+                    } else if snap.key == "category1"{
+                        self.categoryText.text = snap.value as! String
                     }
                     
                 }
@@ -258,6 +292,7 @@ class SingleJobPostViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        print("memoryWarning")
         // Dispose of any resources that can be recreated.
     }
     
