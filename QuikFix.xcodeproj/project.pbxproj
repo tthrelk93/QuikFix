@@ -7,11 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */; };
 		314C313C1FCC8C6B00345E8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
+		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
+		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
+		31CE1FE61FDCB5DA00B783CF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE51FDCB5DA00B783CF /* CoreText.framework */; };
+		31CE1FE81FDCB5E700B783CF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE71FDCB5E700B783CF /* Foundation.framework */; };
+		31CE1FEA1FDCB60000B783CF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE91FDCB60000B783CF /* MobileCoreServices.framework */; };
+		31CE1FEC1FDCB60A00B783CF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FEB1FDCB60A00B783CF /* QuartzCore.framework */; };
+		31CE1FEE1FDCB61700B783CF /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FED1FDCB61600B783CF /* QuickLook.framework */; };
+		31CE1FF01FDCB62000B783CF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FEF1FDCB62000B783CF /* Security.framework */; };
+		31CE1FF21FDCB63500B783CF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */; };
+		31CE1FF41FDCB64400B783CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF31FDCB64400B783CF /* UIKit.framework */; };
+		31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF51FDCB65500B783CF /* libc++.tbd */; };
 		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
-		323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */; };
 		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
 		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
 		3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */; };
@@ -70,7 +79,9 @@
 		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
 		3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */; };
 		3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */; };
-		A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */; };
+		ADE4F47A6DCBC0677D70CA85 /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */; };
+		C3B3B6F942B07C511D22766A /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */; };
+		F0CF21939BC87CE5C5995D30 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,11 +102,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
+		25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		31264BDD1FD7A5F60053D31A /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
 		314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
+		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		31CE1FE51FDCB5DA00B783CF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		31CE1FE71FDCB5E700B783CF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		31CE1FE91FDCB60000B783CF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		31CE1FEB1FDCB60A00B783CF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		31CE1FED1FDCB61600B783CF /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		31CE1FEF1FDCB62000B783CF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		31CE1FF31FDCB64400B783CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		31CE1FF51FDCB65500B783CF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -161,13 +185,11 @@
 		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
 		3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostViewController.swift; sourceTree = "<group>"; };
 		3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostLocationPickerViewController.swift; sourceTree = "<group>"; };
-		75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8867144E2BB4C75C2D4B1234 /* Pods-QuikFixUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.release.xcconfig"; sourceTree = "<group>"; };
-		92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DC1A85FDAE22099A01722CF /* Pods-QuikFix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.debug.xcconfig"; sourceTree = "<group>"; };
 		D7ECA5030CCF68E5D95CD9D5 /* Pods-QuikFixTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E431C7C480AA6C2B3DA795EF /* Pods-QuikFixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.release.xcconfig"; sourceTree = "<group>"; };
-		FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,7 +197,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				323DCBE7BEF7B7B65F0D4CD3 /* Pods_QuikFix.framework in Frameworks */,
+				31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */,
+				31CE1FF41FDCB64400B783CF /* UIKit.framework in Frameworks */,
+				31CE1FF21FDCB63500B783CF /* SystemConfiguration.framework in Frameworks */,
+				31CE1FF01FDCB62000B783CF /* Security.framework in Frameworks */,
+				31CE1FEE1FDCB61700B783CF /* QuickLook.framework in Frameworks */,
+				31CE1FEC1FDCB60A00B783CF /* QuartzCore.framework in Frameworks */,
+				31CE1FEA1FDCB60000B783CF /* MobileCoreServices.framework in Frameworks */,
+				31CE1FE81FDCB5E700B783CF /* Foundation.framework in Frameworks */,
+				31CE1FE61FDCB5DA00B783CF /* CoreText.framework in Frameworks */,
+				31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */,
+				31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */,
+				C3B3B6F942B07C511D22766A /* Pods_QuikFix.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,7 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5138D263F0A8D0ABBF8F21D /* Pods_QuikFixTests.framework in Frameworks */,
+				ADE4F47A6DCBC0677D70CA85 /* Pods_QuikFixTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +224,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				089E4C2D8167591593EED857 /* Pods_QuikFixUITests.framework in Frameworks */,
+				F0CF21939BC87CE5C5995D30 /* Pods_QuikFixUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,9 +443,20 @@
 		CDA56F631708AAA711DBEFEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				75DFAFAEC9E827D1B4045A8A /* Pods_QuikFix.framework */,
-				FE2DCE67B596419195C2AD4C /* Pods_QuikFixTests.framework */,
-				92A2F76CC249B75C01107975 /* Pods_QuikFixUITests.framework */,
+				31CE1FF51FDCB65500B783CF /* libc++.tbd */,
+				31CE1FF31FDCB64400B783CF /* UIKit.framework */,
+				31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */,
+				31CE1FEF1FDCB62000B783CF /* Security.framework */,
+				31CE1FED1FDCB61600B783CF /* QuickLook.framework */,
+				31CE1FEB1FDCB60A00B783CF /* QuartzCore.framework */,
+				31CE1FE91FDCB60000B783CF /* MobileCoreServices.framework */,
+				31CE1FE71FDCB5E700B783CF /* Foundation.framework */,
+				31CE1FE51FDCB5DA00B783CF /* CoreText.framework */,
+				31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */,
+				31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */,
+				7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */,
+				053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */,
+				25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -678,7 +722,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix-frameworks.sh\"\n\n";
 			showEnvVarsInLog = 0;
 		};
 		74958879C06DDAE4D85FCFDE /* [CP] Copy Pods Resources */ = {
@@ -1034,6 +1078,10 @@
 				CODE_SIGN_ENTITLEMENTS = QuikFix/QuikFix.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = QuikFix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1052,6 +1100,10 @@
 				CODE_SIGN_ENTITLEMENTS = QuikFix/QuikFix.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = QuikFix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

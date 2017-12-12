@@ -23,6 +23,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func handleAddPaymentMethodButtonTapped() {
         // Setup add card view controller
+        print("handleAddPayment")
         let addCardViewController = STPAddCardViewController()
         addCardViewController.delegate = self
         
@@ -38,18 +39,26 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         dismiss(animated: true)
     }
     
-    func submitTokenToBackend(token: STPToken, completionHandler: (Error) -> ()){
+    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
+        print("submitTokenToBackEnd")
         var tempDict = [String:Any]()
         tempDict["stripeToken"] = token.tokenId
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        self.poster.email = "tthrelk@gmail.com"
+        self.poster.name = "Thomas"
+        
+        MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!, completion: completion)
+         dismiss(animated: true)
+        //return
         //tempDict["paymentAmount"] = job.payment
         //tempDict["description"] = job.description
         
     }
     
+    var poster = JobPoster()
     func addCardViewController(_ addCardViewController: STPAddCardViewController, didCreateToken token: STPToken, completion: @escaping STPErrorBlock) {
-        
-        submitTokenToBackend(token: token, completionHandler: { (error: Error?) in
+        print("begin save card")
+        submitTokenToBackend(token: token, completion: completion, completionHandler: { (error: Error?) in
             if let error = error {
                 // Show error in add card view controller
                 print("error: \(error.localizedDescription)")
@@ -58,6 +67,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
             else {
                 print("Sup")
                 completion(nil)
+                
                 
                 // Dismiss add card view controller
                 dismiss(animated: true)
@@ -212,7 +222,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 }
             })
         }*/
-        print("jobcompletedPressed")
+        /*print("jobcompletedPressed")
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -229,13 +239,13 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                     }
 
                 }
-                //if paymentVer == true{
-                    let checkoutViewController = CheckoutViewController(product: self.stripeToken,
+                self.handleAddPaymentMethodButtonTapped()                //if paymentVer == true{
+                   /* let checkoutViewController = CheckoutViewController(product: self.stripeToken,
                                                                         price: 1200,
                                                                         settings: self.settingsVC.settings)
                     //self.navigationController?.pushViewController(checkoutViewController, animated: true)
                     let navigationController = UINavigationController(rootViewController: checkoutViewController)
-                    self.present(navigationController, animated: true)
+                    self.present(navigationController, animated: true)*/
 
                // } //else {
                    // print("else")
@@ -244,7 +254,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
             }
         })
         
-               // handleAddPaymentMethodButtonTapped()
+               // handleAddPaymentMethodButtonTapped()*/
         
         
     }
@@ -268,7 +278,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         buyButton.setTitle("Confirm", for: .normal)*/
        
         // Add payment card text field to view
-        view.addSubview(paymentCardTextField)
+        //view.addSubview(paymentCardTextField)
        // view.addSubview(buyButton)
         
         groupChatButton.layer.cornerRadius = 10

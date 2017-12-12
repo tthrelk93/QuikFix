@@ -10,8 +10,41 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseMessaging
+import Stripe
 
-class SingleJobPostViewController: UIViewController, MessagingDelegate {
+class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPaymentContextDelegate {
+    
+    // 1) To get started with this demo, first head to https://dashboard.stripe.com/account/apikeys
+    // and copy your "Test Publishable Key" (it looks like pk_test_abcdef) into the line below.
+    let stripePublishableKey = "pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+    
+    // 2) Next, optionally, to have this demo save your user's payment details, head to
+    // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
+    // the instructions (don't worry, it's free). Replace nil on the line below with your
+    // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
+    let backendBaseURL: String? = "https://quikfix123.herokuapp.com"
+    
+    // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
+    // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
+    let appleMerchantID: String? = nil
+    
+    // These values will be shown to the user when they purchase with Apple Pay.
+    let companyName = "QuikFix"
+    let paymentCurrency = "usd"
+    
+    var paymentContext: STPPaymentContext?
+    
+    var theme: STPTheme?
+    var paymentRow: CheckoutRowView?
+    //let shippingRow: CheckoutRowView
+    var totalRow: CheckoutRowView?
+    var buyButton: BuyButton?
+    let rowHeight: CGFloat = 44
+    let productImage = UILabel()
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    var numberFormatter: NumberFormatter?
+    //let shippingString: String
+    var product = ""
     @IBOutlet weak var posterImage: UIImageView!
     
     @IBOutlet weak var categoryLabel: UILabel!
@@ -53,7 +86,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate {
                     if snap.key == "currentListings"{
                         containsCurrentListings = true
                         var tempJobArray = snap.value as! [String]
-                        tempJobArray.remove(at: tempJobArray.index(of: self.jobID)!)
+                        tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
                         //var keyInDictBool = false
                         //var tempIDArray = [String]()
                         var uploadDict = [String:Any]()
@@ -163,9 +196,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate {
                 dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
                 let triggerDate = dateFormatter.date(from: dateToFormat)
                 
-                
-                let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
-                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                //MyAPIClient.sharedClient.completeCharge(amount: 10,
+                                                       // poster: self.posterID)
+                MyAPIClient.sharedClient.completeCharge(amount: 2000, poster: self.posterID)
+                //let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
+                //RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             
             })
             
@@ -182,7 +217,99 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate {
     
     func chargePoster(){
         print("charge the poster")
+        self.paymentContext?.requestPayment()
     }
+    
+    //var product = String()
+    var price = Int()
+    let settingsVC = SettingsViewController()
+    
+    
+   /* init(product: String, price: Int, settings: Settings, jobID: String, posterID: String, categoryType: String, job1: JobPost) {
+        print("init")
+        var settings = settingsVC.settings
+        self.jobID = jobID
+        self.posterID = posterID
+        self.categoryType = categoryType
+        self.job1 = job1
+        let stripePublishableKey = self.stripePublishableKey
+        let backendBaseURL = self.backendBaseURL
+        
+        assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
+        assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
+        
+        self.product = product
+        self.productImage.text = product
+        self.theme = settings.theme
+        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
+        
+        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
+        let config = STPPaymentConfiguration.shared()
+        config.publishableKey = self.stripePublishableKey
+        config.appleMerchantIdentifier = self.appleMerchantID
+        config.companyName = self.companyName
+        config.requiredBillingAddressFields = settings.requiredBillingAddressFields
+        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
+        // config.shippingType = settings.shippingType
+        config.additionalPaymentMethods = settings.additionalPaymentMethods
+        
+        
+        
+        let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
+        let paymentContext = STPPaymentContext(customerContext: customerContext,
+                                               configuration: config,
+                                               theme: settings.theme)
+        let userInformation = STPUserInformation()
+        
+        paymentContext.prefilledInformation = userInformation
+        
+        paymentContext.paymentAmount = price
+        paymentContext.paymentCurrency = self.paymentCurrency
+        
+        let paymentSelectionFooter = PaymentContextFooterView(text: "You can add custom footer views to the payment selection screen.")
+        paymentSelectionFooter.theme = settings.theme
+        
+        //paymentContext.paymentMethodsViewControllerFooterView
+        paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
+        
+        let addCardFooter = PaymentContextFooterView(text: "You can add custom footer views to the add card screen.")
+        addCardFooter.theme = settings.theme
+        paymentContext.addCardViewControllerFooterView = addCardFooter
+        
+        self.paymentContext = paymentContext
+        
+        //self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
+                                          theme: settings.theme)
+        //var shippingString = "Contact"
+        /*if config.requiredShippingAddressFields.contains(.postalAddress) {
+         shippingString = config.shippingType == .shipping ? "Shipping" : "Delivery"
+         }
+         self.shippingString = shippingString
+         self.shippingRow = CheckoutRowView(title: self.shippingString,
+         detail: "Enter \(self.shippingString) Info",
+         theme: settings.theme)*/
+        //self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
+                                        theme: settings.theme)
+        self.buyButton = BuyButton(enabled: true, theme: settings.theme)
+        var localeComponents: [String: String] = [
+            NSLocale.Key.currencyCode.rawValue: self.paymentCurrency,
+            ]
+        localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
+        let localeID = NSLocale.localeIdentifier(fromComponents: localeComponents)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: localeID)
+        numberFormatter.numberStyle = .currency
+        numberFormatter.usesGroupingSeparator = true
+        //self.numberFormatter = numberFormatter
+        super.init(nibName: nil, bundle: nil)
+        self.paymentContext.delegate = self
+        paymentContext.hostViewController = self
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }*/
     
     var job = [String: Any]()
     @IBOutlet weak var durationLabel: UILabel!
@@ -196,8 +323,85 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       // self.navigationController?.pushViewController(self, animated: false)
+        var settings = settingsVC.settings
+        //self.jobID = jobID
+        //self.posterID = posterID
+        //self.categoryType = categoryType
+        //self.job1 = job1
+        let stripePublishableKey = self.stripePublishableKey
+        let backendBaseURL = self.backendBaseURL
+        
+        assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
+        assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
+        
+        //self.product = product
+        self.productImage.text = self.product
+        self.theme = settings.theme
+        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
+        
+        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
+        let config = STPPaymentConfiguration.shared()
+        //config.publishableKey = self.stripePublishableKey
+        //config.appleMerchantIdentifier = self.appleMerchantID
+        //config.companyName = self.companyName
+        //config.requiredBillingAddressFields = settings.requiredBillingAddressFields
+        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
+        // config.shippingType = settings.shippingType
+        //config.additionalPaymentMethods = settings.additionalPaymentMethods
         
         
+       // STPCustomerContext(
+        
+        /*let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
+        let paymentContext = STPPaymentContext(customerContext: customerContext,
+                                               configuration: config,
+                                               theme: settings.theme)
+        let userInformation = STPUserInformation()
+        
+        paymentContext.prefilledInformation = userInformation
+        
+        paymentContext.paymentAmount = price
+        paymentContext.paymentCurrency = self.paymentCurrency
+        
+        let paymentSelectionFooter = PaymentContextFooterView(text: "You can add custom footer views to the payment selection screen.")
+        paymentSelectionFooter.theme = settings.theme
+        
+        //paymentContext.paymentMethodsViewControllerFooterView
+        paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
+        
+        let addCardFooter = PaymentContextFooterView(text: "You can add custom footer views to the add card screen.")
+        addCardFooter.theme = settings.theme
+        paymentContext.addCardViewControllerFooterView = addCardFooter
+        
+        self.paymentContext = paymentContext
+        
+        //self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
+                                          //theme: settings.theme)
+        //var shippingString = "Contact"
+        /*if config.requiredShippingAddressFields.contains(.postalAddress) {
+         shippingString = config.shippingType == .shipping ? "Shipping" : "Delivery"
+         }
+         self.shippingString = shippingString
+         self.shippingRow = CheckoutRowView(title: self.shippingString,
+         detail: "Enter \(self.shippingString) Info",
+         theme: settings.theme)*/
+        //self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
+                                       // theme: settings.theme)
+        self.buyButton = BuyButton(enabled: true, theme: settings.theme)
+        var localeComponents: [String: String] = [
+            NSLocale.Key.currencyCode.rawValue: self.paymentCurrency,
+            ]
+        localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
+        let localeID = NSLocale.localeIdentifier(fromComponents: localeComponents)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: localeID)
+        numberFormatter.numberStyle = .currency
+        numberFormatter.usesGroupingSeparator = true
+        //self.numberFormatter = numberFormatter
+        //super.init(nibName: nil, bundle: nil)
+        self.paymentContext?.delegate = self
+        paymentContext.hostViewController = self*/
      
         posterImage.layer.cornerRadius = posterImage.frame.width/2
         posterImage.clipsToBounds = true
@@ -308,6 +512,129 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
+        print("didCreatePaymentResult: \(self.posterID)")
+       /* MyAPIClient.sharedClient.completeCharge(paymentResult,
+                                                amount: (self.paymentContext?.paymentAmount)!,
+                                                shippingAddress: nil,
+                                                shippingMethod: nil,
+                                                poster: self.posterID,
+                                                completion: completion)*/
+    }
+    var paymentInProgress: Bool = false {
+        didSet {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                if self.paymentInProgress {
+                    print("paymentInProgress")
+                    self.activityIndicator.startAnimating()
+                    self.activityIndicator.alpha = 1
+                    self.buyButton?.alpha = 0
+                }
+                else {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.alpha = 0
+                    self.buyButton?.alpha = 1
+                }
+            }, completion: nil)
+        }
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
+        print("finishedWith")
+        self.paymentInProgress = false
+        let title: String
+        let message: String
+        switch status {
+        case .error:
+            title = "Error"
+            message = error?.localizedDescription ?? ""
+            print("error")
+        case .success:
+            print("success")
+            title = "Success"
+            message = "You bought a \(self.product)!"
+        case .userCancellation:
+            print("cancelled")
+            return
+        }
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(action)
+        //self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
+        //self.paymentRow.loading = paymentContext.loading
+        print("paymentContextDidChange")
+        if let paymentMethod = paymentContext.selectedPaymentMethod {
+            //self.paymentRow.detail = paymentMethod.label
+        }
+        else {
+            //self.paymentRow.detail = "Select Payment"
+        }
+        /*if let shippingMethod = paymentContext.selectedShippingMethod {
+         self.shippingRow.detail = shippingMethod.label
+         }
+         else {
+         self.shippingRow.detail = "Enter \(self.shippingString) Info"
+         }*/
+        //self.totalRow.detail = self.numberFormatter.string(from: NSNumber(value: Float(self.paymentContext.paymentAmount)/100))!
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
+        print("paymentContextFailedToLoad")
+        let alertController = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            // Need to assign to _ because optional binding loses @discardableResult value
+            // https://bugs.swift.org/browse/SR-1681
+            _ = self.navigationController?.popViewController(animated: true)
+        })
+        let retry = UIAlertAction(title: "Retry", style: .default, handler: { action in
+            self.paymentContext?.retryLoading()
+        })
+        alertController.addAction(cancel)
+        alertController.addAction(retry)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didUpdateShippingAddress address: STPAddress, completion: @escaping STPShippingMethodsCompletionBlock) {
+        let upsGround = PKShippingMethod()
+        upsGround.amount = 0
+        upsGround.label = "UPS Ground"
+        upsGround.detail = "Arrives in 3-5 days"
+        upsGround.identifier = "ups_ground"
+        let upsWorldwide = PKShippingMethod()
+        upsWorldwide.amount = 10.99
+        upsWorldwide.label = "UPS Worldwide Express"
+        upsWorldwide.detail = "Arrives in 1-3 days"
+        upsWorldwide.identifier = "ups_worldwide"
+        let fedEx = PKShippingMethod()
+        fedEx.amount = 5.99
+        fedEx.label = "FedEx"
+        fedEx.detail = "Arrives tomorrow"
+        fedEx.identifier = "fedex"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if address.country == nil || address.country == "US" {
+                completion(.valid, nil, [upsGround, fedEx], fedEx)
+            }
+            else if address.country == "AQ" {
+                let error = NSError(domain: "ShippingError", code: 123, userInfo: [NSLocalizedDescriptionKey: "Invalid Shipping Address",
+                                                                                   NSLocalizedFailureReasonErrorKey: "We can't ship to this country."])
+                completion(.invalid, error, nil, nil)
+            }
+            else {
+                fedEx.amount = 20.99
+                completion(.valid, nil, [upsWorldwide, fedEx], fedEx)
+            }
+        }
+    }
+
     
 
 }

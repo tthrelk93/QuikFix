@@ -9,7 +9,8 @@
 import Foundation
 import Stripe
 import Alamofire
-
+import FirebaseDatabase
+import FirebaseAuth
 
 class MyAPIClient: NSObject, STPEphemeralKeyProvider {
 
@@ -22,21 +23,20 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             fatalError()
         }
     }
-
-    func completeCharge(_ result: STPPaymentResult,
-                        amount: Int,
-                        shippingAddress: STPAddress?,
-                        shippingMethod: PKShippingMethod?,
-                        completion: @escaping STPErrorBlock) {
-        let url = self.baseURL.appendingPathComponent("charge")
+    
+    func saveCard(_ stripeToken: STPToken, email: String, name: String, completion: @escaping STPErrorBlock){
+        let url = self.baseURL.appendingPathComponent("user")
         var params: [String: Any] = [
-            "source": result.source.stripeID,
-            "amount": amount
+            "stripeToken": stripeToken,
+            "name": name,
+            "email": email
         ]
         //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
         Alamofire.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in
+                var custID = response.data
+                print(custID)
                 switch response.result {
                 case .success:
                     completion(nil)
@@ -44,6 +44,42 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     completion(error)
                 }
         }
+    }
+var stripeToken = String()
+   // var poster = String()
+    func completeCharge(amount: Int,
+                        poster: String) {
+        Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots {
+                    if snap.key == "stripeToken"{
+                        self.stripeToken = snap.value as! String
+                    }
+                }
+                print("stripeToken inside charge: \(self.stripeToken)")
+        let url = self.baseURL.appendingPathComponent("charge")
+        var params: [String: Any] = [
+            "amount": amount,
+            "customer_id": self.stripeToken
+                ]
+         
+        
+        //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
+        Alamofire.request(url, method: .post, parameters: params)
+            .validate(statusCode: 200..<300)
+            .responseString { response in
+                /*switch response.result {
+                case .success:
+                    //completion(nil)
+                    
+                case .failure(let error):
+                    //completion(error)
+                }*/
+        }
+            }
+        })
     }
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

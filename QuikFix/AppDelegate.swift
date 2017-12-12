@@ -17,21 +17,55 @@ import UserNotifications
 import Firebase
 import Stripe
 import IQKeyboardManagerSwift
+//import HockeySDK
 
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    // 1) To get started with this demo, first head to https://dashboard.stripe.com/account/apikeys
+    // and copy your "Test Publishable Key" (it looks like pk_test_abcdef) into the line below.
+    let stripePublishableKey = "pk_test_cmqNsIYuyCchUdHAnaHOyiXp"//"pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+    
+    // 2) Next, optionally, to have this demo save your user's payment details, head to
+    // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
+    // the instructions (don't worry, it's free). Replace nil on the line below with your
+    // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
+    let backendBaseURL: String? = "https://quikfix123.herokuapp.com"
+    
+    // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
+    // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
+    let appleMerchantID: String? = nil
+    
+    // These values will be shown to the user when they purchase with Apple Pay.
+    let companyName = "QuikFix"
+    let paymentCurrency = "usd"
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        /*BITHockeyManager.shared().configure(withIdentifier: "APP_IDENTIFIER")
+        BITHockeyManager.shared().start()
+        BITHockeyManager.shared().authenticator.authenticateInstallation() // This line is obsolete in the crash only builds*/
         IQKeyboardManager.sharedManager().enable = true
         GMSPlacesClient.provideAPIKey("AIzaSyDvw0LOBxWRxlY56O3sbE5nCqs3T3K1u-M")
         GMSServices.provideAPIKey("AIzaSyADVDZNEDAirfuVo92hECXnvCvTay8gXqo")
-        STPPaymentConfiguration.shared().publishableKey = "pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+        
+        STPPaymentConfiguration.shared().publishableKey = "pk_test_cmqNsIYuyCchUdHAnaHOyiXp" //"pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
+        
+        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
+        let config = STPPaymentConfiguration.shared()
+        config.publishableKey = self.stripePublishableKey
+        config.appleMerchantIdentifier = self.appleMerchantID
+        config.companyName = self.companyName
+       // config.requiredBillingAddressFields = settings.requiredBillingAddressFields
+        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
+        // config.shippingType = settings.shippingType
+       // config.additionalPaymentMethods = settings.additionalPaymentMethods
         
         
             // iOS 10 support

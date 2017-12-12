@@ -225,14 +225,49 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     var selectedJobID = String()
     var selectedJob = JobPost()
-    
+    var stripeToken = String()
     func performSegueToSingleJob(category: String, jobID: String, job: JobPost){
         self.selectedJobID = jobID
         self.selectedJob = job
-        performSegue(withIdentifier: "SingleJobSelected", sender: self)
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                var paymentVer = false
+                
+                for snap in snapshots {
+                    /*if snap.key == "paymentVerified"{
+                     if snap.value as! Bool == true{
+                     paymentVer = true
+                     }
+                     }*/
+                    if snap.key == "stripeToken"{
+                        self.stripeToken = snap.value as! String
+                    }
+                    
+                }
+                
+                //print(tempInt as! Int)
+                
+                /*let singleJobViewController = SingleJobPostViewController(product: self.stripeToken,
+                                                                          price: tempInt,
+                                                                          settings: self.settingsVC.settings,
+                                                                          jobID: self.selectedJobID,
+                                                                          posterID: self.selectedJob.posterID!,
+                                                                          categoryType: self.categoryType,
+                                                                          job1: self.selectedJob)
+                self.navigationController?.pushViewController(singleJobViewController, animated: true)
+                let navigationController = UINavigationController(rootViewController: singleJobViewController)
+                self.present(navigationController, animated: true)*/
+               // self.navigationController?.pushViewController(singleJobViewController, animated: true)
+                self.performSegue(withIdentifier: "SingleJobSelected", sender: self)
+                //performSeg
+            }
+        })
+        
+        
     }
     
-    
+    let settingsVC = SettingsViewController()
        
  
 
@@ -244,10 +279,15 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SingleJobSelected"{
             if let vc = segue.destination as? SingleJobPostViewController{
+                var tempString = self.selectedJob.payment?.substring(from: 1)
+                var tempInt = (tempString as! NSString).integerValue
                 vc.jobID = self.selectedJobID
                 vc.posterID = self.selectedJob.posterID!
                 vc.categoryType = self.categoryType
                 vc.job1 = self.selectedJob
+                vc.price = tempInt
+                vc.categoryType = self.categoryType
+                vc.product = self.stripeToken
                 
             }
             

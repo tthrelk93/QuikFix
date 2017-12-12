@@ -17,6 +17,7 @@ protocol PerformSegueInJobPostViewController {
 
 class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, PerformSegueInTableViewCell {
    var date = String()
+    var sender = String()
     var delegate: PerformSegueInJobPostViewController?
     //var tempCollect = UICollectionView()
     @IBOutlet weak var calCollect: UICollectionView!
@@ -58,7 +59,7 @@ class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectio
         //cell.gestureRecognizers?.first?.cancelsTouchesInView = false
         // cell.gestureRecognizers?.first?.delaysTouchesBegan = false
         cell.layer.borderColor = UIColor.clear.cgColor
-        cell.posterName.text = self.jobsForDate[indexPath.row].posterName
+        cell.posterName.text = self.jobsForDate[indexPath.row].category1
         cell.distLabel.text = ""
         cell.rateLabel.text = self.jobsForDate[indexPath.row].payment
         cell.timeLabel.text = self.jobsForDate[indexPath.row].date

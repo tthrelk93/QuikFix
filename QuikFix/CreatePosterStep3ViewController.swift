@@ -14,8 +14,11 @@ import CoreLocation
 import SwiftOverlays
 import Stripe
 
-class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
+class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
     
+    
+    var stripeToken = String()
+    let settingsVC = SettingsViewController()
     @IBOutlet var orLabel: UILabel!
     @IBOutlet var step4Label: UILabel!
     @IBOutlet var topLabel: UILabel!
@@ -150,7 +153,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
     var creditButtonFrame = CGRect()
     var creditShowing = false
     @IBAction func creditPressed(_ sender: Any) {
-        if creditShowing == false{
+        /*if creditShowing == false{
             topLabel.isHidden = false
             sepAndCreditInfoPosition2.isHidden = true
             orLabel.isHidden = true
@@ -189,9 +192,210 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
                 
             })
             creditShowing = false
-        }
+        }*/
+        
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                var paymentVer = false
+                
+                for snap in snapshots {
+                    /*if snap.key == "paymentVerified"{
+                     if snap.value as! Bool == true{
+                     paymentVer = true
+                     }
+                     }*/
+                    if snap.key == "stripeToken"{
+                        self.stripeToken = snap.value as! String
+                    }
+                    
+                }
+                self.handleAddPaymentMethodButtonTapped()
+            }
+        })
         
     }
+    
+    func handleAddPaymentMethodButtonTapped() {
+        // Setup add card view controller
+        print("handleAddPayment")
+        let addCardViewController = STPAddCardViewController()
+        addCardViewController.delegate = self
+        
+        // Present add card view controller
+        let navigationController = UINavigationController(rootViewController: addCardViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPAddCardViewControllerDelegate
+    
+    func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {
+        // Dismiss add card view controller
+        dismiss(animated: true)
+    }
+    
+    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
+        print("submitTokenToBackEnd")
+        //var tempDict = [String:Any]()
+        //tempDict["stripeToken"] = token.tokenId
+        //Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        //self.poster.email = "tthrelk@gmail.com"
+        //self.poster.name = "Thomas"
+        
+        MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!, completion: completion)
+        dismiss(animated: true)
+        
+        
+            Auth.auth().signIn(withEmail: self.poster.email!, password: self.crypt, completion: { (user: User?, error) in
+                if error != nil {
+                    // SwiftOverlays.removeAllBlockingOverlays()
+                    let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                else{
+                    print("Successful Login")
+                    //self.poster.experience = self.experience
+                    SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                    let imageName = NSUUID().uuidString
+                    let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
+                    
+                    let profileImage = self.profPic
+                    let uploadData = UIImageJPEGRepresentation(profileImage, 0.1)
+                    storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                        
+                        if error != nil {
+                            print(error as Any)
+                            return
+                        }
+                        
+                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                            
+                            var values = Dictionary<String, Any>()
+                            
+                            //values["posterID"] = Auth.auth().currentUser!.uid
+                            //values["bio"] = self.student.bio
+                            values["name"] = self.poster.name
+                            values["email"] = self.poster.email
+                            // values["password"] = self.poster.password
+                            //values["school"] = self.poster.school
+                            //values["major"] = self.student.major
+                            values["jobsCompleted"] = self.poster.jobsCompleted
+                            //values["totalEarned"] = 0
+                            values["address"] = [self.poster.address]
+                            values["phone"] = self.poster.phone
+                            var tempPromo = self.randomString(length: 6)
+                            
+                            while self.existingPromoCodes.contains(tempPromo){
+                                tempPromo = self.randomString(length: 6)
+                            }
+                            values["stripeToken"] = token.tokenId
+                            values["posterID"] = Auth.auth().currentUser!.uid
+                            values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                            values["availableCredits"] = 0
+                            values["upcomingJobs"] = self.poster.upcomingJobs
+                            //values["experience"] = self.student.experience
+                            //values["rating"] =  self.student.rating
+                            print("locDict: \(self.locDict)")
+                            values["location"] = self.locDict
+                            values["pic"] = profileImageUrl
+                            var tempDict = [String: Any]()
+                            tempDict[(user?.uid)!] = values
+                            Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                            
+                            self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
+                            
+                        }
+                    })
+                    
+                }
+                
+            })
+            
+        
+        
+        //dismiss(animated: true)
+        //return
+        //tempDict["paymentAmount"] = job.payment
+        //tempDict["description"] = job.description
+        
+    }
+    
+    var poster = JobPoster()
+    func addCardViewController(_ addCardViewController: STPAddCardViewController, didCreateToken token: STPToken, completion: @escaping STPErrorBlock) {
+        print("begin save card")
+        submitTokenToBackend(token: token, completion: completion, completionHandler: { (error: Error?) in
+            if let error = error {
+                // Show error in add card view controller
+                print("error: \(error.localizedDescription)")
+                completion(error)
+            }
+            else {
+                print("Sup")
+                completion(nil)
+                
+                
+                // Dismiss add card view controller
+                dismiss(animated: true)
+            }
+        })
+    }
+    var buyButton = UIButton()
+    let paymentCardTextField = STPPaymentCardTextField()
+    func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+        // Toggle buy button state
+        buyButton.isEnabled = textField.isValid
+        buyButton.isHidden = false
+    }
+    
+    func handlePaymentMethodsButtonTapped() {
+        // Setup customer context
+        print("handlemethodstouched")
+        let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared as! STPEphemeralKeyProvider)
+        
+        
+        
+        
+        // Setup payment methods view controller
+        let paymentMethodsViewController = STPPaymentMethodsViewController(configuration: STPPaymentConfiguration.shared(), theme: STPTheme.default(), customerContext: customerContext, delegate: self)
+        
+        // Present payment methods view controller
+        let navigationController = UINavigationController(rootViewController: paymentMethodsViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPPaymentMethodsViewControllerDelegate
+    
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didFailToLoadWithError error: Error) {
+        // Dismiss payment methods view controller
+        dismiss(animated: true)
+        
+        // Present error to user...
+    }
+    
+    func paymentMethodsViewControllerDidCancel(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        dismiss(animated: true)
+    }
+    
+    func paymentMethodsViewControllerDidFinish(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        dismiss(animated: true)
+    }
+    
+    var selectedPaymentMethod: STPPaymentMethod?
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didSelect paymentMethod: STPPaymentMethod) {
+        // Save selected payment method
+        selectedPaymentMethod = paymentMethod
+    }
+
+
+
+
+
+
+
     @IBOutlet weak var creditButton: UIButton!
     @IBOutlet weak var skip: UIButton!
     var crypt = String()
@@ -265,11 +469,9 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
             }
             
         })
-
-        
         
     }
-    var poster = JobPoster()
+    //var poster = JobPoster()
     var profPic = UIImage()
     var existingPromoCodes = [String]()
     func randomString(length: Int) -> String {
@@ -304,6 +506,14 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate {
         creditButtonOrigin = creditButton.frame.origin
         creditViewFrame = enterInfoView.bounds
         creditViewOrigin = enterInfoView.frame.origin
+        
+        paymentCardTextField.delegate = self
+        /*buyButton.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
+         buyButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+         buyButton.setTitle("Confirm", for: .normal)*/
+        
+        // Add payment card text field to view
+        view.addSubview(paymentCardTextField)
         
         
         Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in

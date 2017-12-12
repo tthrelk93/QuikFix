@@ -19,7 +19,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
     // the instructions (don't worry, it's free). Replace nil on the line below with your
     // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
-    let backendBaseURL: String? = "https://quikfix.herokuapp.com"
+    let backendBaseURL: String? = "https://quikfix123.herokuapp.com"
 
     // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
     // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
@@ -187,6 +187,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     func didTapBuy() {
         print("buy")
         self.paymentInProgress = true
+        
         self.paymentContext.requestPayment()
        
     }
@@ -195,11 +196,12 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
         print("didCreatePaymentResult")
-        MyAPIClient.sharedClient.completeCharge(paymentResult,
+        /*MyAPIClient.sharedClient.completeCharge(paymentResult,
                                                 amount: self.paymentContext.paymentAmount,
                                                 shippingAddress: nil,
                                                 shippingMethod: nil,
-                                                completion: completion)
+                                                poster: "",
+                                                completion: completion)*/
     }
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {

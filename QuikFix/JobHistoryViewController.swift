@@ -537,14 +537,18 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     var sizingCell: DateCollectionViewCell?
     func configureTableViewCell(tableView: UITableView, cell: DateTableViewCell, indexPath: IndexPath){
-        cell.dateLabel?.text = datesArray[indexPath.row]
+        var tempArray = [String]()
+        for (key, _) in calendarDict{
+            tempArray.append(key)
+        }
+        cell.dateLabel?.text = tempArray[indexPath.row]
         cell.layer.borderColor = UIColor.clear.cgColor
         for (key, val) in calendarDict{
             if key == datesArray[indexPath.row]{
-                print()
+                
                 self.jobsForDate = (val as! [JobPost])
                 cell.jobsForDate = val as! [JobPost]
-                
+                cell.sender = "poster"
                 cell.calCollect.dataSource = cell
                 cell.calCollect.delegate = cell
                 cell.calCollect.heightAnchor.constraint(equalToConstant: (145.0 * CGFloat(jobsForDate.count)) + 37).isActive = true
@@ -557,7 +561,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         //let tempCell = DateCollectionViewCell()
         //print("TVCheight: \((tempCell.frame.height * CGFloat(jobsForDate.count)))")
-        return ((142.0 * CGFloat(jobsForDate.count)) + 25)
+        return ((150.0 * CGFloat(jobsForDate.count)) + 25)
     }
     var selectedJobID = String()
     var selectedJob = JobPost()
