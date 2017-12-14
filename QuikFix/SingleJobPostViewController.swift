@@ -63,7 +63,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
    
     @IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
-        
+        workerInJob()
         if workerInJobAlready == true{
             let alert = UIAlertController(title: "Duplicate Application Error", message: "You have already applied to this job. Your application is awaiting review by the job poster.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -198,9 +198,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 
                 //MyAPIClient.sharedClient.completeCharge(amount: 10,
                                                        // poster: self.posterID)
-                MyAPIClient.sharedClient.completeCharge(amount: 2000, poster: self.posterID)
-                //let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
-                //RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                
+                let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
+                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             
             })
             
@@ -217,7 +217,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     
     func chargePoster(){
         print("charge the poster")
-        self.paymentContext?.requestPayment()
+        var tempCharge = ((self.job1.payment?.substring(from: 1) as! NSString).intValue * 100)
+        print("charge in cents: \(tempCharge)")
+        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID)
     }
     
     //var product = String()
@@ -310,6 +312,26 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }*/
+    func workerInJob(){
+        self.workerInJobAlready = false
+        Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                let tempDict = snapshot.value as! [String:Any]
+                
+                for snap in snapshots{
+                    if snap.key == "workers"{
+                        var tempArray = snap.value as! [String]
+                        if tempArray.contains((Auth.auth().currentUser!.uid)){
+                            
+                            self.workerInJobAlready = true
+                        }
+                    }
+                }
+                
+            }
+        })
+    }
     
     var job = [String: Any]()
     @IBOutlet weak var durationLabel: UILabel!

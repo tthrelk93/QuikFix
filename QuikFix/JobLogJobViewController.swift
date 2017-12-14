@@ -47,7 +47,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         self.poster.email = "tthrelk@gmail.com"
         self.poster.name = "Thomas"
         
-        MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!, completion: completion)
+       // MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!)
          dismiss(animated: true)
         //return
         //tempDict["paymentAmount"] = job.payment

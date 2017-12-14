@@ -193,7 +193,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         var locValue:CLLocationCoordinate2D = manager.location!.coordinate
         self.locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //print("locations = \(locValue.latitude) \(locValue.longitude)")
         //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
         //ref.updateChildValues(locDict)
     }

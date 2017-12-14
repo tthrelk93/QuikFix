@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>136937988698-koon7b33g4dbqjj31pu7cbb7sg6k3043.apps.googleusercontent.com</string>
+	<string>334382432491-prltibd6vt4bvgoeepda5c46tdkp6sig.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.136937988698-koon7b33g4dbqjj31pu7cbb7sg6k3043</string>
+	<string>com.googleusercontent.apps.334382432491-prltibd6vt4bvgoeepda5c46tdkp6sig</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCJ30zvPb_2drgOWFBpokYNEgWF4z21k1w</string>
+	<string>AIzaSyCyLv7kqGc0iTu0egPP1O_JaXMDp4w92Zw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>136937988698</string>
+	<string>334382432491</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.shitapps.QuikFix</string>
 	<key>PROJECT_ID</key>
-	<string>quikfix-49664</string>
+	<string>quikfix-d8081</string>
 	<key>STORAGE_BUCKET</key>
-	<string>quikfix-49664.appspot.com</string>
+	<string>quikfix-d8081.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:136937988698:ios:d9ef14f8f45ab0a0</string>
+	<string>1:334382432491:ios:d9ef14f8f45ab0a0</string>
 	<key>DATABASE_URL</key>
-	<string>https://quikfix-49664.firebaseio.com</string>
+	<string>https://quikfix-d8081.firebaseio.com</string>
 </dict>
 </plist>

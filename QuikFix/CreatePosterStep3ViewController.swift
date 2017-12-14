@@ -14,9 +14,11 @@ import CoreLocation
 import SwiftOverlays
 import Stripe
 
-class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
-    
-    
+class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, DataDelegate {
+    var dataID = String()
+    func getID(id: String) {
+        self.dataID = id
+    }
     var stripeToken = String()
     let settingsVC = SettingsViewController()
     @IBOutlet var orLabel: UILabel!
@@ -215,7 +217,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         })
         
     }
-    
+    var custID = String()
     func handleAddPaymentMethodButtonTapped() {
         // Setup add card view controller
         print("handleAddPayment")
@@ -241,11 +243,14 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         //Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
         //self.poster.email = "tthrelk@gmail.com"
         //self.poster.name = "Thomas"
-        
-        MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!, completion: completion)
-        dismiss(animated: true)
-        
-        
+        //MyAPIClient.sharedClient.delegate = self
+        MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.poster.email!, name: self.poster.name!){ responseObject, error in
+            // use responseObject and error here
+            self.dataID = responseObject as! String
+            print("responseObject = \(responseObject!); error = \(error)")
+            self.dismiss(animated: true)
+            
+            
             Auth.auth().signIn(withEmail: self.poster.email!, password: self.crypt, completion: { (user: User?, error) in
                 if error != nil {
                     // SwiftOverlays.removeAllBlockingOverlays()
@@ -290,7 +295,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             while self.existingPromoCodes.contains(tempPromo){
                                 tempPromo = self.randomString(length: 6)
                             }
-                            values["stripeToken"] = token.tokenId
+                            values["stripeToken"] = responseObject!
                             values["posterID"] = Auth.auth().currentUser!.uid
                             values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
                             values["availableCredits"] = 0
@@ -313,6 +318,11 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                 
             })
             
+            return
+        }
+
+       //MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!)
+        
         
         
         //dismiss(animated: true)

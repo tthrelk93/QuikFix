@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		314C313C1FCC8C6B00345E8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */; };
+		31220A271FE19780003DCC57 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31220A261FE19780003DCC57 /* GoogleService-Info.plist */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
 		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
 		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
@@ -106,8 +106,8 @@
 		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
 		25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		31220A261FE19780003DCC57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31264BDD1FD7A5F60053D31A /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
-		314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
 		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -347,7 +347,7 @@
 				31D994DC1FD0B6070038C9C0 /* Main.storyboard */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
-				314C313B1FCC8C6B00345E8E /* GoogleService-Info.plist */,
+				31220A261FE19780003DCC57 /* GoogleService-Info.plist */,
 				3BB8CC7C1F71A436002EAEF3 /* Cells */,
 				3B9F21A61F6355B20068D7EB /* Model */,
 				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
@@ -587,7 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
-				314C313C1FCC8C6B00345E8E /* GoogleService-Info.plist in Resources */,
+				31220A271FE19780003DCC57 /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,

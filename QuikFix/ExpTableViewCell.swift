@@ -19,10 +19,7 @@ class ExpTableViewCell: UITableViewCell{
         print("expCellInit")
         
         
-        
-        
-        
-        
+    
     }
 
     
