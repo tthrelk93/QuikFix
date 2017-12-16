@@ -9,9 +9,10 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import Stripe
 
 
-class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
+class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
     
     @IBAction func editLocationPressed(_ sender: Any) {
     }
@@ -237,6 +238,9 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
     var posterName = String()
     
     @IBAction func postJobPressed(_ sender: Any) {
+        print("in post job Pressed")
+        if self.cardConnected == true {
+            print("cardTrue")
             var values = [String:Any]()
             var ref = Database.database().reference().child("jobs").childByAutoId()
             values["posterName"] = self.tempPosterName
@@ -246,9 +250,13 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
         
             values["location"] = jobPost.location
             values["date"] = jobPost.date
+            
             values["additInfo"] = jobPost.additInfo
+            
             values["payment"] = totalFinalCost.text
+            
             values["startTime"] = jobPost.startTime
+            
         values["jobDuration"] = jobPost.jobDuration
         
             values["workerCount"] = jobPost.workerCount
@@ -303,11 +311,213 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
             Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
             Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
         }
+        } else {
+            let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+                self.showAddCard()
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
         
             
             
         
     }
+    func showAddCard(){
+        self.handleAddPaymentMethodButtonTapped()
+    }
+    func handleAddPaymentMethodButtonTapped() {
+        // Setup add card view controller
+        print("handleAddPayment")
+        let addCardViewController = STPAddCardViewController()
+        addCardViewController.delegate = self
+        
+        // Present add card view controller
+        let navigationController = UINavigationController(rootViewController: addCardViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPAddCardViewControllerDelegate
+    
+    func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {
+        // Dismiss add card view controller
+        dismiss(animated: true)
+    }
+    
+    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
+        print("submitTokenToBackEnd")
+        //var tempDict = [String:Any]()
+        //tempDict["stripeToken"] = token.tokenId
+        //Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        //self.poster.email = "tthrelk@gmail.com"
+        //self.poster.name = "Thomas"
+        //MyAPIClient.sharedClient.delegate = self
+        MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.email, name: self.tempPosterName){ responseObject, error in
+            // use responseObject and error here
+            //self.dataID = responseObject as! String
+            print("responseObject = \(responseObject!); error = \(error)")
+            self.dismiss(animated: true)
+            var tempDict = [String:Any]()
+            tempDict["stripeToken"] = responseObject!
+            Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+            self.cardConnected = true
+            var values = [String:Any]()
+            var ref = Database.database().reference().child("jobs").childByAutoId()
+            values["posterName"] = self.tempPosterName
+            values["posterID"] = Auth.auth().currentUser?.uid
+            
+            values["category1"] = self.jobPost.category1
+            
+            values["location"] = self.jobPost.location
+            values["date"] = self.jobPost.date
+            values["additInfo"] = self.jobPost.additInfo
+            values["payment"] = self.totalFinalCost.text
+            values["startTime"] = self.jobPost.startTime
+            values["jobDuration"] = self.jobPost.jobDuration
+            
+            values["workerCount"] = self.self.jobPost.workerCount
+            values["acceptedCount"] = 0
+            if self.jobPost.category1 == "Moving(Home-To-Home)"{
+                values["pickupLocation"] = self.jobPost.pickupLocation
+                values["dropOffLocation"] = self.jobPost.dropOffLocation
+            }
+            
+            if self.jobPost.tools != nil{
+                values["tools"] = self.self.jobPost.tools!
+            }
+            
+            values["jobID"] = ref.key
+            values["completed"] = false
+            
+            //self.segueJobData = values
+            self.jobRef = ref.key
+            ref.updateChildValues(values)
+            var values2 = [String: Any]()
+            //values2["currentListings"]
+            
+            Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                var tempBool = false
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if snap.key == "currentListings"{
+                            tempBool = true
+                            for val in snap.value as! [String]{
+                                self.listingsArray.append(val)
+                            }
+                        }
+                    }
+                    if tempBool == false{
+                        
+                    }
+                    self.listingsArray.append(ref.key)
+                    
+                    var tempDict = [String:Any]()
+                    tempDict["currentListings"] = self.listingsArray
+                    //self.seguePosterData = tempDict
+                    Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+                    print("need to segue")
+                    DispatchQueue.main.async{
+                   self.perfSeg()
+                    }
+                }
+                
+            })
+            if self.promoSuccess == true{
+                print("ps: \(self.promoSender)")
+                self.creditCount = self.creditCount + 1
+                self.promoSenderArray.append((Auth.auth().currentUser?.uid)!)
+                
+                Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
+                Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
+            }
+            //self.postJobPressed(Any)
+            //self.perfSeg()
+        }
+    }
+    func perfSeg(){
+        print("perf")
+        //performSegue(withIdentifier: "CreateJobToProfile", sender: self)
+        let secondViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "posterProfile") as! JobPosterProfileViewController
+        let nav = UINavigationController(rootViewController: secondViewController)
+        self.present(nav, animated:true, completion:nil)
+    }
+    func addCardViewController(_ addCardViewController: STPAddCardViewController, didCreateToken token: STPToken, completion: @escaping STPErrorBlock) {
+        print("begin save card")
+        submitTokenToBackend(token: token, completion: completion, completionHandler: { (error: Error?) in
+            if let error = error {
+                // Show error in add card view controller
+                print("error: \(error.localizedDescription)")
+                completion(error)
+            }
+            else {
+                print("Sup")
+                completion(nil)
+                
+                
+                // Dismiss add card view controller
+                dismiss(animated: true)
+            }
+        })
+    }
+    var buyButton = UIButton()
+    let paymentCardTextField = STPPaymentCardTextField()
+    func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+        // Toggle buy button state
+        buyButton.isEnabled = textField.isValid
+        buyButton.isHidden = false
+    }
+    
+    func handlePaymentMethodsButtonTapped() {
+        // Setup customer context
+        print("handlemethodstouched")
+        let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared as! STPEphemeralKeyProvider)
+        
+        
+        
+        
+        // Setup payment methods view controller
+        let paymentMethodsViewController = STPPaymentMethodsViewController(configuration: STPPaymentConfiguration.shared(), theme: STPTheme.default(), customerContext: customerContext, delegate: self)
+        
+        // Present payment methods view controller
+        let navigationController = UINavigationController(rootViewController: paymentMethodsViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPPaymentMethodsViewControllerDelegate
+    
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didFailToLoadWithError error: Error) {
+        // Dismiss payment methods view controller
+        dismiss(animated: true)
+        
+        // Present error to user...
+    }
+    
+    func paymentMethodsViewControllerDidCancel(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        print("cancel")
+        dismiss(animated: true)
+    }
+    
+    func paymentMethodsViewControllerDidFinish(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        print("inDismiss")
+        dismiss(animated: true)
+       /* let secondViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "posterProfile") as! JobPosterProfileViewController
+        let nav = UINavigationController(rootViewController: secondViewController)
+        self.present(nav, animated:true, completion:nil)*/
+        DispatchQueue.main.async {
+            self.perfSeg()
+        }
+    }
+    
+    var selectedPaymentMethod: STPPaymentMethod?
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didSelect paymentMethod: STPPaymentMethod) {
+        // Save selected payment method
+        selectedPaymentMethod = paymentMethod
+    }
+
+    
+    
     var creditCount = Int()
     @IBOutlet weak var detailsTextView: UITextView!
     @IBOutlet weak var totalFinalCost: UILabel!
@@ -345,6 +555,8 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var totalPromoDisc: UILabel!
     @IBOutlet weak var dropoffLabel: UILabel!
+    var cardConnected = false
+    var email = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         enterPromoTF.delegate = self
@@ -361,6 +573,12 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate {
                 for snap in snapshots{
                     if snap.key == "name"{
                         self.tempPosterName = snap.value as! String
+                    }
+                    if snap.key == "stripeToken"{
+                        self.cardConnected = true
+                    }
+                    if snap.key == "email"{
+                        self.email = snap.value as! String
                     }
                 }
             }

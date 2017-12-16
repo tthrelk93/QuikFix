@@ -30,8 +30,8 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                         var tempStudent = Student()
                         tempStudent.pic = tempDict["pic"] as! String
                         tempStudent.name = tempDict["name"] as! String
-                        if tempDict["jobsFinished"] != nil{
-                        tempStudent.jobsFinished = tempDict["jobsFinished"] as! [String]
+                        if tempDict["jobsCompleted"] != nil{
+                        tempStudent.jobsCompleted = tempDict["jobsCompleted"] as! [String]
                         }
                         tempStudent.studentID = tempDict["studentID"] as! String
                         
@@ -70,8 +70,8 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
         cell.profileButton.clipsToBounds = true
         cell.nameLabel.text = studentArray[indexPath.row].name
         
-        if studentArray[indexPath.row].jobsFinished != nil{
-            cell.jobCountLabel.text = String(describing: studentArray[indexPath.row].jobsFinished?.count)
+        if studentArray[indexPath.row].jobsCompleted != nil{
+            cell.jobCountLabel.text = String(describing: studentArray[indexPath.row].jobsCompleted?.count)
         } else {
             cell.jobCountLabel.text = "0"
         }

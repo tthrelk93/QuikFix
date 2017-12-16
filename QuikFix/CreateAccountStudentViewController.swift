@@ -48,7 +48,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
                 //student.password = passwordTextField.text
                 student.school = ""
                 student.major = ""
-                student.jobsFinished = [String]()
+                student.jobsCompleted = [String]()
                 student.upcomingJobs = [String]()
                 student.experience = [String]()
                 student.rating = Int()
@@ -70,7 +70,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
                             let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
                                 (_) in
                                 user?.sendEmailVerification(completion: nil)
-                                self.createAccountButton.setTitle("Re-send Verificaion Email", for: .normal)
+                                self.createAccountButton.setTitle("Re-send Verification Email", for: .normal)
                                 
                                 
                                 self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)

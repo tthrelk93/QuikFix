@@ -49,32 +49,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     // Takes in the HTTP response data and returns a DogPark Array
-    func parse(values: Any) -> [cusID] {
-        var custIDs: [cusID] = []
-        
-        // Attempting to cast the values property into an Array of Any
-        guard let values = values as? [Any] else { return custIDs }
-        
-        // Evaluate each value from the values Any Array
-        for value in values {
-            //Cast the value from the values Array to a Dictionary
-            if let resultDict = value as? [String: Any] {
-                
-                // Attempt to initialize an instance of DogPark with the dictionary
-                do {
-                    let custID = try cusID(json: resultDict)
-                    // If try is successful we'll append the results and continue as normal
-                    custIDs.append(custID)
-                } catch {
-                    print("ERROR: \(error)")
-                }
-                
-            }
-        }
-        
-        // Returns an instance of DogPark Array
-        return custIDs
-    }
+   
     var returnID = String()
     func callSaveCard(stripeToken: STPToken, email: String, name: String, completionHandler: @escaping (String?, Error?) -> ()){
         saveCard(stripeToken, email: email, name: name, completionHandler: completionHandler)
@@ -98,39 +73,16 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 print(resData.result.value!)
                 self.returnID = resData.result.value!
                 completionHandler(self.returnID as? String, nil)
-               /* case .success(let value):
-                completionHandler(value as? NSDictionary, nil)
-                case .failure(let error):
-                completionHandler(nil, error)*/
-                //self.delegate?.getID(id: resData.result.value!)
-                //let strOutput = String(data : resData.result.value! as! Data, encoding : String.Encoding.utf8)
-               // print(strOutput as! String)
-                /*if (response.result.error == nil) {
-                    debugPrint("HTTP Response Body: \(response.data)")
-                    if let values = response.result.value {
-                        custIDs = self.parse(values: values) // Add this line of code
-                        print("custIDs: \(custIDs)")
-                    }
-                } // else ..*/
-               // switch response.result {
-               // case .success:
-                  //  completion(nil)
-               // case .failure(let error):
-                   // completion(error)
-               // }
-                //return resData.result.value!
+              
         }
-        //DispatchQueue.main.async{
-          //  print(self.returnID)
-        //return self.returnID
-        //}
-        //return self.returnID
-        //print("custID = \(temp)")
     }
-var stripeToken = String()
+    var stripeToken = String()
+    //var job = [String:Any]()
    // var poster = String()
     func completeCharge(amount: Int,
-                        poster: String) {
+                        poster: String, job: [String:Any]) {
+        
+        
         Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -146,22 +98,103 @@ var stripeToken = String()
             "amount": amount,
             "customer_id": self.stripeToken
                 ]
-         
+            
         
         //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
         Alamofire.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in
-                /*switch response.result {
+                switch response.result {
                 case .success:
                     //completion(nil)
+                   var containsUpcomingJobs = false
+                   var containsJobsCompleted = false
+                   Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            
+                            for snap in snapshots {
+                                if snap.key == "upcomingJobs"{
+                                    containsUpcomingJobs = true
+                                    var tempJobArray = snap.value as! [String]
+                                    tempJobArray.remove(at: tempJobArray.index(of: job["jobID"] as! String)!)
+                                    var uploadDict = [String:Any]()
+                                    uploadDict["upcomingJobs"] = tempJobArray
+                                    Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
+                                    
+                                } else if snap.key == "jobsCompleted"{
+                                    containsJobsCompleted = true
+                                    var tempJobArray = snap.value as! [String]
+                                    tempJobArray.append(job["jobID"] as! String)
+                                    var uploadDict = [String:Any]()
+                                    uploadDict["jobsCompleted"] = tempJobArray
+                                    Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
+                                }
+                            }
+                            if containsUpcomingJobs == false{
+                                var uploadData = [String]()
+                                uploadData.append(job["jobID"] as! String)
+                                var uploadDict = [String:Any]()
+                                uploadDict["upcomingJobs"] = uploadData
+                                Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
+                            }
+                            if containsJobsCompleted == false{
+                                var uploadData = [String]()
+                                uploadData.append(job["jobID"] as! String)
+                                var uploadDict = [String:Any]()
+                                uploadDict["jobsCompleted"] = uploadData
+                                Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
+                            }
+                    }
+                    
+                    Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                            var containsJobs = false
+                            var containsCompleted = false
+                            var upcomingArray = [String]()
+                            var tempJobArray = [String]()
+                            var tempCompletedArray = [String]()
+                            for snap in snapshots {
+                                
+                                if snap.key == "upcomingJobs"{
+                                    tempJobArray = snap.value as! [String]
+                                    tempJobArray.remove(at: tempJobArray.index(of: job["jobID"] as! String)!)
+                                    containsJobs = true
+                                }
+                                if snap.key == "jobsCompleted"{
+                                    tempCompletedArray = snap.value as! [String]
+                                    tempCompletedArray.append(job["jobID"] as! String)
+                                    containsCompleted = true
+                                }
+                            }
+                                var uploadDict2 = [String:Any]()
+                                if containsJobs == false{
+                                    
+                                    //uploadDict2["upcomingJobs"] = [self.jobID]
+                                }else {
+                                    uploadDict2["upcomingJobs"] = tempJobArray
+                                }
+                                if containsCompleted == false{
+                                    uploadDict2["jobsCompleted"] = [job["jobID"] as! String]
+                                } else {
+                                    uploadDict2["jobsCompleted"] = tempCompletedArray
+                                }
+                                Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
+                            }
+                        })
+                    
+                    
+                })
                     
                 case .failure(let error):
+                    print(error)
                     //completion(error)
-                }*/
-        }
+                }
             }
+        }
+        
         })
+        
     }
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

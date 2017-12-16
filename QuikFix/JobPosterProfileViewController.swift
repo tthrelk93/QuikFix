@@ -19,7 +19,10 @@ import SwiftOverlays
 class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate {
     
    // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
-   
+    @IBOutlet weak var promoTextButton: UIButton!
+    @IBOutlet weak var myJobsTextButton: UIButton!
+    @IBOutlet weak var dealsTextButton: UIButton!
+    
     //@IBOutlet weak var postSuccessShadeView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
@@ -412,8 +415,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var mToken = String()
     var upcomingJobs = [String]()
     var upcomingJobsObj = [[String:Any]]()
+    //let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.promoTextButton.setTitleColor(qfGreen, for: .normal)
+        self.myJobsTextButton.setTitleColor(qfGreen, for: .normal)
+        self.dealsTextButton.setTitleColor(qfGreen, for: .normal)
         //metalBar.layer.cornerRadius = 8
        // metalBar.layer.borderWidth = 1
        // metalBar.layer.borderColor = qfRed.cgColor

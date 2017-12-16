@@ -97,7 +97,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                                 //values["password"] = self.student.password
                                 values["school"] = self.student.school
                                 values["major"] = self.student.major
-                                values["jobsFinished"] = self.student.jobsFinished
+                                values["jobsCompleted"] = self.student.jobsCompleted
                                 values["totalEarned"] = 0
                                 values["upcomingJobs"] = self.student.upcomingJobs
                                 values["experience"] = self.student.experience
@@ -139,7 +139,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         // The view to which the drop down will appear on
         
        
-        
+        addButton.layer.cornerRadius = 7
         tShirtSizeDropDownTF.delegate = self
         relevantExperienceDropDownTF.delegate = self
         step3Picker.delegate = self

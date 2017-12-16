@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyDvw0LOBxWRxlY56O3sbE5nCqs3T3K1u-M")
         GMSServices.provideAPIKey("AIzaSyADVDZNEDAirfuVo92hECXnvCvTay8gXqo")
         
-        STPPaymentConfiguration.shared().publishableKey = "pk_test_cmqNsIYuyCchUdHAnaHOyiXp" //"pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
+        STPPaymentConfiguration.shared().publishableKey = "pk_test_cmqNsIYuyCchUdHAnaHOyiXp"//"pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.

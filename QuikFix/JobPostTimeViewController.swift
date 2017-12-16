@@ -28,18 +28,38 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
        
             hourData = self.hourData
         
+        let date = Date()
+        let formatter = DateFormatter()
+        
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        var tempDate = formatter.string(from: date)
+        
+        
+        print("actualDateTime: \(tempDate)")
+        
+        
         let tempString = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
         //var startTime = timeFormatter(time: startTimePicker.date)
         //var endTime = timeFormatter(time: endTimePicker.date)
-        print("tmepString: \(tempString)")
-        jobPost.startTime = tempString
-        jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
-        print(durString[durationPicker.selectedRow(inComponent: 0)])
-        
-        if jobPost.category1 == "Moving(Home-To-Home)"{
-            performSegue(withIdentifier: "SkipLocationSegue", sender: self)
+        var dateObj = formatter.date(from: tempString)
+        var dateObj2 = formatter.date(from: tempDate)
+        if (dateObj as! Date) <= (dateObj2 as! Date){
+            let alert = UIAlertController(title: "Date has Passed", message: "Job start time must be atleast thirty minutes from right now.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
         } else {
-            performSegue(withIdentifier: "JPStep4ToStep5", sender: self)
+            print("selectedTime: \(tempString)")
+            jobPost.startTime = tempString
+            jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
+            print(durString[durationPicker.selectedRow(inComponent: 0)])
+            
+            if jobPost.category1 == "Moving(Home-To-Home)"{
+                performSegue(withIdentifier: "SkipLocationSegue", sender: self)
+            } else {
+                performSegue(withIdentifier: "JPStep4ToStep5", sender: self)
+            }
         }
     }
     

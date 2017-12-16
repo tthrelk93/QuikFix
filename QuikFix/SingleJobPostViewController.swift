@@ -63,163 +63,34 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
    
     @IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
+        print("apply pressed")
         workerInJob()
-        if workerInJobAlready == true{
-            let alert = UIAlertController(title: "Duplicate Application Error", message: "You have already applied to this job. Your application is awaiting review by the job poster.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-        self.applySuccessView.isHidden = false
-        print("posterID: \(self.posterID)")
-            
         
-        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                 var containsCurrentListings = false
-                var containsUpcomingJobs = false
-               
-                for snap in snapshots{
-                   /* if snap.key == "deviceToken"{
-                        var deviceToken = (snap.value as! [String:Any]).keys.first
-                        
-                    }*/
-                    if snap.key == "currentListings"{
-                        containsCurrentListings = true
-                        var tempJobArray = snap.value as! [String]
-                        tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
-                        //var keyInDictBool = false
-                        //var tempIDArray = [String]()
-                        var uploadDict = [String:Any]()
-                        uploadDict["currentListings"] = tempJobArray
-                        Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
-                        
-                    } else if snap.key == "upcomingJobs"{
-                        containsUpcomingJobs = true
-                        var tempJobArray = snap.value as! [String]
-                        tempJobArray.append(self.jobID)
-                        //var keyInDictBool = false
-                        //tempJobDict[self.jobID] = self.job
-                        //var tempIDArray = [String]()
-                        var uploadDict = [String:Any]()
-                        uploadDict["upcomingJobs"] = tempJobArray
-                    Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
-                        
-                    }
-                }
-                if containsUpcomingJobs == false{
-                    var uploadData = [String]()
-                    uploadData.append(self.jobID)
-                    var uploadDict = [String:Any]()
-                    uploadDict["upcomingJobs"] = uploadData
-                    Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
-                }
-                    if containsCurrentListings == false{
-                        var uploadData = [String]()
-                        uploadData.append(self.jobID)
-                        var uploadDict = [String:Any]()
-                        uploadDict["currentListings"] = uploadData
-                        
-                        Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
-                    }
-                
-    
-       /* } else {
-            let alert = UIAlertController(title: "Duplicate Application Error", message: "You have already applied to this job. Your application is awaiting review by the job poster.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }*/
-            
-        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                var containsJobs = false
-                var upcomingArray = [String]()
-                for snap in snapshots {
-                    
-                    if snap.key == "upcomingJobs"{
-                        upcomingArray = snap.value as! [String]
-                        upcomingArray.append(self.jobID)
-                        containsJobs = true
-                    }
-                    var uploadDict2 = [String:Any]()
-                    if containsJobs == false{
-                        
-                        uploadDict2["upcomingJobs"] = [self.jobID]
-                    }else {
-                        uploadDict2["upcomingJobs"] = upcomingArray
-                    }
-                    Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
-                }
-                }
-            Database.database().reference().child("jobs").child(self.jobID).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                    var containsWorkers = false
-                    var workersArray = [String]()
-                    for snap in snapshots {
-                        
-                        if snap.key == "workers"{
-                            containsWorkers = true
-                            workersArray = snap.value as! [String]
-                            workersArray.append((Auth.auth().currentUser!.uid))
-                            var uploadDict = [String:Any]()
-                            uploadDict["workers"] = workersArray
-                            Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
-                        } else if snap.key == "acceptedCount" {
-                            var tempInt = snap.value as! Int
-                            tempInt = tempInt + 1
-                            var uploadDict = [String:Any]()
-                            uploadDict["acceptedCount"] = tempInt
-                            Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
-                            
-                        }
-                        }
-                    
-                    if containsWorkers == false{
-                        var uploadDict = [String:Any]()
-                        uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as! Any)
-                        Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
-                    }
-                }
-                 self.applySuccessView.isHidden = true
-                var date = self.job1.date!
-                var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
-                var timeHours = timeComp[0]
-                print("timeHours: \(timeHours)")
-                var timeHoursInt = Int(timeHours)
-                var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
-                var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
-                print("triggerTime: \(triggerTimeString)")
-                var dateToFormat = "\(date) \(triggerTimeString)"
-                
-                
-                
-                var dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
-                let triggerDate = dateFormatter.date(from: dateToFormat)
-                
-                //MyAPIClient.sharedClient.completeCharge(amount: 10,
-                                                       // poster: self.posterID)
-                
-                let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
-                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
-            
-            })
-            
-                    
-        })
-            }
-        })
-        }
-            
+        
 
         
     
     }
-    
+    //var sendJob = [String:Any]()
     func chargePoster(){
-        print("charge the poster")
-        var tempCharge = ((self.job1.payment?.substring(from: 1) as! NSString).intValue * 100)
-        print("charge in cents: \(tempCharge)")
-        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID)
+        Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots {
+                    if snap.key == self.jobID{
+                        var sendJob = snap.value as! [String:Any]
+                        sendJob["jobID"] = snap.key as! String
+                        print("charge the poster")
+                        var tempCharge = ((self.chargeAmount as! NSString).intValue * 100)
+                        print("charge in cents: \(tempCharge)")
+                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob)
+                    }
+                }
+            }
+        
+        
+        })
     }
     
     //var product = String()
@@ -312,8 +183,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }*/
+    var containsWorkers = false
     func workerInJob(){
-        self.workerInJobAlready = false
+        //self.workerInJobAlready = false
+        
+        print("wIJ: \(jobID)")
         Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -321,12 +195,275 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 
                 for snap in snapshots{
                     if snap.key == "workers"{
+                        self.containsWorkers = true
                         var tempArray = snap.value as! [String]
                         if tempArray.contains((Auth.auth().currentUser!.uid)){
                             
-                            self.workerInJobAlready = true
-                        }
+                            //self.workerInJobAlready = true
+                            print("already in job")
+                        } else {
+                            print("sup, not in job")
+                                self.applySuccessView.isHidden = false
+                                print("posterID: \(self.posterID)")
+                            Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        var containsCurrentListings = false
+                                        var containsUpcomingJobs = false
+                                        
+                                        for snap in snapshots{
+                                            if snap.key == "currentListings"{
+                                                containsCurrentListings = true
+                                                var tempJobArray = snap.value as! [String]
+                                                tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
+                                                //var keyInDictBool = false
+                                                //var tempIDArray = [String]()
+                                                var uploadDict = [String:Any]()
+                                                uploadDict["currentListings"] = tempJobArray
+                                                Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                                
+                                            } else if snap.key == "upcomingJobs"{
+                                                containsUpcomingJobs = true
+                                                var tempJobArray = snap.value as! [String]
+                                                tempJobArray.append(self.jobID)
+                                                //var keyInDictBool = false
+                                                //tempJobDict[self.jobID] = self.job
+                                                //var tempIDArray = [String]()
+                                                var uploadDict = [String:Any]()
+                                                uploadDict["upcomingJobs"] = tempJobArray
+                                                Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                                
+                                            }
+                                        }
+                                        
+                                        if containsUpcomingJobs == false{
+                                            var uploadData = [String]()
+                                            uploadData.append(self.jobID)
+                                            var uploadDict = [String:Any]()
+                                            uploadDict["upcomingJobs"] = uploadData
+                                            Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                        }
+                                        if containsCurrentListings == false{
+                                            var uploadData = [String]()
+                                            uploadData.append(self.jobID)
+                                            var uploadDict = [String:Any]()
+                                            uploadDict["currentListings"] = uploadData
+                                            
+                                            Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                        }
+                                        
+                                        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                                                var containsJobs = false
+                                                var upcomingArray = [String]()
+                                                for snap in snapshots {
+                                                    
+                                                    if snap.key == "upcomingJobs"{
+                                                        upcomingArray = snap.value as! [String]
+                                                        upcomingArray.append(self.jobID)
+                                                        containsJobs = true
+                                                    }
+                                                    var uploadDict2 = [String:Any]()
+                                                    if containsJobs == false{
+                                                        
+                                                        uploadDict2["upcomingJobs"] = [self.jobID]
+                                                    }else {
+                                                        uploadDict2["upcomingJobs"] = upcomingArray
+                                                    }
+                                                    Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
+                                                }
+                                            }
+                                            Database.database().reference().child("jobs").child(self.jobID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                                                    var containsWorkers = false
+                                                    var workersArray = [String]()
+                                                    for snap in snapshots {
+                                                        
+                                                        if snap.key == "workers"{
+                                                            containsWorkers = true
+                                                            workersArray = snap.value as! [String]
+                                                            workersArray.append((Auth.auth().currentUser!.uid))
+                                                            var uploadDict = [String:Any]()
+                                                            uploadDict["workers"] = workersArray
+                                                            Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                                        } else if snap.key == "acceptedCount" {
+                                                            var tempInt = snap.value as! Int
+                                                            tempInt = tempInt + 1
+                                                            var uploadDict = [String:Any]()
+                                                            uploadDict["acceptedCount"] = tempInt
+                                                            Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                                            
+                                                        }
+                                                    }
+                                                    
+                                                    if containsWorkers == false{
+                                                        var uploadDict = [String:Any]()
+                                                        uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as! Any)
+                                                        Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                                    }
+                                                }
+                                                self.applySuccessView.isHidden = true
+                                                var date = self.job1.date!
+                                                var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
+                                                var timeHours = timeComp[0]
+                                                print("timeHours: \(timeHours)")
+                                                var timeHoursInt = Int(timeHours)
+                                                var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
+                                                var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                                print("triggerTime: \(triggerTimeString)")
+                                                var dateToFormat = "\(date) \(triggerTimeString)"
+                                                
+                                                
+                                                
+                                                var dateFormatter = DateFormatter()
+                                                dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                                                let triggerDate = dateFormatter.date(from: dateToFormat)
+                                                
+                                                //MyAPIClient.sharedClient.completeCharge(amount: 10,
+                                                // poster: self.posterID)
+                                                
+                                                let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
+                                                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                                self.performSegue(withIdentifier: "JobAcceptedBackToProfile", sender: self)
+                                                
+                                            })
+                                            
+                                            
+                                        })
+                                    }
+                                })
+                            }
+                        
                     }
+                }
+                if self.containsWorkers == false{
+                    self.applySuccessView.isHidden = false
+                    print("posterID: \(self.posterID)")
+                    Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            var containsCurrentListings = false
+                            var containsUpcomingJobs = false
+                            
+                            for snap in snapshots{
+                                if snap.key == "currentListings"{
+                                    containsCurrentListings = true
+                                    var tempJobArray = snap.value as! [String]
+                                    tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
+                                    //var keyInDictBool = false
+                                    //var tempIDArray = [String]()
+                                    var uploadDict = [String:Any]()
+                                    uploadDict["currentListings"] = tempJobArray
+                                    Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                    
+                                } else if snap.key == "upcomingJobs"{
+                                    containsUpcomingJobs = true
+                                    var tempJobArray = snap.value as! [String]
+                                    tempJobArray.append(self.jobID)
+                                    //var keyInDictBool = false
+                                    //tempJobDict[self.jobID] = self.job
+                                    //var tempIDArray = [String]()
+                                    var uploadDict = [String:Any]()
+                                    uploadDict["upcomingJobs"] = tempJobArray
+                                    Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                                    
+                                }
+                            }
+                            
+                            if containsUpcomingJobs == false{
+                                var uploadData = [String]()
+                                uploadData.append(self.jobID)
+                                var uploadDict = [String:Any]()
+                                uploadDict["upcomingJobs"] = uploadData
+                                Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                            }
+                            if containsCurrentListings == false{
+                                var uploadData = [String]()
+                                uploadData.append(self.jobID)
+                                var uploadDict = [String:Any]()
+                                uploadDict["currentListings"] = uploadData
+                                
+                                Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
+                            }
+                            
+                            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                                    var containsJobs = false
+                                    var upcomingArray = [String]()
+                                    for snap in snapshots {
+                                        
+                                        if snap.key == "upcomingJobs"{
+                                            upcomingArray = snap.value as! [String]
+                                            upcomingArray.append(self.jobID)
+                                            containsJobs = true
+                                        }
+                                        var uploadDict2 = [String:Any]()
+                                        if containsJobs == false{
+                                            
+                                            uploadDict2["upcomingJobs"] = [self.jobID]
+                                        }else {
+                                            uploadDict2["upcomingJobs"] = upcomingArray
+                                        }
+                                        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
+                                    }
+                                }
+                                Database.database().reference().child("jobs").child(self.jobID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                                        var containsWorkers = false
+                                        var workersArray = [String]()
+                                        for snap in snapshots {
+                                            
+                                            if snap.key == "workers"{
+                                                containsWorkers = true
+                                                workersArray = snap.value as! [String]
+                                                workersArray.append((Auth.auth().currentUser!.uid))
+                                                var uploadDict = [String:Any]()
+                                                uploadDict["workers"] = workersArray
+                                                Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                            } else if snap.key == "acceptedCount" {
+                                                var tempInt = snap.value as! Int
+                                                tempInt = tempInt + 1
+                                                var uploadDict = [String:Any]()
+                                                uploadDict["acceptedCount"] = tempInt
+                                                Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                                
+                                            }
+                                        }
+                                        
+                                        if containsWorkers == false{
+                                            var uploadDict = [String:Any]()
+                                            uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as! Any)
+                                            Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                        }
+                                    }
+                                    self.applySuccessView.isHidden = true
+                                    var date = self.job1.date!
+                                    var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
+                                    var timeHours = timeComp[0]
+                                    print("timeHours: \(timeHours)")
+                                    var timeHoursInt = Int(timeHours)
+                                    var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
+                                    var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                    print("triggerTime: \(triggerTimeString)")
+                                    var dateToFormat = "\(date) \(triggerTimeString)"
+                                    
+                                    
+                                    
+                                    var dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                                    let triggerDate = dateFormatter.date(from: dateToFormat)
+                                    
+                                    //MyAPIClient.sharedClient.completeCharge(amount: 10,
+                                    // poster: self.posterID)
+                                    
+                                    let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
+                                    RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                    self.performSegue(withIdentifier: "JobAcceptedBackToProfile", sender: self)
+                                    
+                                })
+                                
+                                
+                            })
+                        }
+                    })
                 }
                 
             }
@@ -342,6 +479,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     var categoryType = String()
     var posterID = String()
     var workerInJobAlready = false
+    var chargeAmount = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -360,6 +498,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         //self.product = product
         self.productImage.text = self.product
         self.theme = settings.theme
+        
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
@@ -446,6 +585,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     
                     if snap.key == "payment"{
                         var tempPayString = snap.value as! String
+                        self.chargeAmount = tempPayString.substring(from: 1)
                         tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                         let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
                         tempPayString = "$\(tempPayDouble)"

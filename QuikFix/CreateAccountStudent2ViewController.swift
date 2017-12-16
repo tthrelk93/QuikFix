@@ -45,7 +45,19 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
         }
         
     }
-    
+    @IBOutlet weak var selectButton: UIButton!
+    var currentPicked = String()
+    @IBAction func selectButtonPressed(_ sender: Any) {
+        if curPicker == "school"{
+            schoolDropDownTF.text = self.currentPicked
+            
+        } else if curPicker == "major"{
+            majorDropDownTF.text = self.currentPicked
+        } else {
+            gradYearTF.text = self.currentPicked
+        }
+        
+    }
     @IBOutlet weak var schoolAndMajorPicker: UIPickerView!
     var majorData = ["Accounting","Actuarial Science","Advertising","Agriculture","Agricultural and Biological Engineering","Agricultural Business Management","Agriculture Economics","Animal Bioscience","Animal Sciences","Anthropology","Applied Mathematics","Archaeology","Architectural Engineering","Architecture","Art History","Studio Art","Art Education","Biobehavioral Health","Biochemistry","Bioengineering","Biology","Biophysics","Biotechnology","Business Administration and Management","Business Logistics","Chemical Engineering","Chemistry","Children","Civil Engineering","Computer Engineering","Computer Science","Crime, Law, and Justice","Dance","Earth Sciences","Economics","Electrical Engineering","Elementary and Kindergarten Education","Engineering Science","English","Environmental Systems Engineering","Environmental Sciences","Environmental Resource Management","Film and Video","Finance","Food Science","Forest Science","Forest Technology","General Science","Geography","Geosciences","Graphic Design and Photography","Health and Physical Education","Health Policy and Administration","History","Horticulture","Hotel, Restaurant, and Institutional Management","Human Development and Family Studies","Individual and Family Studies","Industrial Engineering","Information Sciences and Technology","Journalism","Kinesiology","Landscape Architecture","Law Enforcement and Correction","Marine Biology","Marketing","Mathematics","Mechanical Engineering","Media Studies","Meteorology","Microbiology","Mineral Economics","Modern Languages","Music Education","Nuclear Engineering","Nursing","Nutrition","Philosophy","Physics","Physiology","Political Science","Pre-medicine","Psychology","Public Relations","Real Estate","Recreation and Parks","Rehabilitation Services","Religious Studies","Secondary Education","Secondary Education","Sociology","Social Work","Special Education","Speech Communication","Statistics","Telecommunications","Theater","Wildlife and Fishery Science","Wildlife Technology","Women's Studies"]
     var schoolDataArray = ["Rhodes College","Birmingham Southern College",
@@ -442,7 +454,8 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
             }
             }
         }*/
-        
+        selectButton.isHidden = true
+        selectButton.layer.cornerRadius = 7
         schoolAndMajorPicker.delegate = self
         schoolAndMajorPicker.dataSource = self
         
@@ -516,12 +529,12 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if curPicker == "school"{
-            schoolDropDownTF.text = schoolDataArray[row]
+            self.currentPicked = schoolDataArray[row]
             
         } else if curPicker == "major"{
-            majorDropDownTF.text = majorData[row]
+            self.currentPicked = majorData[row]
         } else {
-            gradYearTF.text = gradData[row]
+            self.currentPicked = gradData[row]
         }
         //pickerView.isHidden = true
     }
@@ -545,6 +558,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
             }
         schoolAndMajorPicker.reloadAllComponents()
         schoolAndMajorPicker.isHidden = false
+        selectButton.isHidden = false
         //return false
         
         

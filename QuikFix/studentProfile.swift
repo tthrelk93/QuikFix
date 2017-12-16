@@ -148,9 +148,11 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             backButtonForPoster.isHidden = true
             editButton.isHidden = false
         //self.editProfPicImageView.layer.cornerRadius = 10
-        profileImageView.layer.cornerRadius = profileImageView.frame.width/2
+        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
         picker.delegate = self
-        profileImageView.clipsToBounds = true
+        profileImageView.clipsToBounds = false
+        profileImageView.layer.masksToBounds = true
+            profileImageView.centerXAnchor.constraint(equalTo: self.cityLabel.centerXAnchor).isActive = true
         /*editGradYearTextField.delegate = self
         editMajorTextField.delegate = self
         editNameTextField.delegate = self
@@ -181,7 +183,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         self.majorLabel.text = snap.value as? String
                         //self.editMajorTextField.placeholder = snap.value as! String
                     }
-                    else if snap.key == "jobsFinished"{
+                    else if snap.key == "jobsCompleted"{
                         for job in snap.value as! [String]{
                             self.jobsFinishedArray.append(job)
                         }
@@ -293,7 +295,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             self.majorLabel.text = snap.value as? String
                             //self.editMajorTextField.placeholder = snap.value as! String
                         }
-                        else if snap.key == "jobsFinished"{
+                        else if snap.key == "jobsCompleted"{
                             for job in snap.value as! [String]{
                                 self.jobsFinishedArray.append(job)
                             }

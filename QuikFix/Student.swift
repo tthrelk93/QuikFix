@@ -18,7 +18,7 @@ class Student: NSObject {
     var school: String?
     var major: String?
     var gradYear: String?
-    var jobsFinished: [String]?
+    var jobsCompleted: [String]?
     var upcomingJobs: [String]?
     var experience: [String]?
     var rating: Int?
