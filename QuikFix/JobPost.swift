@@ -29,6 +29,7 @@ class JobPost: NSObject {
     var pickupLocation: String?
     var dropOffLocation: String?
     var tools: [String]?
+    var inProgress: Bool?
     
     //var responses: [String]?
     

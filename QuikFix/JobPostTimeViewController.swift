@@ -30,20 +30,23 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let date = Date()
         let formatter = DateFormatter()
-        
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        var tempDate = formatter.string(from: date)
+        formatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
+        //formatter.timeStyle = .short
+        //formatter.dateStyle = .none
+        let tempDate = formatter.string(from: date)
         
         
         print("actualDateTime: \(tempDate)")
         
-        
-        let tempString = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        let jobTime = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        let tempString = "\(self.jobPost.date!) \(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        let dateFormatter2 = DateFormatter()
+        dateFormatter2.dateFormat = "MMMM-dd-yyyy h:mm a"
         //var startTime = timeFormatter(time: startTimePicker.date)
         //var endTime = timeFormatter(time: endTimePicker.date)
-        var dateObj = formatter.date(from: tempString)
-        var dateObj2 = formatter.date(from: tempDate)
+        let dateObj = dateFormatter2.date(from: tempString)
+        let dateObj2 = formatter.date(from: tempDate)
+        print("jobTime: \(String(describing: dateObj)), realTime: \(String(describing: dateObj2))")
         if (dateObj as! Date) <= (dateObj2 as! Date){
             let alert = UIAlertController(title: "Date has Passed", message: "Job start time must be atleast thirty minutes from right now.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -51,7 +54,7 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
             return
         } else {
             print("selectedTime: \(tempString)")
-            jobPost.startTime = tempString
+            jobPost.startTime = jobTime
             jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
             print(durString[durationPicker.selectedRow(inComponent: 0)])
             

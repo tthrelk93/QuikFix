@@ -280,6 +280,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     var jobsCompletedObj = [[String:Any]]()
     var tableViewData = [JobPost]()
     var upcomingJobsObj = [[String:Any]]()
+    var jobType = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         print("senderScreen = \(self.senderScreen)")
@@ -287,6 +288,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
             print("in poster")
             self.backButton.isHidden = false
             self.tabBar.isHidden = true
+            self.jobTypeSegment.isHidden = true
             Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -324,6 +326,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         }
                     }
                     print("im hereeee")
+                    if self.jobType == "jc"{
                     for tempDict in self.jobsCompletedObj{
                         let tempJob = JobPost()
                         tempJob.additInfo = (tempDict["additInfo"] as! String)
@@ -349,6 +352,60 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         }
 
                     }
+                    } else if self.jobType == "cl"{
+                        for tempDict in self.currentListingsObj{
+                            let tempJob = JobPost()
+                            tempJob.additInfo = (tempDict["additInfo"] as! String)
+                            tempJob.category1 = (tempDict["category1"] as! String)
+                            //tempJob.category2 = (tempDict["category2"] as! String)
+                            tempJob.posterName = (tempDict["posterName"] as! String)
+                            tempJob.date = (tempDict["date"] as! String)
+                            
+                            tempJob.payment = (tempDict["payment"] as! String)
+                            tempJob.startTime = (tempDict["startTime"] as! String)
+                            tempJob.jobDuration = tempDict["jobDuration"] as! String
+                            tempJob.jobID = (tempDict["jobID"] as! String)
+                            tempJob.posterID = (tempDict["posterID"] as! String)
+                            tempJob.completed = tempDict["completed"] as! Bool
+                            tempJob.workers = (tempDict["workers"] as! [String])
+                            self.tableViewData.append(tempJob)
+                            if self.calendarDict[tempJob.date!] != nil {
+                                var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                                tempJobArray.append(tempJob)
+                                self.calendarDict[tempJob.date!] = tempJobArray
+                            } else {
+                                self.calendarDict[tempJob.date!] = [tempJob]
+                            }
+                            
+                        }
+                    } else {
+                            for tempDict in self.upcomingJobsObj{
+                                let tempJob = JobPost()
+                                tempJob.additInfo = (tempDict["additInfo"] as! String)
+                                tempJob.category1 = (tempDict["category1"] as! String)
+                                //tempJob.category2 = (tempDict["category2"] as! String)
+                                tempJob.posterName = (tempDict["posterName"] as! String)
+                                tempJob.date = (tempDict["date"] as! String)
+                                
+                                tempJob.payment = (tempDict["payment"] as! String)
+                                tempJob.startTime = (tempDict["startTime"] as! String)
+                                tempJob.jobDuration = tempDict["jobDuration"] as! String
+                                tempJob.jobID = (tempDict["jobID"] as! String)
+                                tempJob.posterID = (tempDict["posterID"] as! String)
+                                tempJob.completed = tempDict["completed"] as! Bool
+                                tempJob.workers = (tempDict["workers"] as! [String])
+                                self.tableViewData.append(tempJob)
+                                if self.calendarDict[tempJob.date!] != nil {
+                                    var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                                    tempJobArray.append(tempJob)
+                                    self.calendarDict[tempJob.date!] = tempJobArray
+                                } else {
+                                    self.calendarDict[tempJob.date!] = [tempJob]
+                                }
+                                
+                            }
+                        }
+                    
                     for (key, _) in self.calendarDict{
                         self.datesArray.append(key)
                     }

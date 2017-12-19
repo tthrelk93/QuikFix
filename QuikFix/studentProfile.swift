@@ -162,7 +162,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if snap.key == "name"{
-                        self.nameLabel.text = snap.value as! String
+                        self.nameLabel.text = snap.value as? String
                         //self.editNameTextField.placeholder = snap.value as! String
                         
                     }
@@ -213,7 +213,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         
                         
                         
-                        self.cityLabel.text = city as! String
+                                self.cityLabel.text = city as String
                             }
                         })
                         
@@ -231,7 +231,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                     }
                         
                     else if snap.key == "gradYear"{
-                        self.gradYearLabel.text = snap.value as! String
+                        self.gradYearLabel.text = snap.value as? String
                        // self.editGradYearTextField.placeholder = snap.value as! String
                     }
                         
@@ -283,7 +283,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if snap.key == "name"{
-                            self.nameLabel.text = snap.value as! String
+                            self.nameLabel.text = snap.value as? String
                             //self.editNameTextField.placeholder = snap.value as! String
                             
                         }
@@ -340,7 +340,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         }
                             
                         else if snap.key == "gradYear"{
-                            self.gradYearLabel.text = snap.value as! String
+                            self.gradYearLabel.text = snap.value as? String
                            // self.editGradYearTextField.placeholder = snap.value as! String
                         }
                             

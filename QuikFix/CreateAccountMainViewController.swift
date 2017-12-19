@@ -80,7 +80,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                             print("promo: \(promo)")
                             for (key, val) in promo{
                                 if key == self.promoCodeTF.text{
-                                   var tempArray = val as! [String]
+                                    let tempArray = val as! [String]
                                     if tempArray.contains(Auth.auth().currentUser!.uid){
                                         let alert = UIAlertController(title: "Promo Code Reuse Error", message: "It appears that you have already used this promo code.", preferredStyle: UIAlertControllerStyle.alert)
                                         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))

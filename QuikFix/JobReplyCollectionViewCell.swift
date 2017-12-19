@@ -38,13 +38,13 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                 for snap in snapshots {
                     if self.jobArray.contains(snap.key){
                         var tempDict = snap.value as! [String:Any]
-                        var tempStudent = Student()
-                        tempStudent.pic = tempDict["pic"] as! String
-                        tempStudent.name = tempDict["name"] as! String
+                        let tempStudent = Student()
+                        tempStudent.pic = tempDict["pic"] as? String
+                        tempStudent.name = tempDict["name"] as? String
                         if tempDict["jobsCompleted"] != nil{
-                            tempStudent.jobsCompleted = tempDict["jobsCompleted"] as! [String]
+                            tempStudent.jobsCompleted = tempDict["jobsCompleted"] as? [String]
                         }
-                        tempStudent.studentID = tempDict["studentID"] as! String
+                        tempStudent.studentID = tempDict["studentID"] as? String
                         
                         self.studentArray.append(tempStudent)
                     }
@@ -152,7 +152,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                                 var tempArray = val as! [String]
                                 //var uploadDict = [String:Any]()
                                 
-                                var removeIndex = tempArray.index(of: studentID)
+                                let removeIndex = tempArray.index(of: studentID)
                                 tempArray.remove(at: removeIndex!)
                                 tempDict[key] = tempArray
                                 
@@ -187,9 +187,9 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                                     
                                     var uploadDict3 = [String:Any]()
                                     
-                                    if (String(describing:self.job.acceptedCount! as! Int + 1)) as! String == (String(describing:self.job.workerCount! as! Int)) as! String{
+                                    if (String(describing:self.job.acceptedCount! as! Int + 1)) == (String(describing:self.job.workerCount! as! Int)) {
                                         
-                                        self.acceptedWorkerLabel.text = "\(String(describing:(self.job.acceptedCount! as! Int) + 1) as! String)/\(String(describing:self.job.workerCount! as! Int) as! String) accepted student workers"
+                                        self.acceptedWorkerLabel.text = "\(String(describing:(self.job.acceptedCount! as! Int) + 1) )/\(String(describing:self.job.workerCount! as! Int) ) accepted student workers"
                                         
                                         uploadDict3["acceptedCount"] = (self.job.acceptedCount as! Int) + 1
                                         Database.database().reference().child("jobs").child(self.job.jobID!).updateChildValues(uploadDict3)
@@ -247,7 +247,7 @@ class JobReplyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate
                                 var tempArray = val as! [String]
                                 //var uploadDict = [String:Any]()
                                 
-                                var removeIndex = tempArray.index(of: studentID)
+                                let removeIndex = tempArray.index(of: studentID)
                                 tempArray.remove(at: removeIndex!)
                                 tempDict[key] = tempArray
                                 

@@ -301,9 +301,9 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             let snapshots = snapshot.children.allObjects as! [DataSnapshot]
             
             for snap in snapshots {
-                if snap.key as! String == "name"{
+                if snap.key == "name"{
                     self.posterName = snap.value as! String
-                    self.jobPost.posterName = snap.value as! String
+                    self.jobPost.posterName = snap.value as? String
                     break
                 }
             }

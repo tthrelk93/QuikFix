@@ -7,7 +7,7 @@ target 'QuikFix' do
 
   # Pods for QuikFix
 
-  pod 'Firebase/Core'
+pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
@@ -23,14 +23,16 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'UICircularProgressRing'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
+
 
   target 'QuikFixTests' do
     inherit! :search_paths
     # Pods for testing
 
-   pod 'Firebase/Core'
+pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'	
 pod 'Firebase/Storage'
@@ -46,8 +48,10 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'UICircularProgressRing'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
+
 
   end
 
@@ -55,7 +59,7 @@ pod 'Crashlytics', '~> 3.9.3'
     inherit! :search_paths
     # Pods for testing
 
-    pod 'Firebase/Core'
+pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
@@ -70,6 +74,7 @@ pod 'Stripe'
 pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
+pod 'UICircularProgressRing'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
 

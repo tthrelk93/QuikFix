@@ -245,7 +245,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             var ref = Database.database().reference().child("jobs").childByAutoId()
             values["posterName"] = self.tempPosterName
             values["posterID"] = Auth.auth().currentUser?.uid
-            
+            values["inProgress"] = false
             values["category1"] = jobPost.category1
         
             values["location"] = jobPost.location
@@ -365,7 +365,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             var ref = Database.database().reference().child("jobs").childByAutoId()
             values["posterName"] = self.tempPosterName
             values["posterID"] = Auth.auth().currentUser?.uid
-            
+            values["inProgress"] = false
             values["category1"] = self.jobPost.category1
             
             values["location"] = self.jobPost.location

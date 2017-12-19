@@ -27,13 +27,13 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                 for snap in snapshots {
                     if self.jobArray.contains(snap.key){
                         var tempDict = snap.value as! [String:Any]
-                        var tempStudent = Student()
-                        tempStudent.pic = tempDict["pic"] as! String
-                        tempStudent.name = tempDict["name"] as! String
+                        let tempStudent = Student()
+                        tempStudent.pic = tempDict["pic"] as? String
+                        tempStudent.name = tempDict["name"] as? String
                         if tempDict["jobsCompleted"] != nil{
-                        tempStudent.jobsCompleted = tempDict["jobsCompleted"] as! [String]
+                            tempStudent.jobsCompleted = tempDict["jobsCompleted"] as? [String]
                         }
-                        tempStudent.studentID = tempDict["studentID"] as! String
+                        tempStudent.studentID = tempDict["studentID"] as? String
                         
                         self.studentArray.append(tempStudent)
                     }
@@ -123,7 +123,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                                 var tempArray = val as! [String]
                                 //var uploadDict = [String:Any]()
                                 
-                                var removeIndex = tempArray.index(of: studentID)
+                                let removeIndex = tempArray.index(of: studentID)
                                 tempArray.remove(at: removeIndex!)
                                 tempDict[key] = tempArray
                                 
@@ -191,7 +191,7 @@ class SpecificResponseViewController: UIViewController, UICollectionViewDelegate
                             var tempArray = val as! [String]
                                 //var uploadDict = [String:Any]()
                                 
-                            var removeIndex = tempArray.index(of: studentID)
+                                let removeIndex = tempArray.index(of: studentID)
                                 tempArray.remove(at: removeIndex!)
                                 tempDict[key] = tempArray
                             

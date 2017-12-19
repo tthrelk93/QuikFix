@@ -29,6 +29,7 @@ class JobPoster: NSObject{
     var availableCredits: Int?
     var creditAmount: Int?
     var deviceToken: [String: Any]?
+    var expiredJobs: [String]?
     
     //var city: String?
     //var state: String?

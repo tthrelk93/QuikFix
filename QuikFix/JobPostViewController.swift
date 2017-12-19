@@ -47,12 +47,43 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
         Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let snapshots = snapshot.children.allObjects as! [DataSnapshot]
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMMM-dd-yyyy h:mm a"
+            //let triggerDate = dateFormatter.date(from: dateToFormat)
+            //print("tDate: \(triggerDate!)")
+            
+           
+            let today = Date()
             
             for snap in snapshots {
                 
                 var tempDict = snap.value as! [String:Any]
-                if (tempDict["acceptedCount"] as! Int) == (tempDict["workerCount"] as! Int) {
-                    
+                let trigger2TimeString = "\(String(describing: tempDict["date"]!)) \(String(describing: tempDict["startTime"]!))"
+                
+                let trigger2Date = dateFormatter.date(from: trigger2TimeString)
+                print("t2Date: \(trigger2Date!)")
+                
+                if (tempDict["acceptedCount"] as! Int) == (tempDict["workerCount"] as! Int) || today > trigger2Date!  {
+                    print("dont append job")
+                    if today > trigger2Date!{
+                        //send poster push notification asking if they would like to repost the job or scrap it
+                       
+                        var tempArray = [String]()
+                        for job in (tempDict["currentListings"] as! [String]){
+                            if job == (tempDict["jobID"] as! String){
+                                
+                            } else {
+                                tempArray.append(job)
+                            }
+                        }
+                        var tempArray2 = tempDict["expiredJobs"] as! [String]
+                        if tempArray2.count == 0 || tempArray2.isEmpty {
+                            tempArray2 = [tempDict["jobID"] as! String]
+                        } else {
+                            tempArray2.append(tempDict["jobID"] as! String)
+                        }
+                        Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings":tempArray, "expiredJobs": tempArray2])
+                    }
                 } else {
                     if tempDict["category1"] as! String == self.categoryType{
                         let tempJob = JobPost()
@@ -67,7 +98,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         tempPayString = "$\(tempPayDouble)"
                         tempJob.payment = tempPayString
                         tempJob.startTime = (tempDict["startTime"] as! String)
-                        tempJob.jobDuration = tempDict["jobDuration"] as! String
+                        tempJob.jobDuration = tempDict["jobDuration"] as? String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         //tempJob.paymentType = tempDict["paymentType"] as! Int
@@ -92,7 +123,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         tempJob.payment = tempPayString
                         print("studentPayment: \(tempPayString)")
                         tempJob.startTime = (tempDict["startTime"] as! String)
-                        tempJob.jobDuration = tempDict["jobDuration"] as! String
+                        tempJob.jobDuration = tempDict["jobDuration"] as? String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         //tempJob.paymentType = tempDict["paymentType"] as! Int
@@ -113,11 +144,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
             //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
             var convertedArray: [Date] = []
             
-            var dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMMM-dd-yyyy"
+            let dateFormatter2 = DateFormatter()
+            dateFormatter2.dateFormat = "MMMM-dd-yyyy"
             
             for dat in self.datesArray {
-                var date = dateFormatter.date(from: dat)
+                let date = dateFormatter2.date(from: dat)
                 convertedArray.append(date!)
             }
             
@@ -232,7 +263,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                var paymentVer = false
+              //  var paymentVer = false
                 
                 for snap in snapshots {
                     /*if snap.key == "paymentVerified"{
@@ -279,8 +310,8 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SingleJobSelected"{
             if let vc = segue.destination as? SingleJobPostViewController{
-                var tempString = self.selectedJob.payment?.substring(from: 1)
-                var tempInt = (tempString as! NSString).integerValue
+                let tempString = self.selectedJob.payment?.substring(from: 1)
+                let tempInt = (tempString! as NSString).integerValue
                 vc.jobID = self.selectedJobID
                 vc.posterID = self.selectedJob.posterID!
                 vc.categoryType = self.categoryType

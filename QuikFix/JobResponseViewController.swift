@@ -42,7 +42,7 @@ class JobResponseViewController: UIViewController, UICollectionViewDelegate, UIC
                     }
                 
                 }
-                for (key, val) in self.responseDict{
+                for (key, _) in self.responseDict{
                     self.jobIDArray.append(key)
                 }
                 Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -51,11 +51,11 @@ class JobResponseViewController: UIViewController, UICollectionViewDelegate, UIC
                         
                         for snap in snapshots {
                             if self.jobIDArray.contains(snap.key){
-                                var tempJob = JobPost()
-                                 var tempDict = snap.value as! [String:Any]
+                                let tempJob = JobPost()
+                                let tempDict = snap.value as! [String:Any]
                                 for (key, val) in tempDict{
                                     if key == "workerCount"{
-                                        var tempInt = val as! Int
+                                        let tempInt = val as! Int
                                        tempJob.setValue(tempInt, forKeyPath: key)
                                     } else {
                                     tempJob.setValue(val, forKeyPath: key)
@@ -212,7 +212,7 @@ class JobResponseViewController: UIViewController, UICollectionViewDelegate, UIC
         
 
         acceptString = String(describing:(job.acceptedCount! as! Int) + 1)
-        workerCountString = String(describing: job.workerCount! as! Int) as! String!
+        workerCountString = String(describing: job.workerCount! as! Int) as String!
         jobPlacementWorkerCountLabel.text = "\(acceptString)/\(workerCountString) student workers found to complete your job."
         jobOrderReadyView.isHidden = false
         self.jobsCollect.reloadData()

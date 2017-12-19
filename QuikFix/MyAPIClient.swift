@@ -55,10 +55,10 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         saveCard(stripeToken, email: email, name: name, completionHandler: completionHandler)
     }
     func saveCard(_ stripeToken: STPToken, email: String, name: String, completionHandler: @escaping (String?, Error?) -> ()) {
-        var custIDs: [cusID] = []
+        //var custIDs: [cusID] = []
         print("saveCArd")
         let url = self.baseURL.appendingPathComponent("user")
-        var params: [String: Any] = [
+        let params: [String: Any] = [
             "stripeToken": stripeToken,
             "name": name,
             "email": email
@@ -72,7 +72,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 //print("response: \(response)")
                 print(resData.result.value!)
                 self.returnID = resData.result.value!
-                completionHandler(self.returnID as? String, nil)
+                completionHandler(self.returnID, nil)
               
         }
     }
@@ -94,7 +94,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 }
                 print("stripeToken inside charge: \(self.stripeToken)")
         let url = self.baseURL.appendingPathComponent("charge")
-        var params: [String: Any] = [
+                let params: [String: Any] = [
             "amount": amount,
             "customer_id": self.stripeToken
                 ]
@@ -151,7 +151,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                             var containsJobs = false
                             var containsCompleted = false
-                            var upcomingArray = [String]()
+                            //var upcomingArray = [String]()
                             var tempJobArray = [String]()
                             var tempCompletedArray = [String]()
                             for snap in snapshots {

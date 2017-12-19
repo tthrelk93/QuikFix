@@ -27,19 +27,19 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     var customer = STPCustomer()
     @IBAction func savePressed(_ sender: Any) {
         if creditCardNumberTF.hasText && creditCardNumberTF.text?.count == 19 && expDate.hasText && expDate.text?.count == 5 && cvvTF.hasText && cvvTF.text?.count == 3 {
-            var cardParams = STPCardParams()
+            let cardParams = STPCardParams()
             cardParams.cvc = cvvTF.text
             
             let expMonth = expDate.text?.substring(to: 2)
             cardParams.expMonth = UInt(expMonth as! String)! //as! UInt
             
             let expYear = expDate.text?.substring(from: 3)
-            print("month: \(expMonth) year: \(expYear)")
+            print("month: \(String(describing: expMonth)) year: \(String(describing: expYear))")
             cardParams.expYear = UInt(expYear as! String)!
-            var cardNumb = creditCardNumberTF.text
+            let cardNumb = creditCardNumberTF.text
             
             cardParams.number = cardNumb
-            print("cardNumber: \(cardParams.number)")
+            print("cardNumber: \(String(describing: cardParams.number))")
             let sourceParams = STPSourceParams.cardParams(withCard: cardParams)
             STPAPIClient.shared().createSource(with: sourceParams, completion: { (source, error) in
                 
@@ -123,7 +123,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             tempPromo = self.randomString(length: 6)
                         }
                         values["posterID"] = Auth.auth().currentUser!.uid
-                        values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                        values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                         values["availableCredits"] = 0
                         values["upcomingJobs"] = self.poster.upcomingJobs
                         //values["experience"] = self.student.experience
@@ -199,7 +199,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                var paymentVer = false
+                //var paymentVer = false
                 
                 for snap in snapshots {
                     /*if snap.key == "paymentVerified"{
@@ -246,8 +246,8 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         //MyAPIClient.sharedClient.delegate = self
         MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.poster.email!, name: self.poster.name!){ responseObject, error in
             // use responseObject and error here
-            self.dataID = responseObject as! String
-            print("responseObject = \(responseObject!); error = \(error)")
+            self.dataID = responseObject!
+            print("responseObject = \(responseObject!); error = \(String(describing: error))")
             self.dismiss(animated: true)
             
             
@@ -297,7 +297,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             }
                             values["stripeToken"] = responseObject!
                             values["posterID"] = Auth.auth().currentUser!.uid
-                            values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                            values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                             values["availableCredits"] = 0
                             values["upcomingJobs"] = self.poster.upcomingJobs
                             //values["experience"] = self.student.experience
@@ -456,7 +456,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                         while self.existingPromoCodes.contains(tempPromo){
                             tempPromo = self.randomString(length: 6)
                         }
-                        values["promoCode"] = ([tempPromo: [""]] as! [String:Any])
+                        values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                         values["availableCredits"] = 0
                         values["deviceToken"] = ""
                         
@@ -530,8 +530,8 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if let tempDict = snap.value as? [String:Any]{
-                        var promo = (tempDict["promoCode"] as! [String:Any])
-                        for (key, val) in promo{
+                        let promo = (tempDict["promoCode"] as! [String:Any])
+                        for (key, _) in promo{
                             self.existingPromoCodes.append(key)
                         }
                     }

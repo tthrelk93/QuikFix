@@ -289,7 +289,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         timeLabel.text = job.startTime!
         durationLabel.text = "\(job.jobDuration!) hour estimated completion time"
         totalCostLabel.text = "\(job.payment!)"
-        detailsTextView.text = job.additInfo!
+       // detailsTextView.text = job.additInfo!
        /* posterLabel.textAlignment = .center
         dateLabel.textAlignment = .center
         timeLabel.textAlignment = .center

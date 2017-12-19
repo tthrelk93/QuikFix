@@ -27,7 +27,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
     @IBAction func currentListingsButtonPressed(_ sender: Any) {
-        for tempDict in self.currentListingsObj{
+       /* for tempDict in self.currentListingsObj{
             
             let tempJob = JobPost()
             tempJob.additInfo = (tempDict["additInfo"] as! String)
@@ -82,16 +82,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             // again convert your date to string
             let dateString = formatter.string(from: yourDate!)
             self.datesArray.append(dateString)
-        }
+        }*/
+        self.jobType = "cl"
+        performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
         
         
         
-        self.jobHistoryTableView.delegate = self
-        self.jobHistoryTableView.dataSource = self
-        DispatchQueue.main.async{
+        //self.jobHistoryTableView.delegate = self
+        //self.jobHistoryTableView.dataSource = self
+        /*DispatchQueue.main.async{
             self.jobHistoryTableView.reloadData()
             self.currentListingsView.isHidden = false
-        }
+        }*/
         
         
         
@@ -103,6 +105,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     @IBAction func closePressed(_ sender: Any) {
         currentListingsView.isHidden = true
     }
+    var jobType = String()
     @IBOutlet weak var currentListingsButton: UIButton!
     var promo = String()
     @IBAction func okayPressed(_ sender: Any) {
@@ -124,6 +127,11 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
 
     }
+    
+    
+    @IBOutlet weak var infoViewPos2: UIView!
+    
+    
     @IBOutlet weak var sharePromo: UIButton!
     var extended = false
     fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
@@ -229,7 +237,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             upcomingJobsLabel.isHidden = false
             currentListingsCount.isHidden = false
             jobsCompletedCount.isHidden = false
-            sepLineVertical.isHidden = false
+           // sepLineVertical.isHidden = false
         }
         
     }
@@ -241,7 +249,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         upcomingJobsLabel.isHidden = false
         currentListingsCount.isHidden = false
         jobsCompletedCount.isHidden = false
-        sepLineVertical.isHidden = false
+        //sepLineVertical.isHidden = false
+        self.jobType = "jc"
         performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
         
     }
@@ -258,7 +267,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         upcomingJobsLabel.isHidden = false
         currentListingsCount.isHidden = false
         jobsCompletedCount.isHidden = false
-        sepLineVertical.isHidden = false
+       // sepLineVertical.isHidden = false
     }
     @IBOutlet weak var dealsButton: UIButton!
     
@@ -336,7 +345,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }
     
     @IBAction func upcomingJobsPressed(_ sender: Any) {
-        calendarDict.removeAll()
+       /* calendarDict.removeAll()
         datesArray.removeAll()
         for tempDict in self.upcomingJobsObj{
             let tempJob = JobPost()
@@ -392,32 +401,48 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             // again convert your date to string
             let dateString = formatter.string(from: yourDate!)
             self.datesArray.append(dateString)
-        }
+        }*/
         
-        
-        
-        self.jobHistoryTableView.delegate = self
-        self.jobHistoryTableView.dataSource = self
-        DispatchQueue.main.async{
+        self.jobType = "uj"
+        performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
+        //self.jobHistoryTableView.delegate = self
+        //self.jobHistoryTableView.dataSource = self
+        /*DispatchQueue.main.async{
             self.jobHistoryTableView.reloadData()
             self.currentListingsView.isHidden = false
-        }
+        }*/
         
     }
+    
+    //fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+    
+    
     @IBOutlet weak var upcomingJobsButton: UIButton!
     @IBOutlet weak var promoCodeView: UIView!
     
+    @IBOutlet weak var jobInProgressInfoView: UIView!
+    @IBOutlet weak var normalInfoView: UIView!
     @IBOutlet weak var sepLineVertical: UIView!
     @IBOutlet weak var promoCode: UILabel!
     
     @IBOutlet weak var metalBar: UIImageView!
     @IBOutlet weak var hideMenuButton: UIButton!
+    var inProgressObj = [[String:Any]]()
+    
     var mToken = String()
     var upcomingJobs = [String]()
     var upcomingJobsObj = [[String:Any]]()
     //let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
+    var jobsCompleted = [String]()
+   // var jobsCompleted
+    
+    var infoBounds = CGRect()
+    var infoOrigin = CGPoint()
     override func viewDidLoad() {
         super.viewDidLoad()
+        infoBounds = normalInfoView.bounds
+        infoOrigin = normalInfoView.frame.origin
+        sepLineVertical.isHidden = true
         self.promoTextButton.setTitleColor(qfGreen, for: .normal)
         self.myJobsTextButton.setTitleColor(qfGreen, for: .normal)
         self.dealsTextButton.setTitleColor(qfGreen, for: .normal)
@@ -475,6 +500,9 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
+                    if snap.key == "jobsCompleted"{
+                        self.jobsCompleted = snap.value as! [String]
+                    }
                    
                     if snap.key == "name"{
                         //(self.navigationBar as UINavigationBar). //
@@ -502,6 +530,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     }
                     else if snap.key == "upcomingJobs"{
                         self.upcomingJobs = snap.value as! [String]
+                        
                         self.jobsCompletedCount.text = String(describing: (snap.value as! [String]).count)
                         
                         
@@ -528,8 +557,28 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         if self.currentListings.contains(snap.key){
                             self.currentListingsObj.append(snap.value as! [String:Any])
                         } else if self.upcomingJobs.contains(snap.key){
+                            
+                            var tempJob = snap.value as! [String:Any]
+                            
+                            if tempJob["inProgress"] as! Bool == true{
+                                self.containsInProgress = true
+                                self.inProgressObj.append(tempJob)
+                            }
                             self.upcomingJobsObj.append(snap.value as! [String:Any])
+                            
+                           
+                        } else if self.jobsCompleted.contains(snap.key){
+                            //self.jobsCompleted
                         }
+                    }
+                    if self.containsInProgress == true{
+                        UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                            self.normalInfoView.bounds = self.infoViewPos2.bounds
+                            self.normalInfoView.frame.origin = self.infoViewPos2.frame.origin
+                      //  self.normalInfoView.bounds = CGRect(origin: CGPoint(x: self.normalInfoView.frame.origin.x, y: (self.normalInfoView.frame.origin.y - 60.0)), size: self.normalInfoView.bounds.size)
+                        self.jobInProgressInfoView.isHidden = false
+                            self.inProgressCount.text = String(describing: self.inProgressObj.count)
+                    })
                     }
                 }
                 
@@ -544,11 +593,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
 
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func inProgressPressed(_ sender: Any) {
+    }
+    
+    
+    var containsInProgress = false
     var jobsForDate = [JobPost]()
     var tableViewData = [JobPost]()
     var calendarDict = [String:Any]()
     var datesArray = [String]()
     
+    @IBOutlet weak var inProgressCount: UILabel!
     
     @IBOutlet weak var jobHistoryTableView: UITableView!
     @available(iOS 2.0, *)
@@ -646,6 +702,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         if segue.identifier == "MyJobsToJobLog"{
                 if let vc = segue.destination as? JobHistoryViewController{
                     vc.senderScreen = "poster"
+                    vc.jobType = self.jobType
                 }
             }
         

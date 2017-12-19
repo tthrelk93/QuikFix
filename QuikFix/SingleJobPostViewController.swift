@@ -26,21 +26,21 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     
     // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
     // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
-    let appleMerchantID: String? = nil
+   // let appleMerchantID: String? = nil
     
     // These values will be shown to the user when they purchase with Apple Pay.
     let companyName = "QuikFix"
     let paymentCurrency = "usd"
-    
+    var times = ["1","2","3","4","5","6","7","8","9","10","11","12"]
     var paymentContext: STPPaymentContext?
     
     var theme: STPTheme?
-    var paymentRow: CheckoutRowView?
+    //var paymentRow: CheckoutRowView?
     //let shippingRow: CheckoutRowView
-    var totalRow: CheckoutRowView?
-    var buyButton: BuyButton?
-    let rowHeight: CGFloat = 44
-    let productImage = UILabel()
+    //var totalRow: CheckoutRowView?
+    //var buyButton: BuyButton?
+    //let rowHeight: CGFloat = 44
+    //let productImage = UILabel()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     var numberFormatter: NumberFormatter?
     //let shippingString: String
@@ -71,8 +71,14 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         
     
     }
+    
+    func countDownDuration(){
+        print("hey : \(self.jobID)")
+        Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": true])
+    }
     //var sendJob = [String:Any]()
     func chargePoster(){
+       
         Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -80,11 +86,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 for snap in snapshots {
                     if snap.key == self.jobID{
                         var sendJob = snap.value as! [String:Any]
-                        sendJob["jobID"] = snap.key as! String
+                        sendJob["jobID"] = snap.key
                         print("charge the poster")
-                        var tempCharge = ((self.chargeAmount as! NSString).intValue * 100)
+                        let tempCharge = ((self.chargeAmount as NSString).intValue * 100)
                         print("charge in cents: \(tempCharge)")
                         MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob)
+                        Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": false])
                     }
                 }
             }
@@ -96,93 +103,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     //var product = String()
     var price = Int()
     let settingsVC = SettingsViewController()
-    
-    
-   /* init(product: String, price: Int, settings: Settings, jobID: String, posterID: String, categoryType: String, job1: JobPost) {
-        print("init")
-        var settings = settingsVC.settings
-        self.jobID = jobID
-        self.posterID = posterID
-        self.categoryType = categoryType
-        self.job1 = job1
-        let stripePublishableKey = self.stripePublishableKey
-        let backendBaseURL = self.backendBaseURL
-        
-        assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
-        assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
-        
-        self.product = product
-        self.productImage.text = product
-        self.theme = settings.theme
-        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
-        
-        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
-        let config = STPPaymentConfiguration.shared()
-        config.publishableKey = self.stripePublishableKey
-        config.appleMerchantIdentifier = self.appleMerchantID
-        config.companyName = self.companyName
-        config.requiredBillingAddressFields = settings.requiredBillingAddressFields
-        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
-        // config.shippingType = settings.shippingType
-        config.additionalPaymentMethods = settings.additionalPaymentMethods
-        
-        
-        
-        let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
-        let paymentContext = STPPaymentContext(customerContext: customerContext,
-                                               configuration: config,
-                                               theme: settings.theme)
-        let userInformation = STPUserInformation()
-        
-        paymentContext.prefilledInformation = userInformation
-        
-        paymentContext.paymentAmount = price
-        paymentContext.paymentCurrency = self.paymentCurrency
-        
-        let paymentSelectionFooter = PaymentContextFooterView(text: "You can add custom footer views to the payment selection screen.")
-        paymentSelectionFooter.theme = settings.theme
-        
-        //paymentContext.paymentMethodsViewControllerFooterView
-        paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
-        
-        let addCardFooter = PaymentContextFooterView(text: "You can add custom footer views to the add card screen.")
-        addCardFooter.theme = settings.theme
-        paymentContext.addCardViewControllerFooterView = addCardFooter
-        
-        self.paymentContext = paymentContext
-        
-        //self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
-                                          theme: settings.theme)
-        //var shippingString = "Contact"
-        /*if config.requiredShippingAddressFields.contains(.postalAddress) {
-         shippingString = config.shippingType == .shipping ? "Shipping" : "Delivery"
-         }
-         self.shippingString = shippingString
-         self.shippingRow = CheckoutRowView(title: self.shippingString,
-         detail: "Enter \(self.shippingString) Info",
-         theme: settings.theme)*/
-        //self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
-                                        theme: settings.theme)
-        self.buyButton = BuyButton(enabled: true, theme: settings.theme)
-        var localeComponents: [String: String] = [
-            NSLocale.Key.currencyCode.rawValue: self.paymentCurrency,
-            ]
-        localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
-        let localeID = NSLocale.localeIdentifier(fromComponents: localeComponents)
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: localeID)
-        numberFormatter.numberStyle = .currency
-        numberFormatter.usesGroupingSeparator = true
-        //self.numberFormatter = numberFormatter
-        super.init(nibName: nil, bundle: nil)
-        self.paymentContext.delegate = self
-        paymentContext.hostViewController = self
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }*/
+
     var containsWorkers = false
     func workerInJob(){
         //self.workerInJobAlready = false
@@ -191,12 +112,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                let tempDict = snapshot.value as! [String:Any]
+                //let tempDict = snapshot.value as! [String:Any]
                 
                 for snap in snapshots{
                     if snap.key == "workers"{
                         self.containsWorkers = true
-                        var tempArray = snap.value as! [String]
+                        let tempArray = snap.value as! [String]
                         if tempArray.contains((Auth.auth().currentUser!.uid)){
                             
                             //self.workerInJobAlready = true
@@ -297,32 +218,39 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                     
                                                     if containsWorkers == false{
                                                         var uploadDict = [String:Any]()
-                                                        uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as! Any)
+                                                        uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as Any)
                                                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                                     }
                                                 }
                                                 self.applySuccessView.isHidden = true
-                                                var date = self.job1.date!
+                                                let date = self.job1.date!
                                                 var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
-                                                var timeHours = timeComp[0]
+                                                let timeHours = timeComp[0]
                                                 print("timeHours: \(timeHours)")
-                                                var timeHoursInt = Int(timeHours)
-                                                var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
-                                                var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                                let timeHoursInt = Int(timeHours)
+                                                let triggerTime = timeHoursInt! + (Int(self.job1.jobDuration!)!)
+                                                let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
                                                 print("triggerTime: \(triggerTimeString)")
-                                                var dateToFormat = "\(date) \(triggerTimeString)"
+                                                let dateToFormat = "\(date) \(triggerTimeString)"
+                                                
+                                                let trigger2TimeString = "\(self.job1.date!) \(self.job1.startTime!)"
                                                 
                                                 
-                                                
-                                                var dateFormatter = DateFormatter()
+                                                let dateFormatter = DateFormatter()
                                                 dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
                                                 let triggerDate = dateFormatter.date(from: dateToFormat)
+                                                let trigger2Date = dateFormatter.date(from: trigger2TimeString)
+                                                let timer2 = Timer(fireAt: trigger2Date!, interval: 0, target: self, selector: #selector(self.countDownDuration), userInfo: nil, repeats: false)
+                                                RunLoop.main.add(timer2, forMode: RunLoopMode.commonModes)
                                                 
                                                 //MyAPIClient.sharedClient.completeCharge(amount: 10,
                                                 // poster: self.posterID)
                                                 
                                                 let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
                                                 RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                               // let dateFormatter2 = "MMMM-dd-yyyy"
+                                               // let triggerDate2 = dateFormatter.dateFrom
+                                            
                                                 self.performSegue(withIdentifier: "JobAcceptedBackToProfile", sender: self)
                                                 
                                             })
@@ -430,26 +358,42 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                         
                                         if containsWorkers == false{
                                             var uploadDict = [String:Any]()
-                                            uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as! Any)
+                                            uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as Any)
                                             Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                         }
                                     }
                                     self.applySuccessView.isHidden = true
-                                    var date = self.job1.date!
+                                    let date = self.job1.date!
                                     var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
-                                    var timeHours = timeComp[0]
+                                    let timeHours = timeComp[0]
                                     print("timeHours: \(timeHours)")
-                                    var timeHoursInt = Int(timeHours)
-                                    var triggerTime = (timeHoursInt as! Int) + (Int(self.job1.jobDuration!) as! Int)
-                                    var triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                    let timeHoursInt = (timeHours as NSString).integerValue
+                                    let trigger1Time = timeHoursInt + (Int(self.job1.jobDuration!)!)
+                                    var triggerTime = Int()
+                                    if trigger1Time > 12{
+                                        triggerTime = trigger1Time % 12
+                                    } else {
+                                        triggerTime = trigger1Time
+                                    }
+                                    print("modTime:\(triggerTime)")
+                                    let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
                                     print("triggerTime: \(triggerTimeString)")
-                                    var dateToFormat = "\(date) \(triggerTimeString)"
+                                    let dateToFormat = "\(date) \(triggerTimeString)"
+                                    print("dataToFormat: \(dateToFormat)")
                                     
                                     
                                     
-                                    var dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMMM-dd-yyyy h:mm a"
                                     let triggerDate = dateFormatter.date(from: dateToFormat)
+                                    print("tDate: \(triggerDate!)")
+                                    
+                                    let trigger2TimeString = "\(self.job1.date!) \(self.job1.startTime!)"
+                                    
+                                    let trigger2Date = dateFormatter.date(from: trigger2TimeString)
+                                    print("t2Date: \(trigger2Date!)")
+                                    let timer2 = Timer(fireAt: trigger2Date!, interval: 0, target: self, selector: #selector(self.countDownDuration), userInfo: nil, repeats: false)
+                                    RunLoop.main.add(timer2, forMode: RunLoopMode.commonModes)
                                     
                                     //MyAPIClient.sharedClient.completeCharge(amount: 10,
                                     // poster: self.posterID)
@@ -480,104 +424,42 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     var posterID = String()
     var workerInJobAlready = false
     var chargeAmount = String()
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         
-       // self.navigationController?.pushViewController(self, animated: false)
-        var settings = settingsVC.settings
+        // self.navigationController?.pushViewController(self, animated: false)
+        let settings = settingsVC.settings
         //self.jobID = jobID
         //self.posterID = posterID
         //self.categoryType = categoryType
         //self.job1 = job1
-        let stripePublishableKey = self.stripePublishableKey
-        let backendBaseURL = self.backendBaseURL
+        //let stripePublishableKey = self.stripePublishableKey
+        //let backendBaseURL = self.backendBaseURL
         
-        assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
-        assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
+        // assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
+        //assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
         
         //self.product = product
-        self.productImage.text = self.product
+        //self.productImage.text = self.product
         self.theme = settings.theme
         
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
-        let config = STPPaymentConfiguration.shared()
-        //config.publishableKey = self.stripePublishableKey
-        //config.appleMerchantIdentifier = self.appleMerchantID
-        //config.companyName = self.companyName
-        //config.requiredBillingAddressFields = settings.requiredBillingAddressFields
-        //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
-        // config.shippingType = settings.shippingType
-        //config.additionalPaymentMethods = settings.additionalPaymentMethods
+        //let config = STPPaymentConfiguration.shared()
         
         
-       // STPCustomerContext(
-        
-        /*let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
-        let paymentContext = STPPaymentContext(customerContext: customerContext,
-                                               configuration: config,
-                                               theme: settings.theme)
-        let userInformation = STPUserInformation()
-        
-        paymentContext.prefilledInformation = userInformation
-        
-        paymentContext.paymentAmount = price
-        paymentContext.paymentCurrency = self.paymentCurrency
-        
-        let paymentSelectionFooter = PaymentContextFooterView(text: "You can add custom footer views to the payment selection screen.")
-        paymentSelectionFooter.theme = settings.theme
-        
-        //paymentContext.paymentMethodsViewControllerFooterView
-        paymentContext.paymentMethodsViewControllerFooterView = paymentSelectionFooter
-        
-        let addCardFooter = PaymentContextFooterView(text: "You can add custom footer views to the add card screen.")
-        addCardFooter.theme = settings.theme
-        paymentContext.addCardViewControllerFooterView = addCardFooter
-        
-        self.paymentContext = paymentContext
-        
-        //self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
-                                          //theme: settings.theme)
-        //var shippingString = "Contact"
-        /*if config.requiredShippingAddressFields.contains(.postalAddress) {
-         shippingString = config.shippingType == .shipping ? "Shipping" : "Delivery"
-         }
-         self.shippingString = shippingString
-         self.shippingRow = CheckoutRowView(title: self.shippingString,
-         detail: "Enter \(self.shippingString) Info",
-         theme: settings.theme)*/
-        //self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
-                                       // theme: settings.theme)
-        self.buyButton = BuyButton(enabled: true, theme: settings.theme)
-        var localeComponents: [String: String] = [
-            NSLocale.Key.currencyCode.rawValue: self.paymentCurrency,
-            ]
-        localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
-        let localeID = NSLocale.localeIdentifier(fromComponents: localeComponents)
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: localeID)
-        numberFormatter.numberStyle = .currency
-        numberFormatter.usesGroupingSeparator = true
-        //self.numberFormatter = numberFormatter
-        //super.init(nibName: nil, bundle: nil)
-        self.paymentContext?.delegate = self
-        paymentContext.hostViewController = self*/
-     
         posterImage.layer.cornerRadius = posterImage.frame.width/2
         posterImage.clipsToBounds = true
         shadowView.dropShadow()
         
-        
-        
-        Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("jobs").child(job1.jobID!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 let tempDict = snapshot.value as! [String:Any]
                 
                 for snap in snapshots{
                     if snap.key == "workers"{
-                        var tempArray = snap.value as! [String]
+                        let tempArray = snap.value as! [String]
                         if tempArray.contains((Auth.auth().currentUser!.uid)){
                             self.workerInJobAlready = true
                         }
@@ -591,7 +473,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                         tempPayString = "$\(tempPayDouble)"
                         self.rateLabel.text = tempPayString
                         
-                       // self.rateLabel.text = tempPayString
+                        // self.rateLabel.text = tempPayString
                     } else if snap.key == "startTime"{
                         self.timeLabel.text = (snap.value as! String)
                     }else if snap.key == "additInfo"{
@@ -600,11 +482,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     } else if snap.key == "posterID"{
                         self.posterID = snap.value as! String
                     } else if snap.key == "date"{
-                        self.dateLabel.text = snap.value as! String
+                        self.dateLabel.text = snap.value as? String
                     } else if snap.key == "jobDuration"{
                         self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
                     } else if snap.key == "category1"{
-                        self.categoryText.text = snap.value as! String
+                        self.categoryText.text = snap.value as? String
                     }
                     
                 }
@@ -627,9 +509,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                         }
                         
                     } else if snap.key == "name"{
-                        self.posterName.text = snap.value as! String
+                        self.posterName.text = snap.value as? String
                     } else if snap.key == "responses"{
-                        var tempDict = snap.value as! [String: Any]
+                        let tempDict = snap.value as! [String: Any]
                         
                         for (key, val) in tempDict{
                             if key == self.jobID{
@@ -645,13 +527,130 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     } else {
                         self.studentHasAlreadyApplied = true
                     }
-
+                    
                 }
             }
             
         })
+        
 
+    }
+    /*override func viewDidAppear(_ animated: Bool) {
+        
+        // self.navigationController?.pushViewController(self, animated: false)
+        let settings = settingsVC.settings
+        //self.jobID = jobID
+        //self.posterID = posterID
+        //self.categoryType = categoryType
+        //self.job1 = job1
+        //let stripePublishableKey = self.stripePublishableKey
+        //let backendBaseURL = self.backendBaseURL
+        
+        // assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
+        //assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
+        
+        //self.product = product
+        //self.productImage.text = self.product
+        self.theme = settings.theme
+        
+        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
+        
+        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
+        //let config = STPPaymentConfiguration.shared()
+        
+        
+        posterImage.layer.cornerRadius = posterImage.frame.width/2
+        posterImage.clipsToBounds = true
+        shadowView.dropShadow()
+        
+        
+        
+        Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                let tempDict = snapshot.value as! [String:Any]
+                
+                for snap in snapshots{
+                    if snap.key == "workers"{
+                        let tempArray = snap.value as! [String]
+                        if tempArray.contains((Auth.auth().currentUser!.uid)){
+                            self.workerInJobAlready = true
+                        }
+                    }
+                    
+                    if snap.key == "payment"{
+                        var tempPayString = snap.value as! String
+                        self.chargeAmount = tempPayString.substring(from: 1)
+                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                        tempPayString = "$\(tempPayDouble)"
+                        self.rateLabel.text = tempPayString
+                        
+                        // self.rateLabel.text = tempPayString
+                    } else if snap.key == "startTime"{
+                        self.timeLabel.text = (snap.value as! String)
+                    }else if snap.key == "additInfo"{
+                        self.detailsTextView.text = snap.value as! String
+                        
+                    } else if snap.key == "posterID"{
+                        self.posterID = snap.value as! String
+                    } else if snap.key == "date"{
+                        self.dateLabel.text = snap.value as? String
+                    } else if snap.key == "jobDuration"{
+                        self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
+                    } else if snap.key == "category1"{
+                        self.categoryText.text = snap.value as? String
+                    }
+                    
+                }
+                
+            }
+            
+        })
+        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    var tempArray = [String]()
+                    if snap.key == "address"{
+                        self.addressLabel.text = (snap.value as! [String]).first
+                    } else if snap.key == "pic"{
+                        if let messageImageUrl = URL(string: snap.value as! String) {
+                            
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                
+                                self.posterImage.image = UIImage(data: imageData as Data) }
+                        }
+                        
+                    } else if snap.key == "name"{
+                        self.posterName.text = snap.value as? String
+                    } else if snap.key == "responses"{
+                        let tempDict = snap.value as! [String: Any]
+                        
+                        for (key, val) in tempDict{
+                            if key == self.jobID{
+                                tempArray = val as! [String]
+                            }
+                        }
+                        
+                    }
+                    if tempArray.isEmpty{
+                        self.studentHasAlreadyApplied = false
+                    } else if tempArray.contains((Auth.auth().currentUser?.uid)!) == false{
+                        self.studentHasAlreadyApplied = false
+                    } else {
+                        self.studentHasAlreadyApplied = true
+                    }
+                    
+                }
+            }
+            
+        })
+        
 
+    }*/
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
 
         // Do any additional setup after loading the view.
     }
@@ -691,12 +690,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     print("paymentInProgress")
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
-                    self.buyButton?.alpha = 0
+                   // self.buyButton?.alpha = 0
                 }
                 else {
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
-                    self.buyButton?.alpha = 1
+                    //self.buyButton?.alpha = 1
                 }
             }, completion: nil)
         }
@@ -729,12 +728,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         //self.paymentRow.loading = paymentContext.loading
         print("paymentContextDidChange")
-        if let paymentMethod = paymentContext.selectedPaymentMethod {
+       /* if let paymentMethod = paymentContext.selectedPaymentMethod {
             //self.paymentRow.detail = paymentMethod.label
         }
         else {
             //self.paymentRow.detail = "Select Payment"
-        }
+        }*/
         /*if let shippingMethod = paymentContext.selectedShippingMethod {
          self.shippingRow.detail = shippingMethod.label
          }
