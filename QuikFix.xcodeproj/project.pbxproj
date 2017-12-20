@@ -21,6 +21,7 @@
 		31CE1FF41FDCB64400B783CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF31FDCB64400B783CF /* UIKit.framework */; };
 		31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF51FDCB65500B783CF /* libc++.tbd */; };
 		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
+		31F6A5801FEB060200D30746 /* SingleJobPostViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */; };
 		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
 		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
 		3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */; };
@@ -120,7 +121,9 @@
 		31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		31CE1FF31FDCB64400B783CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		31CE1FF51FDCB65500B783CF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = /Users/tthrelk/Documents/QuikFix/QuikFix/Main.storyboard; sourceTree = "<absolute>"; };
+		31F6A5811FEB060200D30746 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SingleJobPostViewController.storyboard; sourceTree = "<group>"; };
+		31F6A5841FEB062900D30746 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SingleJobPostViewController.strings; sourceTree = "<group>"; };
 		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobTypePickerViewController.swift; sourceTree = "<group>"; };
 		3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleJobPostViewController.swift; sourceTree = "<group>"; };
@@ -346,6 +349,7 @@
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
 				31D994DC1FD0B6070038C9C0 /* Main.storyboard */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
+				31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
 				31220A261FE19780003DCC57 /* GoogleService-Info.plist */,
 				3BB8CC7C1F71A436002EAEF3 /* Cells */,
@@ -591,6 +595,7 @@
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
+				31F6A5801FEB060200D30746 /* SingleJobPostViewController.storyboard in Resources */,
 				314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
@@ -972,6 +977,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				31F6A5811FEB060200D30746 /* Base */,
+				31F6A5841FEB062900D30746 /* en */,
+			);
+			name = SingleJobPostViewController.storyboard;
+			path = /Users/tthrelk/Documents/QuikFix/QuikFix;
+			sourceTree = "<absolute>";
+		};
 		3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

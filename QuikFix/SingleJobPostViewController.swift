@@ -22,7 +22,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
     // the instructions (don't worry, it's free). Replace nil on the line below with your
     // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
-    let backendBaseURL: String? = "https://quikfix123.herokuapp.com"
+    let backendBaseURL = "https://quikfix123.herokuapp.com"
     
     // 3) Optionally, to enable Apple Pay, follow the instructions at https://stripe.com/docs/mobile/apple-pay
     // to create an Apple Merchant ID. Replace nil on the line below with it (it looks like merchant.com.yourappname).
@@ -45,23 +45,23 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     var numberFormatter: NumberFormatter?
     //let shippingString: String
     var product = ""
-    @IBOutlet weak var posterImage: UIImageView!
+    /*@IBOutlet weak var posterImage: UIImageView!
     
-    @IBOutlet weak var categoryLabel: UILabel!
+   @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var categoryText: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var posterCity: UILabel!
-    @IBOutlet weak var posterName: UILabel!
+    @IBOutlet weak var posterName: UILabel!*/
     var job1 = JobPost()
     @IBAction func backPressed(_ sender: Any) {
         performSegue(withIdentifier: "SingleJobToJobPosts", sender: self)
     }
     @IBOutlet weak var applySuccessView: UIView!
    
-    @IBOutlet weak var shadowView: UIView!
+    //@IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
         print("apply pressed")
         workerInJob()
@@ -124,7 +124,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             print("already in job")
                         } else {
                             print("sup, not in job")
-                                self.applySuccessView.isHidden = false
+                                ////self.applySuccessView.isHidden = false
                                 print("posterID: \(self.posterID)")
                             Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -362,7 +362,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                             Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                         }
                                     }
-                                    self.applySuccessView.isHidden = true
+                                    //self.applySuccessView.isHidden = true
                                     let date = self.job1.date!
                                     var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
                                     let timeHours = timeComp[0]
@@ -427,7 +427,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     override func viewWillAppear(_ animated: Bool) {
         
         // self.navigationController?.pushViewController(self, animated: false)
-        let settings = settingsVC.settings
+        //let settings = settingsVC.settings
         //self.jobID = jobID
         //self.posterID = posterID
         //self.categoryType = categoryType
@@ -440,7 +440,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         
         //self.product = product
         //self.productImage.text = self.product
-        self.theme = settings.theme
+       // self.theme = settings.theme
         
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
@@ -448,53 +448,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         //let config = STPPaymentConfiguration.shared()
         
         
-        posterImage.layer.cornerRadius = posterImage.frame.width/2
-        posterImage.clipsToBounds = true
-        shadowView.dropShadow()
+        //posterImage.layer.cornerRadius = posterImage.frame.width/2
+        //posterImage.clipsToBounds = true
+        //shadowView.dropShadow()
         
-        Database.database().reference().child("jobs").child(job1.jobID!).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                let tempDict = snapshot.value as! [String:Any]
-                
-                for snap in snapshots{
-                    if snap.key == "workers"{
-                        let tempArray = snap.value as! [String]
-                        if tempArray.contains((Auth.auth().currentUser!.uid)){
-                            self.workerInJobAlready = true
-                        }
-                    }
-                    
-                    if snap.key == "payment"{
-                        var tempPayString = snap.value as! String
-                        self.chargeAmount = tempPayString.substring(from: 1)
-                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
-                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
-                        tempPayString = "$\(tempPayDouble)"
-                        self.rateLabel.text = tempPayString
-                        
-                        // self.rateLabel.text = tempPayString
-                    } else if snap.key == "startTime"{
-                        self.timeLabel.text = (snap.value as! String)
-                    }else if snap.key == "additInfo"{
-                        self.detailsTextView.text = snap.value as! String
-                        
-                    } else if snap.key == "posterID"{
-                        self.posterID = snap.value as! String
-                    } else if snap.key == "date"{
-                        self.dateLabel.text = snap.value as? String
-                    } else if snap.key == "jobDuration"{
-                        self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
-                    } else if snap.key == "category1"{
-                        self.categoryText.text = snap.value as? String
-                    }
-                    
-                }
-                
-            }
-            
-        })
-        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
+        /*Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     var tempArray = [String]()
@@ -505,7 +464,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                 
-                                self.posterImage.image = UIImage(data: imageData as Data) }
+                                self.posterImage.image = UIImage(data: imageData as Data)
+                                
+                            }
                         }
                         
                     } else if snap.key == "name"{
@@ -531,7 +492,8 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 }
             }
             
-        })
+        })*/
+        
         
 
     }

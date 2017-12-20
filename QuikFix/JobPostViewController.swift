@@ -35,15 +35,20 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     @IBOutlet weak var tabBar: UITabBar!
-    
+    var currentListings: [String]?
+    var expiredJobs: [String]?
     var categoryType = String()
         @IBOutlet weak var calendarTableView: UITableView!
     
     //var dGroup = DispatchGroup()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBar.delegate = self
+        
        
-        tabBar.delegate = self
+            
+       
+        
         Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let snapshots = snapshot.children.allObjects as! [DataSnapshot]
@@ -54,37 +59,52 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
             
            
             let today = Date()
+           
+            
             
             for snap in snapshots {
                 
                 var tempDict = snap.value as! [String:Any]
+                if self.currentListings != nil{
+                    self.currentListings!.removeAll()
+                }
+                Database.database().reference().child("jobPosters").child((tempDict["posterID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    let snapshots1 = snapshot.children.allObjects as! [DataSnapshot]
+                    for snap in snapshots1{
+                        if snap.key == "currentListings"{
+                            self.currentListings = snap.value as? [String]
+                        } else if snap.key == "expiredJobs"{
+                            self.expiredJobs = snap.value as? [String]
+                        }
+                    }
+                
                 let trigger2TimeString = "\(String(describing: tempDict["date"]!)) \(String(describing: tempDict["startTime"]!))"
                 
                 let trigger2Date = dateFormatter.date(from: trigger2TimeString)
                 print("t2Date: \(trigger2Date!)")
                 
-                if (tempDict["acceptedCount"] as! Int) == (tempDict["workerCount"] as! Int) || today > trigger2Date!  {
+                if today > trigger2Date! || (tempDict["workerCount"] as! Int) == (tempDict["acceptedCount"] as! Int) {
                     print("dont append job")
-                    if today > trigger2Date!{
+                    if today > trigger2Date! && (self.currentListings?.contains(tempDict["jobID"] as! String))! {
                         //send poster push notification asking if they would like to repost the job or scrap it
-                       
-                        var tempArray = [String]()
-                        for job in (tempDict["currentListings"] as! [String]){
-                            if job == (tempDict["jobID"] as! String){
-                                
-                            } else {
-                                tempArray.append(job)
-                            }
-                        }
-                        var tempArray2 = tempDict["expiredJobs"] as! [String]
-                        if tempArray2.count == 0 || tempArray2.isEmpty {
-                            tempArray2 = [tempDict["jobID"] as! String]
+                        let index = self.currentListings?.index(of: tempDict["jobID"] as! String)
+                        
+                        print("removeCL: \(String(describing: self.currentListings))")
+                        self.currentListings?.remove(at: index!)
+                        
+                        
+                        //var tempArray2 = tempDict["expiredJobs"] as! [String]
+                        if self.expiredJobs == nil{
+                            self.expiredJobs = [tempDict["jobID"] as! String]
                         } else {
-                            tempArray2.append(tempDict["jobID"] as! String)
+                            self.expiredJobs!.append(tempDict["jobID"] as! String)
                         }
-                        Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings":tempArray, "expiredJobs": tempArray2])
+                        
+                        Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs!])
                     }
-                } else {
+                }
+                else {
                     if tempDict["category1"] as! String == self.categoryType{
                         let tempJob = JobPost()
                         tempJob.additInfo = (tempDict["additInfo"] as! String)
@@ -134,51 +154,60 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         } else {
                             self.calendarDict[tempJob.date!] = [tempJob]
                         }
-
                     }
-                }
+                    
+                    }
+                    if snap == snapshots.last{
+                        print("calDict: \(self.calendarDict)")
+                        for (key, _) in self.calendarDict{
+                            self.datesArray.append(key)
+                        }
+                        //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
+                        var convertedArray: [Date] = []
+                        
+                        let dateFormatter2 = DateFormatter()
+                        dateFormatter2.dateFormat = "MMMM-dd-yyyy"
+                        
+                        for dat in self.datesArray {
+                            let date = dateFormatter2.date(from: dat)
+                            convertedArray.append(date!)
+                        }
+                        
+                        //Approach : 1
+                        convertedArray.sort(){$0 < $1}
+                        self.datesArray.removeAll()
+                        for dat in convertedArray{
+                            let formatter = DateFormatter()
+                            // initially set the format based on your datepicker date
+                            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                            
+                            let myString = formatter.string(from: dat)
+                            // convert your string to date
+                            let yourDate = formatter.date(from: myString)
+                            //then again set the date format whhich type of output you need
+                            formatter.dateFormat = "MMMM-dd-yyyy"
+                            // again convert your date to string
+                            let dateString = formatter.string(from: yourDate!)
+                            self.datesArray.append(dateString)
+                        }
+                        
+                        self.calendarTableView.delegate = self
+                        self.calendarTableView.dataSource = self
+                        DispatchQueue.main.async{
+                            
+                            self.calendarTableView.reloadData()
+                        }
+                    }
+                })
             }
-            for (key, _) in self.calendarDict{
-                self.datesArray.append(key)
-            }
-            //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
-            var convertedArray: [Date] = []
             
-            let dateFormatter2 = DateFormatter()
-            dateFormatter2.dateFormat = "MMMM-dd-yyyy"
             
-            for dat in self.datesArray {
-                let date = dateFormatter2.date(from: dat)
-                convertedArray.append(date!)
-            }
             
-            //Approach : 1
-            convertedArray.sort(){$0 < $1}
-            self.datesArray.removeAll()
-            for dat in convertedArray{
-                let formatter = DateFormatter()
-                // initially set the format based on your datepicker date
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                
-                let myString = formatter.string(from: dat)
-                // convert your string to date
-                let yourDate = formatter.date(from: myString)
-                //then again set the date format whhich type of output you need
-                formatter.dateFormat = "MMMM-dd-yyyy"
-                // again convert your date to string
-                let dateString = formatter.string(from: yourDate!)
-                self.datesArray.append(dateString)
-            }
-            
-            self.calendarTableView.delegate = self
-            self.calendarTableView.dataSource = self
-            DispatchQueue.main.async{
-                self.calendarTableView.reloadData()
-            }
             
             
             
         })
+        
 
         
 
@@ -319,6 +348,48 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 vc.price = tempInt
                 vc.categoryType = self.categoryType
                 vc.product = self.stripeToken
+                /*Database.database().reference().child("jobs").child(self.selectedJobID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        let tempDict = snapshot.value as! [String:Any]
+                        
+                        for snap in snapshots{
+                            if snap.key == "workers"{
+                                let tempArray = snap.value as! [String]
+                                if tempArray.contains((Auth.auth().currentUser!.uid)){
+                                    vc.workerInJobAlready = true
+                                }
+                            }
+                            
+                            if snap.key == "payment"{
+                                var tempPayString = snap.value as! String
+                                vc.chargeAmount = tempPayString.substring(from: 1)
+                                tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                                let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
+                                tempPayString = "$\(tempPayDouble)"
+                                vc.rateLabel.text = tempPayString
+                                
+                                // self.rateLabel.text = tempPayString
+                            } else if snap.key == "startTime"{
+                                vc.timeLabel.text = (snap.value as! String)
+                            }else if snap.key == "additInfo"{
+                                vc.detailsTextView.text = snap.value as! String
+                                
+                            } else if snap.key == "posterID"{
+                                vc.posterID = snap.value as! String
+                            } else if snap.key == "date"{
+                                vc.dateLabel.text = snap.value as? String
+                            } else if snap.key == "jobDuration"{
+                                vc.durationLabel.text = "\(snap.value as! String) hours (estimated)"
+                            } else if snap.key == "category1"{
+                                vc.categoryText.text = snap.value as? String
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                })*/
                 
             }
             
