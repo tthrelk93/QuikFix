@@ -86,7 +86,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 if today > trigger2Date! || (tempDict["workerCount"] as! Int) == (tempDict["acceptedCount"] as! Int) {
                     print("dont append job")
-                    if today > trigger2Date! && (self.currentListings?.contains(tempDict["jobID"] as! String))! {
+                    if self.currentListings == nil {
+                        
+                    } else {
+                    if today > trigger2Date! &&
+                        (self.currentListings?.contains(tempDict["jobID"] as! String))! {
                         //send poster push notification asking if they would like to repost the job or scrap it
                         let index = self.currentListings?.index(of: tempDict["jobID"] as! String)
                         
@@ -102,6 +106,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         }
                         
                         Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs!])
+                        }
                     }
                 }
                 else {
@@ -155,6 +160,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                             self.calendarDict[tempJob.date!] = [tempJob]
                         }
                     }
+                    
                     
                     }
                     if snap == snapshots.last{
@@ -348,7 +354,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                 vc.price = tempInt
                 vc.categoryType = self.categoryType
                 vc.product = self.stripeToken
-                /*Database.database().reference().child("jobs").child(self.selectedJobID).observeSingleEvent(of: .value, with: { (snapshot) in
+                Database.database().reference().child("jobs").child(self.selectedJobID).observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         let tempDict = snapshot.value as! [String:Any]
@@ -382,14 +388,14 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                             } else if snap.key == "jobDuration"{
                                 vc.durationLabel.text = "\(snap.value as! String) hours (estimated)"
                             } else if snap.key == "category1"{
-                                vc.categoryText.text = snap.value as? String
+                                vc.categoryLabel.text = snap.value as? String
                             }
                             
                         }
                         
                     }
                     
-                })*/
+                })
                 
             }
             

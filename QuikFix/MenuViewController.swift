@@ -36,12 +36,12 @@ class MenuViewController: UIViewController, GuillotineMenu {
         
        
 
-        dismissButton = {
+       /* dismissButton = {
             let button = UIButton(frame: .zero)
             button.setImage(UIImage(named: "ic_menuRotated"), for: .normal)
             button.addTarget(self, action: #selector(dismissButtonTapped(_:)), for: .touchUpInside)
             return button
-        }()
+        }()*/
         
        // dismissButton?.frame = menuframe.bounds
         

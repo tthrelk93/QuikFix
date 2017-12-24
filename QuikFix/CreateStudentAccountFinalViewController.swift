@@ -20,6 +20,7 @@ import FirebaseStorage
 //import DropDown
 import CoreLocation
 import MapKit
+import SwiftOverlays
 
 
 
@@ -27,6 +28,12 @@ import MapKit
 class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBAction func addButtonPressed(_ sender: Any) {
+        
+        if self.curPicker == "shirt" {
+            addButton.setTitle("Add", for: .normal)
+            addButton.backgroundColor = qfGreen
+            tShirtSizeDropDownTF.text = shirtData[step3Picker.selectedRow(inComponent: 0)]
+        } else {
         if experience.contains(expData[curIndex]) == false {
             experience.append(expData[curIndex])
             addButton.setTitle("Remove", for: .normal)
@@ -46,9 +53,8 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
             }
             
         }
-        
-        
         relevantExperienceDropDownTF.text = tempString
+        }
 
     }
     
@@ -72,6 +78,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
             }
             else{
                 print("Successful Login")
+                    SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
                     self.student.experience = self.experience
                
                     let imageName = NSUUID().uuidString
@@ -181,7 +188,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         curIndex = row
         if curPicker == "shirt"{
-            tShirtSizeDropDownTF.text = shirtData[row]
+            //tShirtSizeDropDownTF.text = shirtData[row]
             
         } else {
             if experience.contains(expData[row]){
@@ -202,7 +209,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     public func textFieldShouldBeginEditing(_ textField: UITextField) {
         if textField == tShirtSizeDropDownTF{
             curPicker = "shirt"
-            addButton.isHidden = true
+            //addButton.isHidden = true
         } else {
             curPicker = "exp"
             addButton.isHidden = false

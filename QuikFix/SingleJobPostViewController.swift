@@ -55,6 +55,21 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var posterCity: UILabel!
     @IBOutlet weak var posterName: UILabel!*/
+    
+    
+    @IBOutlet weak var posterImage: UIImageView!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
+    
+    @IBOutlet weak var rateLabel: UILabel!
+    
+    @IBOutlet weak var addressLabel: UILabel!
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    
+    @IBOutlet weak var detailsTextView: UILabel!
+    
+    @IBOutlet weak var dateLabel: UILabel!
     var job1 = JobPost()
     @IBAction func backPressed(_ sender: Any) {
         performSegue(withIdentifier: "SingleJobToJobPosts", sender: self)
@@ -222,7 +237,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                                     }
                                                 }
-                                                self.applySuccessView.isHidden = true
+                                               //// self.applySuccessView.isHidden = true
                                                 let date = self.job1.date!
                                                 var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
                                                 let timeHours = timeComp[0]
@@ -264,7 +279,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     }
                 }
                 if self.containsWorkers == false{
-                    self.applySuccessView.isHidden = false
+                   //// self.applySuccessView.isHidden = false
                     print("posterID: \(self.posterID)")
                     Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with: { (snapshot) in
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -414,9 +429,10 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         })
     }
     
+    @IBOutlet weak var posterName: UILabel!
     var job = [String: Any]()
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var detailsTextView: UITextView!
+   // @IBOutlet weak var durationLabel: UILabel!
+    //@IBOutlet weak var detailsTextView: UITextView!
     var jobID = String()
     var studentsWhoHaveAppliedForJobArray = [String]()
     var studentHasAlreadyApplied = false
@@ -448,12 +464,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         //let config = STPPaymentConfiguration.shared()
         
         
-        //posterImage.layer.cornerRadius = posterImage.frame.width/2
-        //posterImage.clipsToBounds = true
+        posterImage.layer.cornerRadius = posterImage.frame.width/2
+        posterImage.clipsToBounds = true
         //shadowView.dropShadow()
         
             
-        /*Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
+        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     var tempArray = [String]()
@@ -492,7 +508,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 }
             }
             
-        })*/
+        })
         
         
 

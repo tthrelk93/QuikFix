@@ -21,7 +21,12 @@
 		31CE1FF41FDCB64400B783CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF31FDCB64400B783CF /* UIKit.framework */; };
 		31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF51FDCB65500B783CF /* libc++.tbd */; };
 		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
+		31EF342A1FEB1D4300E7F4E8 /* JobFinder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */; };
+		31EF342C1FEDB02200E7F4E8 /* StudentProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */; };
+		31EF342E1FEF292100E7F4E8 /* CreateHomeOwner.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF342D1FEF292100E7F4E8 /* CreateHomeOwner.storyboard */; };
 		31F6A5801FEB060200D30746 /* SingleJobPostViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */; };
+		31F6A5861FEB0BFB00D30746 /* PostJob.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6A5851FEB0BFB00D30746 /* PostJob.storyboard */; };
+		31F6A5881FEB118D00D30746 /* CreateStudent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6A5871FEB118D00D30746 /* CreateStudent.storyboard */; };
 		3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */; };
 		3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */; };
 		3B144E111F7972510088A1D0 /* SingleJobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */; };
@@ -122,8 +127,13 @@
 		31CE1FF31FDCB64400B783CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		31CE1FF51FDCB65500B783CF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = /Users/tthrelk/Documents/QuikFix/QuikFix/Main.storyboard; sourceTree = "<absolute>"; };
+		31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JobFinder.storyboard; sourceTree = "<group>"; };
+		31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StudentProfile.storyboard; sourceTree = "<group>"; };
+		31EF342D1FEF292100E7F4E8 /* CreateHomeOwner.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateHomeOwner.storyboard; sourceTree = "<group>"; };
 		31F6A5811FEB060200D30746 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SingleJobPostViewController.storyboard; sourceTree = "<group>"; };
 		31F6A5841FEB062900D30746 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SingleJobPostViewController.strings; sourceTree = "<group>"; };
+		31F6A5851FEB0BFB00D30746 /* PostJob.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostJob.storyboard; sourceTree = "<group>"; };
+		31F6A5871FEB118D00D30746 /* CreateStudent.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateStudent.storyboard; sourceTree = "<group>"; };
 		3B0AEDEF1F58881400246D89 /* CosmosDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CosmosDistrib.swift; sourceTree = "<group>"; };
 		3B144E0E1F79644C0088A1D0 /* JobTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobTypePickerViewController.swift; sourceTree = "<group>"; };
 		3B144E101F7972510088A1D0 /* SingleJobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleJobPostViewController.swift; sourceTree = "<group>"; };
@@ -348,6 +358,11 @@
 				3B468C861F57653F001D8FEC /* AppDelegate.swift */,
 				3B468C8D1F57653F001D8FEC /* Assets.xcassets */,
 				31D994DC1FD0B6070038C9C0 /* Main.storyboard */,
+				31EF342D1FEF292100E7F4E8 /* CreateHomeOwner.storyboard */,
+				31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */,
+				31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */,
+				31F6A5871FEB118D00D30746 /* CreateStudent.storyboard */,
+				31F6A5851FEB0BFB00D30746 /* PostJob.storyboard */,
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
@@ -538,7 +553,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Thomas Threlkeld";
 				TargetAttributes = {
 					3B468C821F57653E001D8FEC = {
@@ -590,14 +605,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31F6A5881FEB118D00D30746 /* CreateStudent.storyboard in Resources */,
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
 				31220A271FE19780003DCC57 /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
+				31EF342E1FEF292100E7F4E8 /* CreateHomeOwner.storyboard in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
+				31EF342A1FEB1D4300E7F4E8 /* JobFinder.storyboard in Resources */,
 				31F6A5801FEB060200D30746 /* SingleJobPostViewController.storyboard in Resources */,
 				314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */,
 				3B468C8E1F57653F001D8FEC /* Assets.xcassets in Resources */,
+				31F6A5861FEB0BFB00D30746 /* PostJob.storyboard in Resources */,
+				31EF342C1FEDB02200E7F4E8 /* StudentProfile.storyboard in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1007,7 +1027,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1015,7 +1037,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1057,7 +1083,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1065,7 +1093,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

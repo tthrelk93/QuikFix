@@ -547,16 +547,19 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
         
         if textField == schoolDropDownTF{
             self.curPicker = "school"
+            schoolAndMajorPicker.reloadAllComponents()
             //dropDown2.show()
         }
         if textField == majorDropDownTF {
             self.curPicker = "major"
+            schoolAndMajorPicker.reloadAllComponents()
             //dropDown.show()
         }
             if textField == gradYearTF{
                 self.curPicker = "grad"
+                schoolAndMajorPicker.reloadAllComponents()
             }
-        schoolAndMajorPicker.reloadAllComponents()
+        
         schoolAndMajorPicker.isHidden = false
         selectButton.isHidden = false
         //return false
