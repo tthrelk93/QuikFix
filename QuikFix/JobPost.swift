@@ -31,6 +31,7 @@ class JobPost: NSObject {
     var tools: [String]?
     var inProgress: Bool?
     
+    
     //var responses: [String]?
     
     

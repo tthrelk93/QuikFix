@@ -16,6 +16,10 @@ import CoreLocation
 class CreatePosterStep2: UIViewController, UITextFieldDelegate {
     var crypt = String()
     var locDict = [String:Any]()
+    var promoData = [String:Any]()
+    var promoSuccess = Bool()
+    var promoSenderID = String()
+    
     @IBAction func continueButtonPressed(_ sender: Any) {
         
         if addressTextField.text != "Address" && addressTextField.hasText {
@@ -56,15 +60,21 @@ class CreatePosterStep2: UIViewController, UITextFieldDelegate {
     var place: GMSPlace?
     var profPic = UIImage()
     var poster = JobPoster()
+    var promoType = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let vc = segue.destination as? CreateAccountMainViewController{
+        if let vc = segue.destination as? CreatePosterStep3ViewController{
             
             vc.poster = self.poster
             vc.profPic = self.profPic
             vc.crypt = self.crypt
             vc.locDict = self.locDict
-            vc.sender = "step2"
+            //vc.sender = "step2"
+            vc.promoSenderID = self.promoSenderID
+            vc.promoType = self.promoType
+            vc.promoData = self.promoData
+            vc.promoSuccess = self.promoSuccess
+           // vc.promoData = self.promoData
             
         }
         // Get the new view controller using segue.destinationViewController.

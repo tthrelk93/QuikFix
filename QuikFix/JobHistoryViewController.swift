@@ -367,7 +367,11 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             tempJob.jobID = (tempDict["jobID"] as! String)
                             tempJob.posterID = (tempDict["posterID"] as! String)
                             tempJob.completed = tempDict["completed"] as! Bool
+                            if tempDict["workers"] == nil {
+                                tempJob.workers = nil
+                            } else {
                             tempJob.workers = (tempDict["workers"] as! [String])
+                            }
                             self.tableViewData.append(tempJob)
                             if self.calendarDict[tempJob.date!] != nil {
                                 var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]

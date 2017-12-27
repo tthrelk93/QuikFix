@@ -72,75 +72,180 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             self.present(alert, animated: true, completion: nil)
             
         } else {
+           print("in the else")
+           //Auth.auth().
             Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if let tempDict = snap.value as? [String:Any]{
-                            var promo = (tempDict["promoCode"] as! [String:Any])
+                            self.promoCredit = tempDict["availableCredits"] as! Int
+                            self.promoCredit = self.promoCredit + 5
+                            var promo = (tempDict["promoCode"] as! [String: [String]])
                             print("promo: \(promo)")
                             for (key, val) in promo{
                                 if key == self.promoCodeTF.text{
                                     let tempArray = val as! [String]
-                                    if tempArray.contains(Auth.auth().currentUser!.uid){
+                                    /*if tempArray.contains(Auth.auth().currentUser!.uid){
                                         let alert = UIAlertController(title: "Promo Code Reuse Error", message: "It appears that you have already used this promo code.", preferredStyle: UIAlertControllerStyle.alert)
                                         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                                         self.present(alert, animated: true, completion: nil)
                                         return
                                         
-                                    }
+                                    }*/
                                     self.promoSender[snap.key] = key
                                     self.promoSuccess = true
                                     //self.promoCredit = tempDict["availableCredits"] as! Int
                                     
-                                    self.promoCredit = 10
+                                    //self.promoCredit = 10
                                     
                                     break
                                 }
                                 
                             }
-                            var uploadDict = [String:Any]()
-                            uploadDict["availableCredits"] =
-                                self.promoCredit
-                            var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
-                            tempArray.append((self.promoSender.first?.key)!)
-                            promo[(self.promoSender.first?.value)!] = tempArray
-                            uploadDict["promoCode"] = promo
-                            Database.database().reference().child("jobPosters").child((self.promoSender.first?.key)!).updateChildValues(uploadDict)
+                            if self.promoSuccess == false{
+                               print("promoSuccess = false")
+                                Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        for snap in snapshots{
+                                            if let tempDict = snap.value as? [String:Any]{
+                                                self.promoCredit = tempDict["availableCredits"] as! Int
+                                                self.promoCredit = self.promoCredit + 5
+                                                var promo = (tempDict["promoCode"] as! [String:Any])
+                                                print("promo: \(promo)")
+                                                for (key, val) in promo{
+                                                    if key == self.promoCodeTF.text{
+                                                        let tempArray = val as! [String]
+                                                       
+                                                        self.promoSender[snap.key] = key
+                                                        self.promoSuccess = true
+                                                        //self.promoCredit = tempDict["availableCredits"] as! Int
+                                                        
+                                                        
+                                                        
+                                                        break
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        }
+                                        var uploadDict = [String:Any]()
+                                        uploadDict["availableCredits"] =
+                                            self.promoCredit
+                                       // var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
+                                        //tempArray.append((self.promoSender.first?.key)!)
+                                        //promo[(self.promoSender.first?.value)!] = tempArray
+                                        uploadDict["promoCode"] = promo
+                                        self.topLabel.text = "Success!"
+                                        self.promoSuccessLabel.isHidden = false
+                                        self.promoCodeTF.isHidden = true
+                                        self.redeemButton.isHidden = true
+                                        self.skipButton.isHidden = true
+                                        sleep(3)
+                                        self.promoView.isHidden = true
+                                        self.promoType = "student"
+                                        self.uploadData = uploadDict
+                                        self.promoSenderID = (self.promoSender.first?.key)!
+                                        if self.accountType == "student"{
+                                            self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
+                                           // self.promoView.isHidden = true
+                                        } else {
+                                            //promoCodeTF.delegate = self
+                                            //self.promoView.isHidden = true
+                                            self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
+                                        }
+                                        //self.promoSkipped = false
+                                    }
+                                })
+                            } else {
+                                print("pv: \(promo)")
+                                var uploadDict = [String:Any]()
+                                uploadDict["availableCredits"] =
+                                    self.promoCredit
+                                //var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
+                               /* if tempArray.first as! String == "" {
+                                    tempArray.append((self.promoSender.first?.key)!)
+                                    tempArray.remove(at: 0)
+                                
+                                } else {
+                                tempArray.append((self.promoSender.first?.key)!)
+                                }*/
+                                //promo[(self.promoSender.first?.value)!] = tempArray
+                                uploadDict["promoCode"] = promo
+                                //self.topLabel.text = "Success!"
+                                self.promoSuccessLabel.isHidden = false
+                                self.promoCodeTF.isHidden = true
+                                self.redeemButton.isHidden = true
+                                self.skipButton.isHidden = true
+                                sleep(3)
+                                self.promoView.isHidden = true
+                                self.promoType = "poster"
+                                self.uploadData = uploadDict
+                                self.promoSenderID = (self.promoSender.first?.key)!
+                                if self.accountType == "student"{
+                                    self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
+                                    //self.promoView.isHidden = true
+                                } else {
+                                    //promoCodeTF.delegate = self
+                                    //self.promoView.isHidden = true
+                                    self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
+                                }
+                                //uploadDict["promoSender"] = self.promoSender.first?.key
+                                //self.promoSkipped = false
+                            }
+                            
+                            
+                            
+                            //Database.database().reference().child("jobPosters").child((self.promoSender.first?.key)!).updateChildValues(uploadDict)
                             //Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["promoCredit": 5] as [String:Any])
-                            self.topLabel.text = "Success!"
-                            self.promoSuccessLabel.isHidden = false
-                            self.promoCodeTF.isHidden = true
-                            self.redeemButton.isHidden = true
-                            self.skipButton.isHidden = true
-                            sleep(3)
-                            self.self.promoView.isHidden = true
+                            
                             
                         }
                     }
                 }
                     
             })
+            picker.delegate = self
             
             
         }
         
     }
+    var promoSenderID = String()
+    var uploadData = [String:Any]()
+    var promoType = String()
+   // var promoSkipped = Bool()
         
     var promoCredit = Int()
         
     @IBAction func skipPressed(_ sender: Any) {
-        if self.sender == "step2"{
-            performSegue(withIdentifier: "PromoToStep4", sender: self)
+        /*if self.sender == "step2"{
+          //  performSegue(withIdentifier: "PromoToStep4", sender: self)
         } else {
         promoView.isHidden = true
         promoCredit = 5
+        }*/
+        if accountType == "student"{
+            self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
+            //self.promoView.isHidden = true
+        } else {
+            //promoCodeTF.delegate = self
+            //self.promoView.isHidden = true
+            self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
         }
+        self.studentPicLabel.isHidden = false
+        self.promoSuccess = false
+        promoView.isHidden = true
+        promoCredit = 5
+        picker.delegate = self
+        
     }
     @IBOutlet weak var skipButton: UIButton!
     
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        skipButton.layer.cornerRadius = 7
+        redeemButton.layer.cornerRadius = 7
         if self.sender == "step2"{
             promoView.isHidden = false
         } else {
@@ -154,7 +259,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             self.promoView.isHidden = true
             self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
         }
-        
+        self.studentPicLabel.isHidden = false
         picker.delegate = self
         //picker.delegate = self
         userPic.layer.cornerRadius = userPic.frame.width/2
@@ -184,7 +289,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var selectedImageFromPicker: UIImage?
-        
+        print("top of image Picker: \(self.accountType)")
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
             selectedImageFromPicker = editedImage
             
@@ -205,7 +310,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         }
         
         dismiss(animated: true, completion: { (error) in
-            
+            print("inDismiss: \(self.accountType)")
             if self.accountType == "student"{
                 self.performSegue(withIdentifier: "CreateStudent", sender: self)
             } else {
@@ -239,23 +344,34 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     var locDict = [String:Any]()
     var sender = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "PromoToStep4"{
+        /*if segue.identifier == "PromoToStep4"{
             if let vc = segue.destination as? CreatePosterStep3ViewController{
                 vc.poster = self.poster
                 vc.profPic = self.profPic
                 vc.crypt = self.crypt
                 vc.locDict = self.locDict
             }
-        }
+        }*/
         if segue.identifier == "CreateStudent"{
             if let vc = segue.destination as? CreateAccountStudentViewController{
                 vc.profPic = self.userPic.image!
+                vc.promoData = self.uploadData
+                vc.promoSuccess = self.promoSuccess
+                vc.promoSenderID = self.promoSenderID
+                vc.promoType = self.promoType
+                 vc.promoSender = self.promoSender
+                
             }
             
         } else {
             if let vc = segue.destination as? CreateAccountJobPosterViewController{
                 vc.profPic = self.userPic.image!
-                vc.promoBool = self.promoSuccess
+                
+                vc.promoData = self.uploadData
+                vc.promoSuccess = self.promoSuccess
+                vc.promoSenderID = self.promoSenderID
+                vc.promoType = self.promoType
+                //vc.promoSender = self.promoSender
                 
             }
         }

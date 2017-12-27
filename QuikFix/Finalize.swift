@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import Firebase
+import CoreLocation
 
 class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     
@@ -277,6 +278,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     var segueJobData = [String:Any]()
     var seguePosterData = [String:Any]()
     var jobRef = String()
+    var placeCoord = CLLocation()
     
     @IBOutlet weak var additInfoTextView: UITextView!
     @IBOutlet weak var paymentTypeLabel: UILabel!
@@ -370,7 +372,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ActualFinalizeViewController{
-           
+           vc.jobCoord = self.placeCoord
             vc.jobPost = self.jobPost
             vc.timeDifference = Int(jobPost.jobDuration!)!
             vc.toolCount = self.toolCount

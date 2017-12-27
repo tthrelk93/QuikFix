@@ -19,6 +19,10 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
     var emailVerificationSent = false
     var crypt = String()
     var verificationTimer : Timer = Timer()
+    
+    var promoData = [String:Any]()
+    var promoSuccess = Bool()
+    var promoSenderID = String()
 
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
@@ -269,6 +273,9 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
             return true
         }
     }
+    var promoType = String()
+    var promoSender = [String: String]()
+    
 
     @IBOutlet weak var cellPhoneNumberTF: UITextField!
     
@@ -280,6 +287,11 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
             vc.student = self.student
             vc.profPic = self.profPic!
             vc.crypt = self.crypt
+            vc.promoType = self.promoType
+            vc.promoSenderID = self.promoSenderID
+            vc.promoSuccess = self.promoSuccess
+            vc.promoData = self.promoData
+            vc.promoSender = self.promoSender
         }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.

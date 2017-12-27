@@ -27,6 +27,8 @@ class MenuViewController: UIViewController, GuillotineMenu {
 
     }
     
+    @IBAction func settingsButtonPressed(_ sender: Any) {
+    }
     
     @IBOutlet weak var menuframe: UIButton!
     var dismissButton: UIButton?

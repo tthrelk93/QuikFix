@@ -25,232 +25,74 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     @IBOutlet var step4Label: UILabel!
     @IBOutlet var topLabel: UILabel!
     var customer = STPCustomer()
+    var skip = false
+    var promoData = [String:Any]()
+    var promoSuccess = Bool()
     @IBAction func savePressed(_ sender: Any) {
-        if creditCardNumberTF.hasText && creditCardNumberTF.text?.count == 19 && expDate.hasText && expDate.text?.count == 5 && cvvTF.hasText && cvvTF.text?.count == 3 {
-            let cardParams = STPCardParams()
-            cardParams.cvc = cvvTF.text
-            
-            let expMonth = expDate.text?.substring(to: 2)
-            cardParams.expMonth = UInt(expMonth as! String)! //as! UInt
-            
-            let expYear = expDate.text?.substring(from: 3)
-            print("month: \(String(describing: expMonth)) year: \(String(describing: expYear))")
-            cardParams.expYear = UInt(expYear as! String)!
-            let cardNumb = creditCardNumberTF.text
-            
-            cardParams.number = cardNumb
-            print("cardNumber: \(String(describing: cardParams.number))")
-            let sourceParams = STPSourceParams.cardParams(withCard: cardParams)
-            STPAPIClient.shared().createSource(with: sourceParams, completion: { (source, error) in
-                
-               /* let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared)
-                //STPCustomerContext(
-                //var temp = STPEphemeralKeyProvider()
-                //STPAPIClient.shared().
-                
-                
-                
-                /*if let token = source as? STPToken, let card = token.card {
-                    customer.defaultSource = card
-                }*/
-                
-                
-                customerContext.attachSource(toCustomer: source!, completion: { (error) in
-                    if error != nil{
-                        print("source error: \(String(describing: error?.localizedDescription))")
-                    }
+        if skip == true {
+            Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
+                if error != nil {
                     
-                })*/
-                
-            })
-            
-            
-        }
-    }
-    
-    
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var expDate: UITextField!
-    @IBOutlet weak var cvvTF: UITextField!
-    @IBOutlet weak var creditCardNumberTF: UITextField!
-    @IBOutlet weak var sepAndCreditInfoPosition2: UIView!
-    @IBOutlet weak var enterInfoView: UIView!
-    @IBOutlet weak var enterCreditPosition2: UIView!
-    @IBAction func skipButtonPressed(_ sender: Any) {
-        //var authData = Auth.auth().currentUser?.providerData["password"]
-        Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
-            if error != nil {
-                // SwiftOverlays.removeAllBlockingOverlays()
-                let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-            else{
-                print("Successful Login")
-                //self.poster.experience = self.experience
-                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
-                let imageName = NSUUID().uuidString
-                let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
-                
-                let profileImage = self.profPic
-                let uploadData = UIImageJPEGRepresentation(profileImage, 0.1)
-                storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                    let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                else{
+                    print("Successful Login")
+                     SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                    let imageName = NSUUID().uuidString
+                    let storageRef = Storage.storage().reference().child("profile_images").child((user?.uid)!).child("\(imageName).jpg")
                     
-                    if error != nil {
-                        print(error as Any)
-                        return
-                    }
-                    
-                    if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                    let profileImage = self.profPic
+                    let uploadData = UIImageJPEGRepresentation(profileImage, 0.1)
+                    storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
                         
-                        var values = Dictionary<String, Any>()
-                        
-                        //values["posterID"] = Auth.auth().currentUser!.uid
-                        //values["bio"] = self.student.bio
-                        values["name"] = self.poster.name
-                        values["email"] = self.poster.email
-                        // values["password"] = self.poster.password
-                        //values["school"] = self.poster.school
-                        //values["major"] = self.student.major
-                        values["jobsCompleted"] = self.poster.jobsCompleted
-                        //values["totalEarned"] = 0
-                        values["address"] = [self.poster.address]
-                        values["phone"] = self.poster.phone
-                        var tempPromo = self.randomString(length: 6)
-                        
-                        while self.existingPromoCodes.contains(tempPromo){
-                            tempPromo = self.randomString(length: 6)
+                        if error != nil {
+                            print(error as Any)
+                            return
                         }
-                        values["posterID"] = Auth.auth().currentUser!.uid
-                        values["promoCode"] = ([tempPromo: [""]] as [String:Any])
-                        values["availableCredits"] = 0
-                        values["upcomingJobs"] = self.poster.upcomingJobs
-                        //values["experience"] = self.student.experience
-                        //values["rating"] =  self.student.rating
-                        print("locDict: \(self.locDict)")
-                        values["location"] = self.locDict
-                        values["pic"] = profileImageUrl
-                        var tempDict = [String: Any]()
-                        tempDict[(user?.uid)!] = values
-                        Database.database().reference().child("jobPosters").updateChildValues(tempDict)
                         
-                        self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
-                        
-                    }
-                })
-                
-            }
-            
-        })
-        
-
-    }
-    @IBAction func skipButton(_ sender: Any) {
-        
-        
-    }
-    fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
-    var creditViewFrame = CGRect()
-    var creditButtonFrame = CGRect()
-    var creditShowing = false
-    @IBAction func creditPressed(_ sender: Any) {
-        /*if creditShowing == false{
-            topLabel.isHidden = false
-            sepAndCreditInfoPosition2.isHidden = true
-            orLabel.isHidden = true
-            skip.isHidden = true
-            enterInfoView.isHidden = false
-            step4Label.isHidden = true
-        UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
-            self.creditButton.bounds = self.enterCreditPosition2.bounds
-            self.creditButton.frame.origin = self.enterCreditPosition2.frame.origin
-            
-            self.enterInfoView.bounds = self.creditViewFrame
-            self.enterInfoView.frame.origin = self.creditViewOrigin
-            self.creditButton.setTitle("Cancel", for: .normal)
-            
-            
-        })
-            creditShowing = true
-           
-        } else {
-            topLabel.isHidden = false
-            sepAndCreditInfoPosition2.isHidden = false
-            orLabel.isHidden = false
-            skip.isHidden = false
-            step4Label.isHidden = false
-            
-            UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
-                self.creditButton.bounds = self.creditButtonFrame
-                self.creditButton.frame.origin = self.creditButtonOrigin
-                
-                self.enterInfoView.bounds = self.sepAndCreditInfoPosition2.bounds
-                self.enterInfoView.frame.origin = self.sepAndCreditInfoPosition2.frame.origin
-                
-                self.enterInfoView.isHidden = true
-                self.creditButton.setTitle("Connect Credit Card to QuikFix", for: .normal)
-                
-                
-            })
-            creditShowing = false
-        }*/
-        
-        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                //var paymentVer = false
-                
-                for snap in snapshots {
-                    /*if snap.key == "paymentVerified"{
-                     if snap.value as! Bool == true{
-                     paymentVer = true
-                     }
-                     }*/
-                    if snap.key == "stripeToken"{
-                        self.stripeToken = snap.value as! String
-                    }
+                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                            
+                            var values = Dictionary<String, Any>()
+                            
+                            values["name"] = self.poster.name
+                            values["email"] = self.poster.email
+                            
+                            values["jobsCompleted"] = self.poster.jobsCompleted
+                            
+                            values["address"] = [self.poster.address]
+                            values["phone"] = self.poster.phone
+                            var tempPromo = self.randomString(length: 6)
+                            
+                            while self.existingPromoCodes.contains(tempPromo){
+                                tempPromo = self.randomString(length: 6)
+                            }
+                            values["posterID"] = Auth.auth().currentUser!.uid
+                            
+                            values["promoCode"] = ([tempPromo: [""]] as [String:Any])
+                            values["availableCredits"] = 0
+                            values["upcomingJobs"] = self.poster.upcomingJobs
+                            print("locDict: \(self.locDict)")
+                            values["location"] = self.locDict
+                            values["pic"] = profileImageUrl
+                            var tempDict = [String: Any]()
+                            tempDict[(user?.uid)!] = values
+                            Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                            if self.promoType == "student"{
+                                Database.database().reference().child("students").child(self.promoData["promoSender"] as! String)
+                            }
+                            
+                            self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
+                            
+                        }
+                    })
                     
                 }
-                self.handleAddPaymentMethodButtonTapped()
-            }
-        })
-        
-    }
-    var custID = String()
-    func handleAddPaymentMethodButtonTapped() {
-        // Setup add card view controller
-        print("handleAddPayment")
-        let addCardViewController = STPAddCardViewController()
-        addCardViewController.delegate = self
-        
-        // Present add card view controller
-        let navigationController = UINavigationController(rootViewController: addCardViewController)
-        present(navigationController, animated: true)
-    }
-    
-    // MARK: STPAddCardViewControllerDelegate
-    
-    func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {
-        // Dismiss add card view controller
-        dismiss(animated: true)
-    }
-    
-    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
-        print("submitTokenToBackEnd")
-        //var tempDict = [String:Any]()
-        //tempDict["stripeToken"] = token.tokenId
-        //Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
-        //self.poster.email = "tthrelk@gmail.com"
-        //self.poster.name = "Thomas"
-        //MyAPIClient.sharedClient.delegate = self
-        MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.poster.email!, name: self.poster.name!){ responseObject, error in
-            // use responseObject and error here
-            self.dataID = responseObject!
-            print("responseObject = \(responseObject!); error = \(String(describing: error))")
-            self.dismiss(animated: true)
-            
-            
+                
+            })
+        } else {
             Auth.auth().signIn(withEmail: self.poster.email!, password: self.crypt, completion: { (user: User?, error) in
                 if error != nil {
                     // SwiftOverlays.removeAllBlockingOverlays()
@@ -295,7 +137,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             while self.existingPromoCodes.contains(tempPromo){
                                 tempPromo = self.randomString(length: 6)
                             }
-                            values["stripeToken"] = responseObject!
+                            values["stripeToken"] = self.dataID
                             values["posterID"] = Auth.auth().currentUser!.uid
                             values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                             values["availableCredits"] = 0
@@ -317,20 +159,102 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                 }
                 
             })
+        }
+            
+            
+        }
+    
+    
+    
+        fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+        var creditViewFrame = CGRect()
+        var creditButtonFrame = CGRect()
+        var creditShowing = false
+    var promoType = String()
+    var promoSenderID = String()
+    
+        @IBAction func creditPressed(_ sender: Any) {
+            
+            
+            Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    //var paymentVer = false
+                    
+                    for snap in snapshots {
+                        /*if snap.key == "paymentVerified"{
+                         if snap.value as! Bool == true{
+                         paymentVer = true
+                         }
+                         }*/
+                        if snap.key == "stripeToken"{
+                            self.stripeToken = snap.value as! String
+                        }
+                        
+                    }
+                    self.handleAddPaymentMethodButtonTapped()
+                }
+            })
+        }
+
+    
+    
+    @IBOutlet weak var saveButton: UIButton!
+    
+    @IBOutlet weak var sepAndCreditInfoPosition2: UIView!
+    @IBOutlet weak var enterInfoView: UIView!
+    @IBOutlet weak var enterCreditPosition2: UIView!
+    
+    
+    @IBOutlet weak var skipButton: UIButton!
+    
+    @IBAction func skipButtonPressed(_ sender: Any) {
+        self.enterInfoView.isHidden = false
+        self.creditButton.isHidden = true
+        self.orLabel.isHidden = true
+        self.skipButton.isHidden = true
+        
+        
+    }
+    var custID = String()
+    func handleAddPaymentMethodButtonTapped() {
+        // Setup add card view controller
+        print("handleAddPayment")
+        let addCardViewController = STPAddCardViewController()
+        addCardViewController.delegate = self
+        
+        // Present add card view controller
+        let navigationController = UINavigationController(rootViewController: addCardViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPAddCardViewControllerDelegate
+    
+    func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {
+        // Dismiss add card view controller
+        dismiss(animated: true)
+    }
+
+    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
+        print("submitTokenToBackEnd")
+        
+        MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.poster.email!, name: self.poster.name!){ responseObject, error in
+            // use responseObject and error here
+            self.dataID = responseObject!
+            print("responseObject = \(responseObject!); error = \(String(describing: error))")
+            self.dismiss(animated: true)
+            self.enterInfoView.isHidden = false
+            self.creditButton.isHidden = true
+            self.orLabel.isHidden = true
+            self.skipButton.isHidden = true
+            
+            
             
             return
         }
+}
 
-       //MyAPIClient.sharedClient.saveCard(token, email: self.poster.email!, name: self.poster.name!)
-        
-        
-        
-        //dismiss(animated: true)
-        //return
-        //tempDict["paymentAmount"] = job.payment
-        //tempDict["description"] = job.description
-        
-    }
+
     
     var poster = JobPoster()
     func addCardViewController(_ addCardViewController: STPAddCardViewController, didCreateToken token: STPToken, completion: @escaping STPErrorBlock) {
@@ -359,6 +283,8 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         buyButton.isHidden = false
     }
     
+    @IBAction func termsOfServicePressed(_ sender: Any) {
+    }
     func handlePaymentMethodsButtonTapped() {
         // Setup customer context
         print("handlemethodstouched")
@@ -407,9 +333,10 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
 
 
     @IBOutlet weak var creditButton: UIButton!
-    @IBOutlet weak var skip: UIButton!
+    //@IBOutlet weak var skip: UIButton!
     var crypt = String()
     var locationManager = CLLocationManager()
+    
     @IBAction func createAccountPressed(_ sender: Any) {
         //var authData = Auth.auth().currentUser?.providerData["password"]
         Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
@@ -440,15 +367,12 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                         
                         var values = Dictionary<String, Any>()
                         
-                        //values["posterID"] = Auth.auth().currentUser!.uid
-                        //values["bio"] = self.student.bio
+                        
                         values["name"] = self.poster.name
                         values["email"] = self.poster.email
-                       // values["password"] = self.poster.password
-                        //values["school"] = self.poster.school
-                        //values["major"] = self.student.major
+                       
                         values["jobsCompleted"] = self.poster.jobsCompleted
-                        //values["totalEarned"] = 0
+                        
                         values["address"] = [self.poster.address]
                         values["phone"] = self.poster.phone
                         var tempPromo = self.randomString(length: 6)
@@ -461,16 +385,18 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                         values["deviceToken"] = ""
                         
                         values["upcomingJobs"] = self.poster.upcomingJobs
-                        //values["experience"] = self.student.experience
-                        //values["rating"] =  self.student.rating
+                        
                         print("locDict: \(self.locDict)")
                         values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                         values["pic"] = profileImageUrl
-                        //var tempDict = [String: Any]()
-                        //tempDict[(user?.uid)!] = values
-                        //var uploadData = [String: Any]()
-                       // uploadData["jobPosters"] = tempDict
                         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser!.uid)).updateChildValues(values)
+                        if self.promoSuccess == true {
+                        if self.promoType == "student"{
+                            Database.database().reference().child("students").child(self.promoSenderID).updateChildValues(self.promoData)
+                        } else {
+                            Database.database().reference().child("posters").child(self.promoSenderID).updateChildValues(self.promoData)
+                        }
+                        }
                         self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
                         
                     }
@@ -507,10 +433,10 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         super.viewDidLoad()
         enterInfoView.layer.cornerRadius = 7
         saveButton.layer.cornerRadius = 7
-        skip.layer.cornerRadius = 7
-       creditCardNumberTF.delegate = self
-        expDate.delegate = self
-        cvvTF.delegate = self
+        skipButton.layer.cornerRadius = 7
+       //creditCardNumberTF.delegate = self
+        //expDate.delegate = self
+       // cvvTF.delegate = self
         creditButton.layer.cornerRadius = 7
         creditButtonFrame = creditButton.bounds
         creditButtonOrigin = creditButton.frame.origin
@@ -562,24 +488,4 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     
 
 }
-extension String {
-    func index(from: Int) -> Index {
-        return self.index(startIndex, offsetBy: from)
-    }
-    
-    func substring(from: Int) -> String {
-        let fromIndex = index(from: from)
-        return substring(from: fromIndex)
-    }
-    
-    func substring(to: Int) -> String {
-        let toIndex = index(from: to)
-        return substring(to: toIndex)
-    }
-    
-    func substring(with r: Range<Int>) -> String {
-        let startIndex = index(from: r.lowerBound)
-        let endIndex = index(from: r.upperBound)
-        return substring(with: startIndex..<endIndex)
-    }
-}
+

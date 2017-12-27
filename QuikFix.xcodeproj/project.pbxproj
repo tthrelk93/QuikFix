@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		31220A271FE19780003DCC57 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31220A261FE19780003DCC57 /* GoogleService-Info.plist */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
 		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
 		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
@@ -20,6 +19,7 @@
 		31CE1FF21FDCB63500B783CF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */; };
 		31CE1FF41FDCB64400B783CF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF31FDCB64400B783CF /* UIKit.framework */; };
 		31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF51FDCB65500B783CF /* libc++.tbd */; };
+		31D88DA81FF42E9C001C2D8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31D88DA71FF42E9B001C2D8A /* GoogleService-Info.plist */; };
 		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
 		31EF342A1FEB1D4300E7F4E8 /* JobFinder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */; };
 		31EF342C1FEDB02200E7F4E8 /* StudentProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */; };
@@ -112,7 +112,6 @@
 		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
 		25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		31220A261FE19780003DCC57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31264BDD1FD7A5F60053D31A /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
 		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -126,6 +125,7 @@
 		31CE1FF11FDCB63500B783CF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		31CE1FF31FDCB64400B783CF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		31CE1FF51FDCB65500B783CF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		31D88DA71FF42E9B001C2D8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = /Users/tthrelk/Documents/QuikFix/QuikFix/Main.storyboard; sourceTree = "<absolute>"; };
 		31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JobFinder.storyboard; sourceTree = "<group>"; };
 		31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StudentProfile.storyboard; sourceTree = "<group>"; };
@@ -366,7 +366,7 @@
 				3B468C8F1F57653F001D8FEC /* LaunchScreen.storyboard */,
 				31F6A5821FEB060200D30746 /* SingleJobPostViewController.storyboard */,
 				3B468C921F57653F001D8FEC /* Info.plist */,
-				31220A261FE19780003DCC57 /* GoogleService-Info.plist */,
+				31D88DA71FF42E9B001C2D8A /* GoogleService-Info.plist */,
 				3BB8CC7C1F71A436002EAEF3 /* Cells */,
 				3B9F21A61F6355B20068D7EB /* Model */,
 				3B98024C1F68831800F785C8 /* CreateAccount/Login */,
@@ -607,7 +607,6 @@
 			files = (
 				31F6A5881FEB118D00D30746 /* CreateStudent.storyboard in Resources */,
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
-				31220A271FE19780003DCC57 /* GoogleService-Info.plist in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
 				31EF342E1FEF292100E7F4E8 /* CreateHomeOwner.storyboard in Resources */,
@@ -619,6 +618,7 @@
 				31F6A5861FEB0BFB00D30746 /* PostJob.storyboard in Resources */,
 				31EF342C1FEDB02200E7F4E8 /* StudentProfile.storyboard in Resources */,
 				3B4331621F75CA9E00121AA0 /* DateCollectionViewCell.xib in Resources */,
+				31D88DA81FF42E9C001C2D8A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

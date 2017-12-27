@@ -451,13 +451,9 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
        // metalBar.layer.borderColor = qfRed.cgColor
         responseBubble.isHidden = true
         Messaging.messaging().delegate = self
-        self.mToken = Messaging.messaging().fcmToken!
+        //self.mToken = Messaging.messaging().fcmToken!
         //appDelegate.deviceToken
-        var tokenDict = [String: Any]()
         
-        
-        tokenDict["deviceToken"] = [mToken: true] as [String: Any]?
-        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
         
         menuButton1ExtendedFrame = sharePromo.bounds
         menuButton1ExtendedOrigin = sharePromo.frame.origin
@@ -684,6 +680,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         presentationAnimator.mode = .dismissal
         return presentationAnimator
     }*/
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        var tokenDict = [String: Any]()
+        
+        
+        tokenDict["deviceToken"] = [fcmToken: true] as [String: Any]?
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+        
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
     
 
     @IBAction func menuPressed(_ sender: Any) {

@@ -617,6 +617,11 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     
     
     @IBAction func editPicPressed(_ sender: Any) {
+        
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+        
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
@@ -896,7 +901,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                 self.profileImageView.image = UIImage(data: imageData as Data)
-                                self.editPicImage.setImage(UIImage(data: imageData as Data), for: .normal)
+                                self.editPicImage.setBackgroundImage(UIImage(data: imageData as Data), for: .normal)
+                                //self.editPicImage.setImage(UIImage(data: imageData as Data), for: .normal)
                                 //self.editProfPicImageView.image = UIImage(data: imageData as Data)
                             } }
                         //  loadImageUsingCacheWithUrlString(snap.value as! String)
@@ -1179,8 +1185,11 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // editingPicker.colo
-       
+       // editingPicker.colotabBa
+        tabBar.tintColor = qfGreen
+        //tabBar.selectedItem
+        let picker = UIImagePickerController()
+        picker.delegate = self
         loadPageData()
         
         
@@ -1242,7 +1251,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             //userPic.image = selectedImage
             //userPic.isHidden = true
             //selectProfilePic.setBackgroundImage(selectedImage, for: .normal)
-            //self.editProfPicButton.setBackgroundImage(selectedImage, for: .normal)
+            self.editPicImage.setBackgroundImage(selectedImage, for: .normal)
             print("selectedImage: \(selectedImage)")
             //self.editProfPicImageView.image = selectedImage
             

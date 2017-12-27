@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import Stripe
+import CoreLocation
 
 
 class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
@@ -258,7 +259,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             values["startTime"] = jobPost.startTime
             
         values["jobDuration"] = jobPost.jobDuration
-        
+        values["studentsInRange"] = self.studentsInRange
             values["workerCount"] = jobPost.workerCount
             values["acceptedCount"] = 0
             if jobPost.category1 == "Moving(Home-To-Home)"{
@@ -299,7 +300,43 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                     tempDict["currentListings"] = self.listingsArray
                     //self.seguePosterData = tempDict
                     Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
-                    self.performSegue(withIdentifier: "CreateJobToProfile", sender: self)
+                    
+                    Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots{
+                                var snapDict = snap.value as! [String:Any]
+                                let studentLat = (snapDict["location"] as! [String:Any])["lat"] as! CLLocationDegrees
+                                let studentLong = (snapDict["location"] as! [String:Any])["long"] as! CLLocationDegrees
+                                let studentLoc = CLLocation(latitude: studentLat, longitude: studentLong)
+                                
+                                let exp = snapDict["experience"] as! [String]
+                                print("studentEXp: \(exp)")
+                                if exp.contains(self.jobPost.category1!){
+                                    print(snap.key)
+                                    print("studLoc: \(studentLoc)")
+                                    print("jobLoc: \(self.jobCoord)")
+                                    if studentLoc.distance(from: self.jobCoord) <= 90000{
+                                        print("inRange")
+                                        if snapDict["nearbyJobs"] == nil {
+                                            
+                                            print("it was nil")
+                                            Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": [ref.key]])
+                                        } else {
+                                            var tempArray = snapDict["nearbyJobs"] as! [String]
+                                            tempArray.append(ref.key)
+                                            Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": tempArray])
+                                        }
+                                        
+                                        
+                                    }
+                                }
+                            }
+                            print("need to segue")
+                            DispatchQueue.main.async{
+                                self.performSegue(withIdentifier: "CreateJobToProfile", sender: self)
+                            }
+                        }
+                    })
                 }
                 
             })
@@ -377,6 +414,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             
             values["workerCount"] = self.self.jobPost.workerCount
             values["acceptedCount"] = 0
+            values["studentsInRange"] = self.studentsInRange
             if self.jobPost.category1 == "Moving(Home-To-Home)"{
                 values["pickupLocation"] = self.jobPost.pickupLocation
                 values["dropOffLocation"] = self.jobPost.dropOffLocation
@@ -415,11 +453,54 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                     tempDict["currentListings"] = self.listingsArray
                     //self.seguePosterData = tempDict
                     Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
-                    print("need to segue")
-                    DispatchQueue.main.async{
-                   self.perfSeg()
-                    }
+                    
+                   print("im here")
+                    Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots{
+                                var snapDict = snap.value as! [String:Any]
+                                let studentLat = (snapDict["location"] as! [String:Any])["lat"] as! CLLocationDegrees
+                                let studentLong = (snapDict["location"] as! [String:Any])["long"] as! CLLocationDegrees
+                                
+                                
+                                
+                                
+                                let studentLoc = CLLocation(latitude: studentLat, longitude: studentLong)
+                                
+                                let exp = snapDict["experience"] as! [String]
+                                if exp.contains(self.jobPost.category1!){
+                                    print(snap.key)
+                                    if studentLoc.distance(from: self.jobCoord) <= 90000{
+                                       print("inRange")
+                                        if snapDict["nearbyJobs"] == nil {
+                                            
+                                           print("it was nil")
+                                            Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": [ref.key]])
+                                        } else {
+                                       var tempArray = snapDict["nearbyJobs"] as! [String]
+                                            tempArray.append(ref.key)
+                                            Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": tempArray])
+                                        }
+                                        print("need to segue")
+                                        DispatchQueue.main.async{
+                                            self.perfSeg()
+                                        }
+                                        
+                                    }
+                                }
+                                
+                                
+                                
+                                
+                            }
+                        }
+                    })
+                    
+                    
                 }
+                
+                
+                
                 
             })
             if self.promoSuccess == true{
@@ -557,6 +638,11 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
     @IBOutlet weak var dropoffLabel: UILabel!
     var cardConnected = false
     var email = String()
+    var jobCoord = CLLocation()
+    var studentsInRange = [String]()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         enterPromoTF.delegate = self
@@ -567,6 +653,10 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
         mainEditButton.setTitle("Done", for: .selected)
         mainEditButton.setTitleColor(qfGreen, for: .selected)
         mainEditButton.setTitleColor(UIColor.red, for: .normal)
+        
+        var exp = [String]()
+        
+        
         
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{

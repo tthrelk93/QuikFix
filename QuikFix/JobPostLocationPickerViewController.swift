@@ -45,7 +45,21 @@ class JobPostLocationPickerViewController: UIViewController {
                         
                         self.locationLabel.text = (snap.value as! [String]).first!
                         self.jobPost.location = (snap.value as! [String]).first!
-                        self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+                        let geoCoder = CLGeocoder()
+                        geoCoder.geocodeAddressString(self.jobPost.location!) { (placemarks, error) in
+                            guard
+                                let placemarks = placemarks,
+                                let location = placemarks.first?.location?.coordinate
+                                else {
+                                    // handle no location found
+                                    print("locError")
+                                    return
+                            }
+                            self.placeCoord = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                             self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+                            // Use your location
+                        }
+                       
                        // print("loc: \(self.jobPost.location)")
                     }
                 }
@@ -77,10 +91,12 @@ class JobPostLocationPickerViewController: UIViewController {
     }
     var placeAddress = String()
     var place: GMSPlace?
+    var placeCoord = CLLocation()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Step5ToFinalize"{
             if let vc = segue.destination as? Finalize{
                 vc.jobPost = self.jobPost
+                vc.placeCoord = self.placeCoord
             }
         }
     }
@@ -94,6 +110,8 @@ extension JobPostLocationPickerViewController: GMSAutocompleteViewControllerDele
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        self.placeCoord = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        print("placeCoord: \(self.placeCoord)")
         locationLabel.text = place.formattedAddress
         jobPost.location = place.formattedAddress
         self.place = place

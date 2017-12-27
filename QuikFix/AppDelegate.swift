@@ -150,8 +150,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         connectToFBMessaging()
     }
     
+  
+    
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("MessageID: \(userInfo["gcm_message_id"]!)")
+        /*print("MessageID: \(userInfo["gcm_message_id"]!)")
         
         if let aps = userInfo["aps"] as? NSDictionary {
             if let alert = aps["alert"] as? NSDictionary {
@@ -176,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // NotificationCenter.
         
-        print(userInfo)
+        print(userInfo)*/
     }
     var deviceToken: String?
     // Called when APNs has assigned the device a unique token

@@ -442,9 +442,14 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     @IBOutlet weak var majorDropDownTF: UITextField!
     @IBOutlet weak var schoolDropDownTF: UITextField!
     var student = Student()
+    var promoData = [String:Any]()
+    var promoSuccess = Bool()
+    var promoSenderID = String()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.currentPicked = "Rhodes College"
         /*var tempData = SchoolData()
         for val in tempData.schoolDict as! [[String:Any]]{
             for (key, val2) in val as! [String: String]{
@@ -454,6 +459,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
             }
             }
         }*/
+        self.curPicker = "school"
         selectButton.isHidden = true
         selectButton.layer.cornerRadius = 7
         schoolAndMajorPicker.delegate = self
@@ -544,7 +550,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
    var curPicker = String()
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) {
-        
+        self.currentPicked = ""
         if textField == schoolDropDownTF{
             self.curPicker = "school"
             schoolAndMajorPicker.reloadAllComponents()
@@ -552,7 +558,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
         }
         if textField == majorDropDownTF {
             self.curPicker = "major"
-            schoolAndMajorPicker.reloadAllComponents()
+           schoolAndMajorPicker.reloadAllComponents()
             //dropDown.show()
         }
             if textField == gradYearTF{
@@ -583,6 +589,9 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     }
     
 
+    var promoSender = [String: String]()
+    var promoType = String()
+    
     
     // MARK: - Navigation
 
@@ -594,6 +603,12 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
             vc.student = self.student
             vc.profPic = self.profPic
             vc.crypt = self.crypt
+            vc.promoSenderID = self.promoSenderID
+            vc.promoType = self.promoType
+            vc.promoData = self.promoData
+            vc.promoSuccess = self.promoSuccess
+            vc.promoSender = self.promoSender
+            
         }
     }
     

@@ -199,6 +199,8 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     }
 
 
+    var promoData = [String:Any]()
+    var promoSuccess = Bool()
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
    // @IBOutlet weak var addressTextField: UITextField!
@@ -305,6 +307,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var crypt = String()
+    var promoSenderID = String()
+    var promoType = String()
+    //var promoSuccess = Bool()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
@@ -313,6 +318,11 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
             vc.profPic = self.profPic!
             vc.crypt = self.crypt
             vc.locDict = self.locDict
+            vc.promoData = self.promoData
+            vc.promoSuccess = self.promoSuccess
+            vc.promoType = self.promoType
+            vc.promoSenderID = self.promoSenderID
+            
         }
     }
     

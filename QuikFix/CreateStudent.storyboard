@@ -373,7 +373,7 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UIViewController-WLQ-zQ-rc4" id="KMx-SW-5z2" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8z8-Le-t7V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1135.2" y="79.610194902548727"/>
+            <point key="canvasLocation" x="-1132" y="-144"/>
         </scene>
     </scenes>
 </document>

@@ -28,6 +28,9 @@ class Student: NSObject {
     var tShirtSize: String?
     var phone: String?
     var deviceToken: [String:Any]?
+    var nearbyJobs: [String]?
+    var promoCode: [String:Any]?
+    var availableCredits: Int?
     //var directMessages: [String:Any]?
     
 }
