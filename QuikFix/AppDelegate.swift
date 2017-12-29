@@ -21,7 +21,7 @@ import IQKeyboardManagerSwift
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
     
@@ -66,30 +66,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
         // config.shippingType = settings.shippingType
        // config.additionalPaymentMethods = settings.additionalPaymentMethods
+        Messaging.messaging().delegate = self
         
         
             // iOS 10 support
-        if #available(iOS 10, *) {
-            //UNUserNotificationCenter.current().delegate = (self as! UNUserNotificationCenterDelegate)
-            // For iOS 10 data message (sent via FCM)
-            //Messaging.messaging().remoteMessageDelegate = (self as! MessagingDelegate)
-            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
-            application.registerForRemoteNotifications()
-        }
-            // iOS 9 support
-        else if #available(iOS 9, *) {
-            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-            // iOS 8 support
-        else if #available(iOS 8, *) {
-            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-            // iOS 7 support
-        else {
-            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
-        }
+       
         
         return true
     }
@@ -144,6 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func tokenRefreshNotification(notification: NSNotification)
     {
+        print("inRefresh")
         self.token = Messaging.messaging().fcmToken
         //let refreshedToken = FIRInstanceID.instanceID().token()
         // print("InstanceID token: \(refreshedToken)")

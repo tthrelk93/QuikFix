@@ -684,67 +684,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     var location = CLLocation()
     //edit profile view
     var selectedImage = UIImage()
-   // @IBOutlet weak var editProfView: UIView!
-   /* @IBAction func saveChangesPressed(_ sender: Any) {
-        var values = [String: Any]()
-        let imageName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child((Auth.auth().currentUser?.uid)!).child("\(imageName).jpg")
-        
-        if let profileImage = self.editProfPicImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
-            
-            //storageRef.putData(uploadData)
-            
-            
-            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                
-                if error != nil {
-                    print(error as Any)
-                    return
-                }
-                
-                if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
-                    if self.editCityTextField.text != "" {
-                        values["city"] = self.editCityTextField.text
-                    } else {
-                         values["city"] = self.editCityTextField.placeholder
-                    }
-                    if self.editSchoolTextField.text != ""{
-                        values["school"] = self.editSchoolTextField.text
-                    } else {
-                         values["school"] = self.editSchoolTextField.placeholder
-                    }
-                    if self.editMajorTextField.text != ""{
-                        values["major"] = self.editMajorTextField.text
-                    } else {
-                        values["major"] = self.editMajorTextField.placeholder
-                    }
-                    if self.editGradYearTextField.text != ""{
-                        values["gradYear"] = self.editGradYearTextField.text
-                    } else {
-                        values["gradYear"] = self.editGradYearTextField.placeholder
-                    }
-                    //if self.editBioTextView.text != "Edit Bio"
-                    values["bio"] = self.editBioTextView.text
-                    if self.editNameTextField.text != ""{
-                        
-                        values["name"] = self.editNameTextField.text
-                    } else {
-                        values["name"] = self.editNameTextField.placeholder
-                    }
-                    
-                    values["pic"] = profileImageUrl
-                    
-        
-        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(values)
-                    self.editProfView.isHidden = true
-                    self.loadPageData()
-                }
-            })
-        }
-    
-    
-        
-    }*/
+   
     
     @IBOutlet weak var menuButton: UIButton!
     var sender = String()
@@ -778,12 +718,13 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         scrollView.bounces = false
         SwiftOverlays.removeAllBlockingOverlays()
         if sender == "student"{
+            print("aboveMessagingDelegateInStudent")
             Messaging.messaging().delegate = self
-            self.mToken = Messaging.messaging().fcmToken!
+            /*self.mToken = Messaging.messaging().fcmToken!
             //appDelegate.deviceToken
             var tokenDict = [String: Any]()
             tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
-            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)*/
         }
         if self.notUsersProfile == false{
             //availableForWorkLabel.isHidden = false
@@ -1190,6 +1131,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         //tabBar.selectedItem
         let picker = UIImagePickerController()
         picker.delegate = self
+        //Messaging.messaging().delegate = self
         loadPageData()
         
         
@@ -1311,6 +1253,18 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             performSegue(withIdentifier: "StudentProfileTabBarToCalendar", sender: self)
             
         }
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        var tokenDict = [String: Any]()
+        
+        
+        tokenDict["deviceToken"] = [fcmToken: true] as [String: Any]?
+        Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+        
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
 

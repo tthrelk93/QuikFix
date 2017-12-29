@@ -273,11 +273,14 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             
             values["jobID"] = ref.key
             values["completed"] = false
-            
+            self.selectorJobID = ref.key
             //self.segueJobData = values
             self.jobRef = ref.key
             ref.updateChildValues(values)
-            var values2 = [String: Any]()
+            
+            
+            
+            //var values2 = [String: Any]()
             //values2["currentListings"]
             
             Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -356,9 +359,6 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             self.present(alert, animated: true, completion: nil)
         }
         
-            
-            
-        
     }
     func showAddCard(){
         self.handleAddPaymentMethodButtonTapped()
@@ -373,7 +373,9 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
         let navigationController = UINavigationController(rootViewController: addCardViewController)
         present(navigationController, animated: true)
     }
+    var selectorJobID = String()
     
+   
     // MARK: STPAddCardViewControllerDelegate
     
     func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {

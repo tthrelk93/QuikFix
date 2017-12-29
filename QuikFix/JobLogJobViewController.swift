@@ -304,15 +304,18 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                  numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix student"
                 }
             }
+            else {
+                numberOfStudentsLabel.text = "Job Poster"
+            }
         }
-        if (job.completed! as! Bool) == true{
+        /*if (job.completed! as! Bool) == true{
             jobCompletedButton.setTitle("Job Completed/Students Paid", for: .normal)
             jobCompletedButton.isEnabled = false
             jobCompletedButton.alpha = 0.6
         } else {
             jobCompletedButton.setTitle("Complete Job/Pay Students", for: .normal)
             jobCompletedButton.isEnabled = true
-        }
+        }*/
         
         if self.sender == "student"{
             Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -331,6 +334,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 if self.job.workers == nil{
                     
                 } else {
+                    /*var tempDict2 = [String:Any]()
+                    tempDict2[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String, "studentID": (snap.value as! [String:Any])["studentID"] as! String]
+                    self.workers.append(tempDict)*/
                     self.workersCollect.delegate = self
                     self.workersCollect.dataSource = self
                 }
@@ -400,9 +406,16 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     @IBOutlet weak var cellSelectedView: UIView!
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return workers.count
+        if self.sender == "poster"{
+            return workers.count
+        } else {
+            return workers.count
+        }
     }
     var jobID = String()
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "JobLogStudentCell", for: indexPath) as! JobLogStudentCell
         

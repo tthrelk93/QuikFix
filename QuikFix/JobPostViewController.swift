@@ -14,6 +14,7 @@ import FirebaseAuth
 
 class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController, UITabBarDelegate{
     
+    @IBOutlet weak var noJobsLabel: UILabel!
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items?[0]{
             performSegue(withIdentifier: "TabBarJobPostToJobLog", sender: self)
@@ -242,6 +243,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        if datesArray.count == 0{
+            noJobsLabel.isHidden = false
+        } else {
+            noJobsLabel.isHidden = true
+        }
         return datesArray.count
     }
     

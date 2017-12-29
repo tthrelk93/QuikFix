@@ -299,6 +299,36 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         // 1
+        
+        var workerArray = self.job.workers!
+        var count = 0
+        var removeBool = false
+        for worker in workerArray{
+            if worker == Auth.auth().currentUser!.uid{
+               workerArray.remove(at: count)
+                removeBool = true
+                print("removeTrue")
+            }
+            count = count + 1
+        }
+        print("removeBool: \(removeBool)")
+        if removeBool == false{
+            for worker in workerArray{
+                Database.database().reference().child("students").child(worker).updateChildValues(["unreadMessages": true])
+                Database.database().reference().child("students").child(worker).child("unreadMessages").removeValue()
+            }
+        } else {
+            for worker in workerArray{
+                print("workerID: \(worker)")
+                print("jobID: \(self.job.jobID)")
+                Database.database().reference().child("students").child(worker).updateChildValues(["unreadMessages": true])
+                Database.database().reference().child("students").child(worker).child("unreadMessages").removeValue()
+            }
+            print("posterID: \(self.job.posterID)")
+            Database.database().reference().child("jobPosters").child(self.job.posterID!).updateChildValues(["unreadMessages": true])
+            Database.database().reference().child("jobPosters").child(self.job.posterID!).child("unreadMessages").removeValue()
+        }
+        
         let itemRef = messageRef.childByAutoId()
         
         // 2

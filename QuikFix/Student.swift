@@ -31,6 +31,7 @@ class Student: NSObject {
     var nearbyJobs: [String]?
     var promoCode: [String:Any]?
     var availableCredits: Int?
+    var unreadMessages: Bool?
     //var directMessages: [String:Any]?
     
 }

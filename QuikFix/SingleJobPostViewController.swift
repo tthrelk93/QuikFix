@@ -265,7 +265,22 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
                                                // let dateFormatter2 = "MMMM-dd-yyyy"
                                                // let triggerDate2 = dateFormatter.dateFrom
-                                            
+                                                
+                                                self.selectorJob = self.job1
+                                                let trigger2Time = "\(self.job1.date!) \(self.job1.startTime!)"
+                                                
+                                                
+                                                let dateFormatter3 = DateFormatter()
+                                                dateFormatter3.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                                                let trigger = dateFormatter3.date(from: trigger2Time)
+                                                let date3 = Date(timeInterval: -12, since: trigger!)
+                                                let date4 = Date(timeInterval: -3, since: trigger!)
+                                                let timer3 = Timer(fireAt: date3, interval: 0, target: self, selector: #selector(self.twelveHoursOut), userInfo: nil, repeats: false)
+                                                RunLoop.main.add(timer3, forMode: RunLoopMode.commonModes)
+                                                
+                                                let timer4 = Timer(fireAt: date4, interval: 0, target: self, selector: #selector(self.threeHoursOut), userInfo: nil, repeats: false)
+                                                RunLoop.main.add(timer4, forMode: RunLoopMode.commonModes)
+
                                                 self.performSegue(withIdentifier: "JobAcceptedBackToProfile", sender: self)
                                                 
                                             })
@@ -415,6 +430,28 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                     
                                     let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
                                     RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                    
+                                    self.selectorJob = self.job1
+                                    let trigger2Time = "\(self.job1.date!) \(self.job1.startTime!)"
+                                    
+                                    
+                                    let dateFormatter3 = DateFormatter()
+                                    dateFormatter3.dateFormat = "MMMM-dd-yyyy hh:mm a"
+                                    let trigger = dateFormatter3.date(from: trigger2Time)
+                                    
+                                    let date3 = Date(timeInterval: -12, since: trigger!)
+                                    let date4 = Date(timeInterval: -3, since: trigger!)
+                                    let date5 = Date(timeInterval: -0.5, since: trigger!)
+                                    
+                                    let timer3 = Timer(fireAt: date3, interval: 0, target: self, selector: #selector(self.twelveHoursOut), userInfo: nil, repeats: false)
+                                    RunLoop.main.add(timer3, forMode: RunLoopMode.commonModes)
+                                    
+                                    let timer4 = Timer(fireAt: date4, interval: 0, target: self, selector: #selector(self.threeHoursOut), userInfo: nil, repeats: false)
+                                    RunLoop.main.add(timer4, forMode: RunLoopMode.commonModes)
+                                    let timer5 = Timer(fireAt: date5, interval: 0, target: self, selector: #selector(self.threeHoursOut), userInfo: nil, repeats: false)
+                                    RunLoop.main.add(timer5, forMode: RunLoopMode.commonModes)
+                                    
+                                    
                                     self.performSegue(withIdentifier: "JobAcceptedBackToProfile", sender: self)
                                     
                                 })
@@ -427,6 +464,21 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                 
             }
         })
+    }
+    
+    var selectorJob = JobPost()
+    func thirtyMinOut(){
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(["thirtyMinToStart": selectorJob.posterID as! String])
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).child("thirtyMinToStart").removeValue()
+    }
+    func threeHoursOut(){
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(["threeHoursToStart": selectorJob.posterID as! String])
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).child("threeHoursToStart").removeValue()
+    }
+    
+    func twelveHoursOut(){
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(["twelveHoursToStart": selectorJob.posterID as! String])
+        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).child("twelveHoursToStart").removeValue()
     }
     
     @IBOutlet weak var posterName: UILabel!

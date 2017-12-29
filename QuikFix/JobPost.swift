@@ -30,6 +30,9 @@ class JobPost: NSObject {
     var dropOffLocation: String?
     var tools: [String]?
     var inProgress: Bool?
+    var twelveHoursToStart: String?
+    var threeHoursToStart: String?
+    var thirtyMinToStart: String?
     
     
     //var responses: [String]?

@@ -16,6 +16,10 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     var jobsForDate = [JobPost]()
     
     
+    
+    @IBOutlet weak var noJobsLabel: UILabel!
+    
+    
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items?[0]{
             
@@ -578,6 +582,11 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        if calendarDict.count == 0{
+            noJobsLabel.isHidden = false
+        } else {
+            noJobsLabel.isHidden = true
+        }
         return calendarDict.count
     }
     

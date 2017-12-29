@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import SwiftOverlays
 
 class CreateAccountMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -70,10 +71,11 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
             let alert = UIAlertController(title: "Invalid Code Error", message: "It appears that the promo code you are entering does not exist.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
+            return
             
         } else {
            print("in the else")
-           //Auth.auth().
+           SwiftOverlays.showBlockingWaitOverlayWithText("Applying Promo...")
             Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
@@ -94,9 +96,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                     }*/
                                     self.promoSender[snap.key] = key
                                     self.promoSuccess = true
-                                    //self.promoCredit = tempDict["availableCredits"] as! Int
-                                    
-                                    //self.promoCredit = 10
+                              
                                     
                                     break
                                 }
@@ -131,9 +131,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                         var uploadDict = [String:Any]()
                                         uploadDict["availableCredits"] =
                                             self.promoCredit
-                                       // var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
-                                        //tempArray.append((self.promoSender.first?.key)!)
-                                        //promo[(self.promoSender.first?.value)!] = tempArray
+                             
                                         uploadDict["promoCode"] = promo
                                         self.topLabel.text = "Success!"
                                         self.promoSuccessLabel.isHidden = false
@@ -147,13 +145,13 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                         self.promoSenderID = (self.promoSender.first?.key)!
                                         if self.accountType == "student"{
                                             self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
-                                           // self.promoView.isHidden = true
+                              
                                         } else {
-                                            //promoCodeTF.delegate = self
-                                            //self.promoView.isHidden = true
+                                            
                                             self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
                                         }
-                                        //self.promoSkipped = false
+                                        SwiftOverlays.removeAllBlockingOverlays()
+                                 
                                     }
                                 })
                             } else {
@@ -161,17 +159,9 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                 var uploadDict = [String:Any]()
                                 uploadDict["availableCredits"] =
                                     self.promoCredit
-                                //var tempArray = promo[(self.promoSender.first?.value)!] as! [String]
-                               /* if tempArray.first as! String == "" {
-                                    tempArray.append((self.promoSender.first?.key)!)
-                                    tempArray.remove(at: 0)
-                                
-                                } else {
-                                tempArray.append((self.promoSender.first?.key)!)
-                                }*/
-                                //promo[(self.promoSender.first?.value)!] = tempArray
+                               
                                 uploadDict["promoCode"] = promo
-                                //self.topLabel.text = "Success!"
+                              
                                 self.promoSuccessLabel.isHidden = false
                                 self.promoCodeTF.isHidden = true
                                 self.redeemButton.isHidden = true
@@ -189,6 +179,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                     //self.promoView.isHidden = true
                                     self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
                                 }
+                                SwiftOverlays.removeAllBlockingOverlays()
                                 //uploadDict["promoSender"] = self.promoSender.first?.key
                                 //self.promoSkipped = false
                             }
@@ -344,14 +335,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     var locDict = [String:Any]()
     var sender = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        /*if segue.identifier == "PromoToStep4"{
-            if let vc = segue.destination as? CreatePosterStep3ViewController{
-                vc.poster = self.poster
-                vc.profPic = self.profPic
-                vc.crypt = self.crypt
-                vc.locDict = self.locDict
-            }
-        }*/
+        
         if segue.identifier == "CreateStudent"{
             if let vc = segue.destination as? CreateAccountStudentViewController{
                 vc.profPic = self.userPic.image!
@@ -359,7 +343,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                 vc.promoSuccess = self.promoSuccess
                 vc.promoSenderID = self.promoSenderID
                 vc.promoType = self.promoType
-                 vc.promoSender = self.promoSender
+                vc.promoSender = self.promoSender
                 
             }
             

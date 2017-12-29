@@ -10,8 +10,10 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import SwiftOverlays
+import UserNotifications
+import FirebaseMessaging
 
-class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
+class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate, MessagingDelegate {
     @IBOutlet weak var createAccountView: UIView!
     
     @IBAction func signInButtonPressed(_ sender: Any) {
@@ -85,6 +87,7 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         userNameTextField.delegate = self
@@ -93,66 +96,133 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
         var posterBool = false
         
         
-        handle = Auth.auth().addStateDidChangeListener { auth, user in
-            if let user = user {
-                // User is signed in.
-                
-                Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        for snap in snapshots{
-                            if snap.key == Auth.auth().currentUser?.uid{
-                                studentBool = true
-                                posterBool = false
-                                
-                                //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
-                                
-                            }
-                        }
-                        /*if studentBool == false{
-                            //
-                            self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
-                        }*/
-                    }
-                    Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        var isRegisteredForRemoteNotifications = UIApplication.shared.isRegisteredForRemoteNotifications
+        if(isRegisteredForRemoteNotifications == false){
+            print("registeredForRemote = false")
+            if #available(iOS 10, *) {
+                UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+                // iOS 9 support
+            else if #available(iOS 9, *) {
+                UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+                // iOS 8 support
+            else if #available(iOS 8, *) {
+                UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+                // iOS 7 support
+            else {
+               print("registeringForRemote")
+                UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
+            }
+            
+            handle = Auth.auth().addStateDidChangeListener { auth, user in
+                if let user = user {
+                    self.authUser = user.uid
+                    Messaging.messaging().delegate = self
+                     Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                             for snap in snapshots{
                                 if snap.key == Auth.auth().currentUser?.uid{
-                                    studentBool = false
-                                    posterBool = true
-                                    
-                                    
-                                    //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
-                                    
+                                    studentBool = true
+                                    posterBool = false
                                 }
                             }
-                            if posterBool == false && studentBool == false{
-                                Auth.auth().currentUser?.delete(completion: { (error) in
-                                    if error != nil {
-                                        print("Error unable to delete user")
-                                        
-                                    }
-                                })
                             
-                            } else if posterBool == false {
-                                self.performSegue(withIdentifier: "LoginSegue", sender: self)
-                            } else if studentBool == false{
-                            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
-                                self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
+                        }
+                        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                for snap in snapshots{
+                                    if snap.key == Auth.auth().currentUser?.uid{
+                                        studentBool = false
+                                        posterBool = true
+                                    }
+                                }
+                                if posterBool == false && studentBool == false{
+                                    Auth.auth().currentUser?.delete(completion: { (error) in
+                                        if error != nil {
+                                            print("Error unable to delete user")
+                                            
+                                        }
+                                    })
+                                    
+                                } else if posterBool == false {
+                                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                                } else if studentBool == false{
+                                    SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                    self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
+                                }
+                            }
+                        })
+                    })
+                    
+                } else {
+                    print("no user")
+                    // No user is signed in.
+                    //Auth.auth().removeStateDidChangeListener(<#T##listenerHandle: AuthStateDidChangeListenerHandle##AuthStateDidChangeListenerHandle#>)
+                }
+            }
+        
+        } else {
+            
+            print("in some else")
+            handle = Auth.auth().addStateDidChangeListener { auth, user in
+                if let user = user {
+                    self.authUser = user.uid
+                    Messaging.messaging().delegate = self
+                    Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots{
+                                if snap.key == Auth.auth().currentUser?.uid{
+                                    studentBool = true
+                                    posterBool = false
+                                }
                             }
                         }
+                        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                for snap in snapshots{
+                                    if snap.key == Auth.auth().currentUser?.uid{
+                                        studentBool = false
+                                        posterBool = true
+                                      
+                                    }
+                                }
+                                if posterBool == false && studentBool == false{
+                                    Auth.auth().currentUser?.delete(completion: { (error) in
+                                        if error != nil {
+                                            print("Error unable to delete user")
+                                            
+                                        }
+                                    })
+                                    
+                                } else if posterBool == false {
+                                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                                } else if studentBool == false{
+                                    SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                                    self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
+                                }
+                            }
+                        })
                     })
-                })
-
-            } else {
-                // No user is signed in.
-                //Auth.auth().removeStateDidChangeListener(<#T##listenerHandle: AuthStateDidChangeListenerHandle##AuthStateDidChangeListenerHandle#>)
+                    
+                } else {
+                    // No user is signed in.
+                    //Auth.auth().removeStateDidChangeListener(<#T##listenerHandle: AuthStateDidChangeListenerHandle##AuthStateDidChangeListenerHandle#>)
+                }
             }
         }
+        
+        
         //userNameTextField.color
 
         // Do any additional setup after loading the view.
     }
-    
+    var authUser = String()
     override func viewWillDisappear(_ animated: Bool) {
         Auth.auth().removeStateDidChangeListener(handle!)
     }
@@ -169,13 +239,29 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        var tokenDict = [String: Any]()
+        
+        
+        tokenDict["deviceToken"] = [fcmToken: true] as [String: Any]?
+        Database.database().reference().child("students").child(self.authUser).updateChildValues(tokenDict)
+        
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
+    
 
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if segue.identifier == "LoginSegue"{
+            if let vc = segue.destination as? studentProfile{
+                vc.sender = "student"
+            }
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
             }
