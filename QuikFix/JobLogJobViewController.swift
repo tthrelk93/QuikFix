@@ -11,6 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import Stripe
+import CoreLocation
 
 class JobLogStudentCell: UICollectionViewCell{
     @IBOutlet weak var studentPic: UIImageView!
@@ -18,7 +19,7 @@ class JobLogStudentCell: UICollectionViewCell{
     
 }
 
-class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, STPAddCardViewControllerDelegate, STPShippingAddressViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
+class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, STPAddCardViewControllerDelegate, STPShippingAddressViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, STPPaymentContextDelegate {
     
     
     func handleAddPaymentMethodButtonTapped() {
@@ -200,62 +201,196 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     var stripeToken = String()
     let settingsVC = SettingsViewController()
     @IBOutlet weak var groupChatButton: UIButton!
-    @IBAction func jobCompletedPressed(_ sender: Any) {
-       /* let cardParams = STPCardParams()
-        cardParams.number = "4242424242424242"
-        cardParams.expMonth = 10
-        cardParams.expYear = 2018
-        cardParams.cvc = "123"
+    
+    func confirmCancel(){
+        var sendJob = [String:Any]()
+        sendJob["jobID"] = self.job.jobID!
+        print("charge the poster for cancel")
+        let tempCharge = 25 * 100
+        print("charge in cents: \(tempCharge)")
+        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "cancelJob")
+        DispatchQueue.main.async{
+            self.performSegue(withIdentifier: "cancelJobToPosterProfile", sender: self)
+        }
+    }
+    var removeAcceptedCount = Int()
+    var workers2 = [String]()
+    func confirmCancel2(){
+        var sendJob = [String:Any]()
+        sendJob["jobID"] = self.job.jobID!
+        sendJob["posterID"] = self.job.posterID!
+        var now = Date()
         
-        STPAPIClient.shared().createTokenWithCard(cardParams) { (token: STPToken?, error: Error?) in
-            guard let token = token, error == nil else {
-                // Present error to user...
-                return
+        let date = self.job.date!
+        var timeComp = self.job.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
+        let timeHours = timeComp[0]
+        print("timeHours: \(timeHours)")
+        let timeHoursInt = (timeHours as NSString).integerValue
+        let trigger1Time = timeHoursInt + (Int(self.job.jobDuration!)!)
+        var triggerTime = Int()
+        if trigger1Time > 12{
+            triggerTime = trigger1Time % 12
+        } else {
+            triggerTime = trigger1Time
+        }
+        print("modTime:\(triggerTime)")
+        let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+        print("triggerTime: \(triggerTimeString)")
+        let dateToFormat = "\(date) \(triggerTimeString)"
+        print("dataToFormat: \(dateToFormat)")
+        
+        
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM-dd-yyyy h:mm a"
+        let triggerDate = dateFormatter.date(from: dateToFormat)
+        
+        var nowString = dateFormatter.string(from: now)
+        var nowDate = dateFormatter.date(from: nowString)
+        var minutesUntil = nowDate?.minutes(from: triggerDate!)
+        print("minutesUntilJob: \(minutesUntil)")
+        
+        
+        
+        if minutesUntil! <= 90 {
+            print("charge the student for cancel")
+            let tempCharge = 5 * 100
+            print("charge in cents: \(tempCharge)")
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        var snapDict = snap.value as! [String:Any]
+                        let studentLat = (snapDict["location"] as! [String:Any])["lat"] as! CLLocationDegrees
+                        let studentLong = (snapDict["location"] as! [String:Any])["long"] as! CLLocationDegrees
+                        let studentLoc = CLLocation(latitude: studentLat, longitude: studentLong)
+                        
+                        let exp = snapDict["experience"] as! [String]
+                        print("studentEXp: \(exp)")
+                        if exp.contains(self.job.category1!){
+                            print(snap.key)
+                           // print("studLoc: \(studentLoc)")
+                            //print("jobLoc: \(self.jobCoord)")
+                            var coords = CLLocation(latitude: Double(self.job.jobLat!)!, longitude: Double(self.job.jobLong!)!)
+                            if studentLoc.distance(from: coords) <= 90000{
+                                print("inRange")
+                                if snapDict["nearbyJobs"] == nil {
+                                    
+                                    print("it was nil")
+                                    Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": [self.job.jobID]])
+                                } else {
+                                    var tempArray = snapDict["nearbyJobs"] as! [String]
+                                    tempArray.append(self.job.jobID!)
+                                    Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": tempArray])
+                                }
+                                
+                                
+                            }
+                        }
+                    }
+                   
+            DispatchQueue.main.async{
+                 MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: (Auth.auth().currentUser?.uid)!, job: sendJob, senderScreen: "cancelJobStudent")
+                self.performSegue(withIdentifier: "cancelJobToStudentProfile", sender: self)
             }
-            
-            submitTokenToBackend(token, completion: { (error: Error?) in
-                if let error = error {
-                    // Present error to user...
-                }
-                else {
-                    // Continue with payment...
                 }
             })
-        }*/
-        /*print("jobcompletedPressed")
-        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                var paymentVer = false
-                
-                for snap in snapshots {
-                    /*if snap.key == "paymentVerified"{
-                        if snap.value as! Bool == true{
-                            paymentVer = true
+        } else {
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        var snapDict = snap.value as! [String:Any]
+                        let studentLat = (snapDict["location"] as! [String:Any])["lat"] as! CLLocationDegrees
+                        let studentLong = (snapDict["location"] as! [String:Any])["long"] as! CLLocationDegrees
+                        let studentLoc = CLLocation(latitude: studentLat, longitude: studentLong)
+                        
+                        let exp = snapDict["experience"] as! [String]
+                        print("studentEXp: \(exp)")
+                        if exp.contains(self.job.category1!){
+                            print(snap.key)
+                            // print("studLoc: \(studentLoc)")
+                            //print("jobLoc: \(self.jobCoord)")
+                            var coords = CLLocation(latitude: Double(self.job.jobLat!)!, longitude: Double(self.job.jobLong!)!)
+                            if studentLoc.distance(from: coords) <= 90000{
+                                print("inRange")
+                                if snapDict["nearbyJobs"] == nil {
+                                    
+                                    print("it was nil")
+                                    Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": [self.job.jobID]])
+                                } else {
+                                    var tempArray = snapDict["nearbyJobs"] as! [String]
+                                    tempArray.append(self.job.jobID!)
+                                    Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": tempArray])
+                                }
+                                
+                                
+                            }
                         }
-                    }*/
-                    if snap.key == "stripeToken"{
-                        self.stripeToken = snap.value as! String
                     }
-
+                    Database.database().reference().child("jobs").child(self.job.jobID as! String).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots {
+                                if snap.key == "workers"{
+                                    self.workers2 = snap.value as! [String]
+                                }
+                                if snap.key == "acceptedCount"{
+                                    self.removeAcceptedCount = (snap.value as! Int) - 1
+                                    
+                                }
+                            }
+                            
+                            self.workers.remove(at: self.workers2.index(of: Auth.auth().currentUser!.uid)!)
+                            Database.database().reference().child("jobs").child(self.job.jobID!).updateChildValues(["acceptedCount": self.removeAcceptedCount, "workers": self.workers])
+                        }
+                        Database.database().reference().child("jobPosters").child(self.job.posterID!).updateChildValues(["studentCancelled": true])
+                        Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                            var uploadDataStudent = [String]()
+                            
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                
+                                for snap in snapshots {
+                                    if snap.key == "upcomingJobs"{
+                                        
+                                        uploadDataStudent = snap.value as! [String]
+                                        uploadDataStudent.remove(at: uploadDataStudent.index(of: self.job.jobID!)!)
+                                    }
+                                }
+                                Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(["upcomingJobs": uploadDataStudent])
+                                DispatchQueue.main.async{
+                                    self.performSegue(withIdentifier: "cancelJobToStudentProfile", sender: self)
+                                }
+                            }
+                        })
+                        
+                    })
+                    
                 }
-                self.handleAddPaymentMethodButtonTapped()                //if paymentVer == true{
-                   /* let checkoutViewController = CheckoutViewController(product: self.stripeToken,
-                                                                        price: 1200,
-                                                                        settings: self.settingsVC.settings)
-                    //self.navigationController?.pushViewController(checkoutViewController, animated: true)
-                    let navigationController = UINavigationController(rootViewController: checkoutViewController)
-                    self.present(navigationController, animated: true)*/
-
-               // } //else {
-                   // print("else")
-                   // self.handleAddPaymentMethodButtonTapped()
-                //}
-            }
-        })
-        
-               // handleAddPaymentMethodButtonTapped()*/
-        
+                
+            })
+            
+        }
+    }
+    
+    //This is now the cancel job button
+    @IBAction func jobCompletedPressed(_ sender: Any) {
+        if self.sender == "student"{
+            print("cancelByStudent")
+            let alert = UIAlertController(title: "Confirm Cancel", message: "You will be charged a cancellation fee of $25.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Confirm Cancel", style: UIAlertActionStyle.default, handler: { action in
+                self.confirmCancel2()
+            }))
+            self.present(alert, animated: true, completion: nil)
+            //
+            
+            
+        } else {
+            //cancel by poster charges poster $25 and credits the student $10
+            let alert = UIAlertController(title: "Confirm Cancel", message: "You will be charged a cancellation fee of $25.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Confirm Cancel", style: UIAlertActionStyle.default, handler: { action in
+                self.confirmCancel()
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+        }
         
     }
     
@@ -263,7 +398,15 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     var job = JobPost()
     var workers = [[String:Any]]()
     
+    // 1) To get started with this demo, first head to https://dashboard.stripe.com/account/apikeys
+    // and copy your "Test Publishable Key" (it looks like pk_test_abcdef) into the line below.
+    let stripePublishableKey = "pk_live_F3qPhd7gnfCP6HP2gi1LTX41"
     
+    // 2) Next, optionally, to have this demo save your user's payment details, head to
+    // https://github.com/stripe/example-ios-backend , click "Deploy to Heroku", and follow
+    // the instructions (don't worry, it's free). Replace nil on the line below with your
+    // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
+    let backendBaseURL = "https://quikfix123.herokuapp.com"
     
     
     @IBOutlet weak var posterLabel: UILabel!
@@ -271,15 +414,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         paymentCardTextField.delegate = self
-        /*buyButton.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
-       buyButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        buyButton.setTitle("Confirm", for: .normal)*/
-       
-        // Add payment card text field to view
-        //view.addSubview(paymentCardTextField)
-       // view.addSubview(buyButton)
+        
         
         groupChatButton.layer.cornerRadius = 10
         posterLabel.text = job.posterName!
@@ -289,15 +426,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         timeLabel.text = job.startTime!
         durationLabel.text = "\(job.jobDuration!) hour estimated completion time"
         totalCostLabel.text = "\(job.payment!)"
-       // detailsTextView.text = job.additInfo!
-       /* posterLabel.textAlignment = .center
-        dateLabel.textAlignment = .center
-        timeLabel.textAlignment = .center
-        durationLabel.textAlignment = .center
-        totalCostLabel.textAlignment = .center
-        detailsTextView.textAlignment = .center*/
-        if job.workers != nil{
-            if self.sender != "student"{
+       
+        if job.workers != nil {
+            if self.sender != "student" {
                 if job.workers?.count as! Int > 1{
                     numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
                 } else {
@@ -308,14 +439,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 numberOfStudentsLabel.text = "Job Poster"
             }
         }
-        /*if (job.completed! as! Bool) == true{
-            jobCompletedButton.setTitle("Job Completed/Students Paid", for: .normal)
-            jobCompletedButton.isEnabled = false
-            jobCompletedButton.alpha = 0.6
-        } else {
-            jobCompletedButton.setTitle("Complete Job/Pay Students", for: .normal)
-            jobCompletedButton.isEnabled = true
-        }*/
+        
         
         if self.sender == "student"{
             Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -334,9 +458,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 if self.job.workers == nil{
                     
                 } else {
-                    /*var tempDict2 = [String:Any]()
-                    tempDict2[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String, "studentID": (snap.value as! [String:Any])["studentID"] as! String]
-                    self.workers.append(tempDict)*/
+                    
                     self.workersCollect.delegate = self
                     self.workersCollect.dataSource = self
                 }
@@ -513,5 +635,180 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
+        print("didCreatePaymentResult: \(self.job.posterID)")
+        /* MyAPIClient.sharedClient.completeCharge(paymentResult,
+         amount: (self.paymentContext?.paymentAmount)!,
+         shippingAddress: nil,
+         shippingMethod: nil,
+         poster: self.posterID,
+         completion: completion)*/
+    }
+    var paymentInProgress: Bool = false {
+        didSet {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                if self.paymentInProgress {
+                    print("paymentInProgress")
+                    self.activityIndicator.startAnimating()
+                    self.activityIndicator.alpha = 1
+                    // self.buyButton?.alpha = 0
+                }
+                else {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.alpha = 0
+                    //self.buyButton?.alpha = 1
+                }
+            }, completion: nil)
+        }
+    }
+    
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    var numberFormatter: NumberFormatter?
+    //let shippingString: String
+    var product = ""
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
+        print("finishedWith")
+        self.paymentInProgress = false
+        let title: String
+        let message: String
+        switch status {
+        case .error:
+            title = "Error"
+            message = error?.localizedDescription ?? ""
+            print("error")
+        case .success:
+            print("success")
+            title = "Success"
+            message = ""
+        case .userCancellation:
+            print("cancelled")
+            return
+        }
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(action)
+        //self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
+        //self.paymentRow.loading = paymentContext.loading
+        print("paymentContextDidChange")
+        /* if let paymentMethod = paymentContext.selectedPaymentMethod {
+         //self.paymentRow.detail = paymentMethod.label
+         }
+         else {
+         //self.paymentRow.detail = "Select Payment"
+         }*/
+        /*if let shippingMethod = paymentContext.selectedShippingMethod {
+         self.shippingRow.detail = shippingMethod.label
+         }
+         else {
+         self.shippingRow.detail = "Enter \(self.shippingString) Info"
+         }*/
+        //self.totalRow.detail = self.numberFormatter.string(from: NSNumber(value: Float(self.paymentContext.paymentAmount)/100))!
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
+        print("paymentContextFailedToLoad")
+        let alertController = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            // Need to assign to _ because optional binding loses @discardableResult value
+            // https://bugs.swift.org/browse/SR-1681
+            _ = self.navigationController?.popViewController(animated: true)
+        })
+        let retry = UIAlertAction(title: "Retry", style: .default, handler: { action in
+            self.paymentContext?.retryLoading()
+        })
+        alertController.addAction(cancel)
+        alertController.addAction(retry)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    var paymentContext: STPPaymentContext?
+    
+    var theme: STPTheme?
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didUpdateShippingAddress address: STPAddress, completion: @escaping STPShippingMethodsCompletionBlock) {
+        let upsGround = PKShippingMethod()
+        upsGround.amount = 0
+        upsGround.label = "UPS Ground"
+        upsGround.detail = "Arrives in 3-5 days"
+        upsGround.identifier = "ups_ground"
+        let upsWorldwide = PKShippingMethod()
+        upsWorldwide.amount = 10.99
+        upsWorldwide.label = "UPS Worldwide Express"
+        upsWorldwide.detail = "Arrives in 1-3 days"
+        upsWorldwide.identifier = "ups_worldwide"
+        let fedEx = PKShippingMethod()
+        fedEx.amount = 5.99
+        fedEx.label = "FedEx"
+        fedEx.detail = "Arrives tomorrow"
+        fedEx.identifier = "fedex"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if address.country == nil || address.country == "US" {
+                completion(.valid, nil, [upsGround, fedEx], fedEx)
+            }
+            else if address.country == "AQ" {
+                let error = NSError(domain: "ShippingError", code: 123, userInfo: [NSLocalizedDescriptionKey: "Invalid Shipping Address",
+                                                                                   NSLocalizedFailureReasonErrorKey: "We can't ship to this country."])
+                completion(.invalid, error, nil, nil)
+            }
+            else {
+                fedEx.amount = 20.99
+                completion(.valid, nil, [upsWorldwide, fedEx], fedEx)
+            }
+        }
+    }
 
+    
+    
+
+}
+
+extension Date {
+    /// Returns the amount of years from another date
+    func years(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.year], from: date, to: self).year ?? 0
+    }
+    /// Returns the amount of months from another date
+    func months(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: date, to: self).month ?? 0
+    }
+    /// Returns the amount of weeks from another date
+    func weeks(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.weekOfMonth], from: date, to: self).weekOfMonth ?? 0
+    }
+    /// Returns the amount of days from another date
+    func days(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: self).day ?? 0
+    }
+    /// Returns the amount of hours from another date
+    func hours(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date, to: self).hour ?? 0
+    }
+    /// Returns the amount of minutes from another date
+    func minutes(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.minute], from: date, to: self).minute ?? 0
+    }
+    /// Returns the amount of seconds from another date
+    func seconds(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
+    }
+    /// Returns the a custom time interval description from another date
+    func offset(from date: Date) -> String {
+        if years(from: date)   > 0 { return "\(years(from: date))y"   }
+        if months(from: date)  > 0 { return "\(months(from: date))M"  }
+        if weeks(from: date)   > 0 { return "\(weeks(from: date))w"   }
+        if days(from: date)    > 0 { return "\(days(from: date))d"    }
+        if hours(from: date)   > 0 { return "\(hours(from: date))h"   }
+        if minutes(from: date) > 0 { return "\(minutes(from: date))m" }
+        if seconds(from: date) > 0 { return "\(seconds(from: date))s" }
+        return ""
+    }
 }

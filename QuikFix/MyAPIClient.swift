@@ -79,8 +79,10 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     var stripeToken = String()
     //var job = [String:Any]()
    // var poster = String()
+    var removeAcceptedCount = Int()
+    
     func completeCharge(amount: Int,
-                        poster: String, job: [String:Any]) {
+                        poster: String, job: [String:Any], senderScreen: String) {
         
         
         Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -101,6 +103,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             
         
         //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
+                
         Alamofire.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in
@@ -109,12 +112,102 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     //completion(nil)
                    var containsUpcomingJobs = false
                    var containsJobsCompleted = false
+                   
+                   if senderScreen == "cancelJob"{
+                    Database.database().reference().child("jobs").child(job["jobID"] as! String).child("workers").observeSingleEvent(of: .value, with: { (snapshot) in
+                         self.workers = snapshot.value as! [String]
+                        
+                    
+                    Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+                        var cancelUpcomingArray = [String]()
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            
+                            for snap in snapshots {
+                                if snap.key == "upcomingJobs"{
+                                    cancelUpcomingArray = snap.value as! [String]
+                                    cancelUpcomingArray.remove(at: cancelUpcomingArray.index(of: job["jobID"] as! String)!)
+                                }
+                                
+                                
+                                
+                            }
+                            Database.database().reference().child("jobPosters").child(poster).updateChildValues(["upcomingJobs": cancelUpcomingArray])
+                        }
+                        
+                        for worker in self.workers{
+                            Database.database().reference().child("students").child(worker).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                                //var containsJobs = false
+                                //var containsCompleted = false
+                                //var upcomingArray = [String]()
+                                var cancelUpcomingArray2 = [String]()
+                                //var tempCompletedArray = [String]()
+                                for snap in snapshots {
+                                    if snap.key == "upcomingJobs"{
+                                        cancelUpcomingArray2 = snap.value as! [String]
+                                        cancelUpcomingArray2.remove(at: cancelUpcomingArray2.index(of: job["jobID"] as! String)!)
+                                    }
+                                    
+                                    
+                                }
+                                
+                                Database.database().reference().child("students").child(worker).updateChildValues(["upcomingJobs": cancelUpcomingArray])
+                                
+                            }
+                        })
+                    }
+                        
+                        
+                        
+                    })
+                    })
+                    
+                    
+                   } else if senderScreen == "cancelJobStudent"{
+                    Database.database().reference().child("jobs").child(job["jobID"] as! String).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            for snap in snapshots {
+                                if snap.key == "workers"{
+                                    self.workers = snap.value as! [String]
+                                }
+                                if snap.key == "acceptedCount"{
+                                    self.removeAcceptedCount = (snap.value as! Int) - 1
+                                    
+                                }
+                            }
+                        
+                        self.workers.remove(at: self.workers.index(of: Auth.auth().currentUser!.uid)!)
+                            Database.database().reference().child("jobs").child(job["jobID"] as! String).updateChildValues(["acceptedCount": self.removeAcceptedCount, "workers": self.workers])
+                        }
+                        Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["studentCancelled": true])
+                        Database.database().reference().child("students").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+                            var uploadDataStudent = [String]()
+                            
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                
+                                for snap in snapshots {
+                                    if snap.key == "upcomingJobs"{
+                                        
+                                        uploadDataStudent = snap.value as! [String]
+                                        uploadDataStudent.remove(at: uploadDataStudent.index(of: job["jobID"] as! String)!)
+                                    }
+                                }
+                                Database.database().reference().child("students").child(poster).updateChildValues(["upcomingJobs": uploadDataStudent])
+                            }
+                            })
+                        
+                    })
+                    
+                    
+                    
+                } else {
                    Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
                         
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                             
                             for snap in snapshots {
                                 if snap.key == "upcomingJobs"{
+                                    
                                     containsUpcomingJobs = true
                                     var tempJobArray = snap.value as! [String]
                                     tempJobArray.remove(at: tempJobArray.index(of: job["jobID"] as! String)!)
@@ -185,6 +278,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     
                     
                 })
+                    }
                     
                 case .failure(let error):
                     print(error)
@@ -196,6 +290,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         })
         
     }
+    var workers = [String]()
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
         print("createCustomerKey")

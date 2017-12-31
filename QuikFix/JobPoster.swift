@@ -31,6 +31,7 @@ class JobPoster: NSObject{
     var deviceToken: [String: Any]?
     var expiredJobs: [String]?
     var unreadMessages: Bool?
+    var studentCancelled: Bool?
     
     //var city: String?
     //var state: String?

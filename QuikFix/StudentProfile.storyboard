@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Student Profile-->
+        <!--studentProfile-->
         <scene sceneID="XOC-MN-Q7p">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-zzN-0X-3KP" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" id="zzN-0X-3KP" customClass="studentProfile" customModule="QuikFix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UIViewController-zzN-0X-3KP" title="studentProfile" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" id="zzN-0X-3KP" customClass="studentProfile" customModule="QuikFix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kOj-gQ-cb2"/>
                         <viewControllerLayoutGuide type="bottom" id="6rp-7W-Uor"/>

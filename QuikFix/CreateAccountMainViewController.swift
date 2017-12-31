@@ -50,7 +50,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         }
     }
     
-    @IBOutlet weak var topLabel: UILabel!
+    //@IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var promoSuccessLabel: UILabel!
     @IBAction func selectProfilePicPressed(_ sender: Any) {
         handleSelectProfileImageView()
@@ -128,12 +128,15 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                                 }
                                             }
                                         }
+                                        if self.promoSuccess == false {
+                                            return
+                                        }
                                         var uploadDict = [String:Any]()
                                         uploadDict["availableCredits"] =
                                             self.promoCredit
                              
                                         uploadDict["promoCode"] = promo
-                                        self.topLabel.text = "Success!"
+                                        //self.topLabel.text = "Success!"
                                         self.promoSuccessLabel.isHidden = false
                                         self.promoCodeTF.isHidden = true
                                         self.redeemButton.isHidden = true

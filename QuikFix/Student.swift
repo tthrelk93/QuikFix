@@ -32,6 +32,7 @@ class Student: NSObject {
     var promoCode: [String:Any]?
     var availableCredits: Int?
     var unreadMessages: Bool?
+    var posterCancelled: Bool?
     //var directMessages: [String:Any]?
     
 }

@@ -202,6 +202,22 @@
             </objects>
             <point key="canvasLocation" x="4693.6000000000004" y="-1772.5637181409297"/>
         </scene>
+        <!--UIViewController-zzN-0X-3KP-->
+        <scene sceneID="hHP-1G-Sw3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="StudentProfile" referencedIdentifier="UIViewController-zzN-0X-3KP" id="D3I-I1-sJd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gf9-BA-5K7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6164" y="-2893"/>
+        </scene>
+        <!--posterProfile-->
+        <scene sceneID="wxC-6O-8KH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="posterProfile" id="mm3-YX-eku" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kqc-hT-ht7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5720" y="-2710"/>
+        </scene>
         <!--Job Log Job View Controller-->
         <scene sceneID="3KX-XC-so4">
             <objects>
@@ -425,6 +441,8 @@
                         <segue destination="Zq3-LF-Kch" kind="showDetail" identifier="JobLogJobToJobLog" id="cyv-Qa-uIV"/>
                         <segue destination="sku-cg-Rni" kind="showDetail" identifier="JobLogJobToChat" id="I1B-RO-2d6"/>
                         <segue destination="L7e-wY-1Mx" kind="show" identifier="JobLogViewJobToStudentProfile" id="KBz-U4-oei"/>
+                        <segue destination="mm3-YX-eku" kind="showDetail" identifier="cancelJobToPosterProfile" id="z5J-oz-Z91"/>
+                        <segue destination="D3I-I1-sJd" kind="showDetail" identifier="cancelJobToStudentProfile" id="qdG-iK-T6x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vVA-cW-ToN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -528,7 +546,7 @@
         <image name="icons8-User-30" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rWP-ri-CCk"/>
+        <segue reference="KBz-U4-oei"/>
         <segue reference="zeB-RM-kRr"/>
     </inferredMetricsTieBreakers>
 </document>

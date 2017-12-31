@@ -105,7 +105,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                         print("charge the poster")
                         let tempCharge = ((self.chargeAmount as NSString).intValue * 100)
                         print("charge in cents: \(tempCharge)")
-                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob)
+                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "charge")
                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": false])
                     }
                 }
@@ -494,34 +494,14 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     var chargeAmount = String()
     override func viewWillAppear(_ animated: Bool) {
         
-        // self.navigationController?.pushViewController(self, animated: false)
-        //let settings = settingsVC.settings
-        //self.jobID = jobID
-        //self.posterID = posterID
-        //self.categoryType = categoryType
-        //self.job1 = job1
-        //let stripePublishableKey = self.stripePublishableKey
-        //let backendBaseURL = self.backendBaseURL
-        
-        // assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
-        //assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
-        
-        //self.product = product
-        //self.productImage.text = self.product
-       // self.theme = settings.theme
+       
         
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
-        
-        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
-        //let config = STPPaymentConfiguration.shared()
-        
-        
+
         posterImage.layer.cornerRadius = posterImage.frame.width/2
         posterImage.clipsToBounds = true
         //shadowView.dropShadow()
-        
-            
-        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
+ Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     var tempArray = [String]()
@@ -565,119 +545,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         
 
     }
-    /*override func viewDidAppear(_ animated: Bool) {
-        
-        // self.navigationController?.pushViewController(self, animated: false)
-        let settings = settingsVC.settings
-        //self.jobID = jobID
-        //self.posterID = posterID
-        //self.categoryType = categoryType
-        //self.job1 = job1
-        //let stripePublishableKey = self.stripePublishableKey
-        //let backendBaseURL = self.backendBaseURL
-        
-        // assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
-        //assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
-        
-        //self.product = product
-        //self.productImage.text = self.product
-        self.theme = settings.theme
-        
-        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
-        
-        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
-        //let config = STPPaymentConfiguration.shared()
-        
-        
-        posterImage.layer.cornerRadius = posterImage.frame.width/2
-        posterImage.clipsToBounds = true
-        shadowView.dropShadow()
-        
-        
-        
-        Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                let tempDict = snapshot.value as! [String:Any]
-                
-                for snap in snapshots{
-                    if snap.key == "workers"{
-                        let tempArray = snap.value as! [String]
-                        if tempArray.contains((Auth.auth().currentUser!.uid)){
-                            self.workerInJobAlready = true
-                        }
-                    }
-                    
-                    if snap.key == "payment"{
-                        var tempPayString = snap.value as! String
-                        self.chargeAmount = tempPayString.substring(from: 1)
-                        tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
-                        let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
-                        tempPayString = "$\(tempPayDouble)"
-                        self.rateLabel.text = tempPayString
-                        
-                        // self.rateLabel.text = tempPayString
-                    } else if snap.key == "startTime"{
-                        self.timeLabel.text = (snap.value as! String)
-                    }else if snap.key == "additInfo"{
-                        self.detailsTextView.text = snap.value as! String
-                        
-                    } else if snap.key == "posterID"{
-                        self.posterID = snap.value as! String
-                    } else if snap.key == "date"{
-                        self.dateLabel.text = snap.value as? String
-                    } else if snap.key == "jobDuration"{
-                        self.durationLabel.text = "\(snap.value as! String) hours (estimated)"
-                    } else if snap.key == "category1"{
-                        self.categoryText.text = snap.value as? String
-                    }
-                    
-                }
-                
-            }
-            
-        })
-        Database.database().reference().child("jobPosters").child(self.posterID).observeSingleEvent(of: .value, with : {(snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                for snap in snapshots{
-                    var tempArray = [String]()
-                    if snap.key == "address"{
-                        self.addressLabel.text = (snap.value as! [String]).first
-                    } else if snap.key == "pic"{
-                        if let messageImageUrl = URL(string: snap.value as! String) {
-                            
-                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                                
-                                self.posterImage.image = UIImage(data: imageData as Data) }
-                        }
-                        
-                    } else if snap.key == "name"{
-                        self.posterName.text = snap.value as? String
-                    } else if snap.key == "responses"{
-                        let tempDict = snap.value as! [String: Any]
-                        
-                        for (key, val) in tempDict{
-                            if key == self.jobID{
-                                tempArray = val as! [String]
-                            }
-                        }
-                        
-                    }
-                    if tempArray.isEmpty{
-                        self.studentHasAlreadyApplied = false
-                    } else if tempArray.contains((Auth.auth().currentUser?.uid)!) == false{
-                        self.studentHasAlreadyApplied = false
-                    } else {
-                        self.studentHasAlreadyApplied = true
-                    }
-                    
-                }
-            }
-            
-        })
-        
-
-    }*/
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

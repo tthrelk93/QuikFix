@@ -451,7 +451,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
        // metalBar.layer.borderColor = qfRed.cgColor
         responseBubble.isHidden = true
         Messaging.messaging().delegate = self
-        //self.mToken = Messaging.messaging().fcmToken!
+        self.mToken = Messaging.messaging().fcmToken!
+        print("token: \(mToken)")
+        //appDelegate.deviceToken
+        var tokenDict = [String: Any]()
+        tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
         //appDelegate.deviceToken
         
         
@@ -679,6 +684,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         presentationAnimator.animationDuration = 0.1
         presentationAnimator.mode = .dismissal
         return presentationAnimator
+    }*/
+    
+    /*func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        if let refreshedToken = InstanceID.instanceID().token() {
+            print("InstanceID token: \(refreshedToken)")
+        }
     }*/
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

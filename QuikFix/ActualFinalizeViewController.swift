@@ -408,6 +408,9 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             values["category1"] = self.jobPost.category1
             
             values["location"] = self.jobPost.location
+            values["jobLat"] = String(describing: self.jobCoord.coordinate.latitude)
+            values["jobLong"] = String(describing: self.jobCoord.coordinate.longitude)
+            
             values["date"] = self.jobPost.date
             values["additInfo"] = self.jobPost.additInfo
             values["payment"] = self.totalFinalCost.text

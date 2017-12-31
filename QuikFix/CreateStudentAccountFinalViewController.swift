@@ -72,15 +72,11 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {
         if relevantExperienceDropDownTF.hasText == true && tShirtSizeDropDownTF.hasText == true {
-            Auth.auth().signIn(withEmail: student.email!, password: self.crypt, completion: { (user: User?, error) in
-                if error != nil {
-                // SwiftOverlays.removeAllBlockingOverlays()
-                let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-            else{
+            self.student.experience = self.experience
+            self.student.tShirtSize = self.tShirtSizeDropDownTF.text
+            self.performSegue(withIdentifier: "CreateStudentStep3ToStep4", sender: self)
+        }
+            /*else{
                 print("Successful Login")
                     SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
                     self.student.experience = self.experience
@@ -150,6 +146,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                                     }
                                     promo[(self.promoSender.first?.value)!] = tempArray
                                     self.promoData["promoCode"] = promo
+                                    
                                     Database.database().reference().child("students").child(self.promoSenderID).updateChildValues(self.promoData)
                                 } else {
                                     var promo = self.promoData["promoCode"] as! [String: [String]]
@@ -179,7 +176,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                 }
             
         })
-    }
+    }*/
     
     
         
@@ -342,9 +339,17 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if let vc = segue.destination as? studentProfile {
-            vc.sender = "student"
+        if let vc = segue.destination as? CreateStudentStep4EnterCardInfoViewController{
+            vc.student = self.student
+            vc.profPic = self.profPic
+            vc.crypt = self.crypt
+            vc.promoSenderID = self.promoSenderID
+            vc.promoType = self.promoType
+            vc.promoData = self.promoData
+            vc.promoSuccess = self.promoSuccess
+            vc.promoSender = self.promoSender
         }
+        
     }
     //var promoType = String()
 

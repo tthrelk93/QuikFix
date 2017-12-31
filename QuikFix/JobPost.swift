@@ -22,6 +22,9 @@ class JobPost: NSObject {
     var workerCount: Any?
     var acceptedCount: Any?
     var location: String?
+    var jobLat: String?
+    var jobLong: String?
+    
     var completed: Any?
     var workers: [String]?
     var messages: [String:Any]?
@@ -33,6 +36,8 @@ class JobPost: NSObject {
     var twelveHoursToStart: String?
     var threeHoursToStart: String?
     var thirtyMinToStart: String?
+    
+    
     
     
     //var responses: [String]?

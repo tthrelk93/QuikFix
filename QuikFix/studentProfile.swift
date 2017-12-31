@@ -720,11 +720,12 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         if sender == "student"{
             print("aboveMessagingDelegateInStudent")
             Messaging.messaging().delegate = self
-            /*self.mToken = Messaging.messaging().fcmToken!
+            self.mToken = Messaging.messaging().fcmToken!
+            print("token: \(mToken)")
             //appDelegate.deviceToken
             var tokenDict = [String: Any]()
             tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
-            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)*/
+            Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
         }
         if self.notUsersProfile == false{
             //availableForWorkLabel.isHidden = false
