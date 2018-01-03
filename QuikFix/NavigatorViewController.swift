@@ -36,13 +36,13 @@ class NavigatorViewController: UIViewController {
     @IBOutlet weak var backgroundDesign: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        backButton.frame = CGRect(x: view.bounds.maxX - 50, y: 0, width: 50, height: 50)
-        backButton.autoresizingMask = [.flexibleLeftMargin, .flexibleBottomMargin]
-        backButton.backgroundColor = UIColor.clear
+        //backButton.frame = CGRect(x: view.bounds.maxX - 50, y: 0, width: 50, height: 50)
+       // backButton.autoresizingMask = [.flexibleLeftMargin, .flexibleBottomMargin]
+        /*backButton.backgroundColor = UIColor.clear
         backButton.setTitleColor(.white, for: .normal)
         backButton.setTitle("Back", for: .normal)
         backButton.addTarget(self, action: "backPressed", for: .touchUpInside)
-        view.addSubview(backButton)
+        view.addSubview(backButton)*/
        
                 // Do any additional setup after loading the view.
     }
@@ -56,7 +56,7 @@ class NavigatorViewController: UIViewController {
     
     
     }
-    var backButton = UIButton(type: UIButtonType.custom) as UIButton
+    //var backButton = UIButton(type: UIButtonType.custom) as UIButton
     
     
 

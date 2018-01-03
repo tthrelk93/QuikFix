@@ -242,6 +242,7 @@
                     <connections>
                         <outlet property="timeAndDatePicker" destination="FXl-XU-lGj" id="sMg-mt-i8b"/>
                         <segue destination="9FU-Xe-rkW" kind="show" identifier="JPStepTwoToStepThree" id="u9h-WD-FKG"/>
+                        <segue destination="CnT-jt-HEQ" kind="show" identifier="EditDateToPostJob" id="wT1-gB-i3L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B3d-nK-4XC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -300,6 +301,7 @@
                     <connections>
                         <outlet property="numberPicker" destination="Ygt-4o-q3Q" id="3xh-C9-t1b"/>
                         <segue destination="z1o-zb-cmV" kind="showDetail" identifier="SelectWorkerCountToDate" id="a4i-zL-YpD"/>
+                        <segue destination="CnT-jt-HEQ" kind="showDetail" identifier="EditCatToPostJob" id="R8F-ga-sui"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UiT-x3-L0D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -318,7 +320,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select start and finish times" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="clF-W4-G3C">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select start time and duration" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="clF-W4-G3C">
                                 <rect key="frame" x="5" y="149" width="359" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="32"/>
@@ -394,6 +396,7 @@
                         <outlet property="minutePicker" destination="P1v-Qs-c7B" id="Cfz-ol-jke"/>
                         <segue destination="tbW-fD-U2A" kind="showDetail" identifier="JPStep4ToStep5" id="27y-r0-zuY"/>
                         <segue destination="EVO-hq-esM" kind="show" identifier="SkipLocationSegue" id="IUm-cv-lwi"/>
+                        <segue destination="CnT-jt-HEQ" kind="showDetail" identifier="EditTimeToPostJob" id="wLs-r6-SJI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfO-y3-rQr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -760,6 +763,9 @@
                                 <state key="normal" title="edit">
                                     <color key="titleColor" red="0.94901960780000005" green="0.14901960780000001" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="editDetailsPressed:" destination="CnT-jt-HEQ" eventType="touchUpInside" id="1xx-Im-yFw"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5tl-4M-TwE">
                                 <rect key="frame" x="200" y="511" width="131" height="30"/>
@@ -858,6 +864,11 @@
                         <outlet property="totalWorkerCount" destination="cpn-56-oP5" id="qqT-5t-rQO"/>
                         <outlet property="usePromo" destination="5tl-4M-TwE" id="dIM-u8-WyF"/>
                         <segue destination="Q0f-La-4sV" kind="showDetail" identifier="CreateJobToProfile" id="zVs-ur-48F"/>
+                        <segue destination="I4N-sH-6JL" kind="show" identifier="PostJobToEditCat" id="O8x-cC-VNh"/>
+                        <segue destination="9FU-Xe-rkW" kind="show" identifier="PostJobToEditTime" id="32K-Ri-tda"/>
+                        <segue destination="z1o-zb-cmV" kind="show" identifier="PostJobToEditDate" id="OuZ-EV-t78"/>
+                        <segue destination="tbW-fD-U2A" kind="show" identifier="PostJobToEditLoc" id="2Xc-3C-Cfg"/>
+                        <segue destination="EVO-hq-esM" kind="show" identifier="PostJobToEditDetails" id="zR2-MM-Frj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yrn-bc-vkK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -942,6 +953,7 @@
                         <outlet property="locationLabel" destination="fGO-n7-G3s" id="dwb-UL-L6y"/>
                         <outlet property="searchDisplayController" destination="O8u-JJ-OMH" id="oL3-rI-pbk"/>
                         <segue destination="EVO-hq-esM" kind="showDetail" identifier="Step5ToFinalize" id="wWl-CA-Mjs"/>
+                        <segue destination="CnT-jt-HEQ" kind="showDetail" identifier="EditLocToPostJob" id="QKY-jn-9hp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HtP-ny-6D5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -966,7 +978,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sNF-3t-XHb"/>
-        <segue reference="wWl-CA-Mjs"/>
+        <segue reference="zVs-ur-48F"/>
+        <segue reference="2Xc-3C-Cfg"/>
+        <segue reference="QKY-jn-9hp"/>
+        <segue reference="zR2-MM-Frj"/>
+        <segue reference="32K-Ri-tda"/>
+        <segue reference="OuZ-EV-t78"/>
     </inferredMetricsTieBreakers>
 </document>

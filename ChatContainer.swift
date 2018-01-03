@@ -62,6 +62,7 @@ class ChatContainer: UIViewController {
                 vc.senderView = self.senderScreen
                 vc.jobID = self.jobID
                 vc.job = self.job
+                vc.jobType = self.jobType
                 
                 
             }

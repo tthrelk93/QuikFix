@@ -11,8 +11,11 @@ import GuillotineMenu
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import GooglePlaces
+import GoogleMaps
+import GooglePlacePicker
 
-class MenuViewController: UIViewController, GuillotineMenu {
+class MenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var editView: UIView!
     
@@ -21,6 +24,9 @@ class MenuViewController: UIViewController, GuillotineMenu {
     }
     
     @IBAction func editDefaultAddressPressed(_ sender: Any) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
     }
     @IBOutlet weak var editDefaultAddress: UIButton!
     @IBAction func editNamePressed(_ sender: Any) {
@@ -31,9 +37,9 @@ class MenuViewController: UIViewController, GuillotineMenu {
             editNameTextField.isHidden = false
         editNameButton.setTitle("Save Changes", for: .normal)
         } else {
-            editPicButton.isHidden = true
-            editDefaultAddress.isHidden = true
-            editNameTextField.isHidden = false
+            editPicButton.isHidden = false
+            editDefaultAddress.isHidden = false
+            editNameTextField.isHidden = true
             editNameButton.setTitle("Edit Name", for: .normal)
             if editNameTextField.text == ""{
                 print("no empty vals")
@@ -49,6 +55,10 @@ class MenuViewController: UIViewController, GuillotineMenu {
     @IBOutlet weak var editPicButton: UIButton!
     
     @IBAction func editPicPressed(_ sender: Any) {
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+        
     }
     
 
@@ -76,7 +86,7 @@ class MenuViewController: UIViewController, GuillotineMenu {
     var name = String()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        picker.delegate = self
        editNameTextField.text = name
 
        /* dismissButton = {
@@ -125,6 +135,7 @@ class MenuViewController: UIViewController, GuillotineMenu {
     
     @IBAction func dealsPressed(_ sender: Any) {
     }
+    var place: GMSPlace?
     @IBAction func calendarPressed(_ sender: Any) {
         performSegue(withIdentifier: "PosterMenuToCalendar", sender: self)
             }
@@ -149,23 +160,94 @@ class MenuViewController: UIViewController, GuillotineMenu {
             }
         }
     }
+    let picker = UIImagePickerController()
+    var newImage = UIImage()
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        var selectedImageFromPicker: UIImage?
+        //print("top of image Picker: \(self.accountType)")
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = editedImage
+            
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            
+            self.newImage = selectedImage
+            let imageName = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+            
+            let profileImage = selectedImage
+            let uploadData = UIImageJPEGRepresentation(profileImage, 0.1)
+            storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print(error as Any)
+                    return
+                }
+                
+                if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                    
+                    var values = Dictionary<String, Any>()
+                    
+                    values["pic"] = profileImageUrl
+                    
+                    Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(values)
+                }
+            })
+        
+            
+            
+        }
+        
+        dismiss(animated: true, completion: { (error) in
+            
+        })
+        
+    }
+    
+    
+    
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("canceled picker")
+        dismiss(animated: true, completion: nil)
+    }
+
     
 
 }
-extension MenuViewController: GuillotineAnimationDelegate {
-    
-    func animatorDidFinishPresentation(_ animator: GuillotineTransitionAnimation) {
-        print("menuDidFinishPresentation")
+extension MenuViewController: GMSAutocompleteViewControllerDelegate {
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        
+        let newPlace = place.formattedAddress
+        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["address": [newPlace]])
+        dismiss(animated: true, completion: nil)
     }
-    func animatorDidFinishDismissal(_ animator: GuillotineTransitionAnimation) {
-        print("menuDidFinishDismissal")
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
     }
     
-    func animatorWillStartPresentation(_ animator: GuillotineTransitionAnimation) {
-        print("willStartPresentation")
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
     }
     
-    func animatorWillStartDismissal(_ animator: GuillotineTransitionAnimation) {
-        print("willStartDismissal")
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }

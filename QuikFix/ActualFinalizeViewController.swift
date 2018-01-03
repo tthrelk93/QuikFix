@@ -15,7 +15,12 @@ import CoreLocation
 
 class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
     
+    @IBAction func editDetailsPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PostJobToEditDetails", sender: self)
+    }
     @IBAction func editLocationPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PostJobToEditLoc", sender: self)
+        
     }
     @IBAction func editPickupPressed(_ sender: Any) {
     }
@@ -225,15 +230,20 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
     
     @IBOutlet weak var usePromo: UIButton!
     @IBAction func editTimePressed(_ sender: Any) {
+        performSegue(withIdentifier: "PostJobToEditTime", sender: self)
     }
    // @IBAction func editPaymentPressed(_ sender: Any) {
     //}
     @IBOutlet weak var editCat: UIButton!
     @IBAction func editCatPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PostJobToEditCat", sender: self)
     }
     @IBOutlet weak var editDate: UIButton!
     
     @IBAction func editDateTouched(_ sender: Any) {
+        performSegue(withIdentifier: "PostJobToEditDate", sender: self)
+        
+        
     }
     let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     var posterName = String()
@@ -711,10 +721,25 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             self.totalToolFee.text = "+ $5 Tool Fee"
         }
         self.totalWorkerCount.text = "x \(jobPost.workerCount!) Workers"
+        
+        
+        var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
+        if jobPost.category1 == "Moving(Home-To-Home)"{
+            calcRate = calcRate + 10
+            
+        }
+        if jobPost.tools?.count != 0 && jobPost.tools?.count != nil {
+            calcRate = calcRate + 5
+            self.toolCount = (jobPost.tools?.count)!
+        } else {
+            self.toolCount = 0
+        }
+        self.jobPost.payment = String(describing:calcRate)
+        
         self.totalFinalCost.text = "$\(jobPost.payment!)"
         
         self.detailsTextView.text = jobPost.additInfo
-
+        print("toolCount: \(self.jobPost.tools?.count)")
         // Do any additional setup after loading the view.
     }
 
@@ -731,14 +756,52 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "PostJobToEditDetails"{
+            if let vc = segue.destination as? Finalize{
+                vc.edit = true
+                vc.jobPostEdit = self.jobPost
+                vc.toolCount = self.toolCount
+                vc.jobCoord = self.jobCoord
+            }
+        }
+        if segue.identifier == "PostJobToEditTime"{
+            if let vc = segue.destination as? JobPostTimeViewController{
+                vc.edit = true
+                vc.jobPostEdit = self.jobPost
+                vc.toolCount = self.toolCount
+                vc.jobCoord = self.jobCoord
+            }
+        }
+        if segue.identifier == "PostJobToEditDate"{
+            if let vc = segue.destination as? JobPostDateAndTimeViewController{
+                vc.edit = true
+                vc.jobPostEdit = self.jobPost
+                vc.toolCount = self.toolCount
+                vc.jobCoord = self.jobCoord
+            }
+        }
+        if segue.identifier == "PostJobToEditLoc"{
+            if let vc = segue.destination as? JobPostLocationPickerViewController{
+                vc.edit = true
+                vc.jobPostEdit = self.jobPost
+                vc.toolCount = self.toolCount
+            }
+        }
+        if segue.identifier == "PostJobToEditCat"{
+            if let vc = segue.destination as? JobPostCategoryViewController{
+                vc.edit = true
+                vc.jobPostEdit = self.jobPost
+            }
+        }
+        
     }
-    */
+    
 
 }

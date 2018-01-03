@@ -7,18 +7,26 @@
 //
 
 import UIKit
+import CoreLocation
 
 
 
 class JobPostDateAndTimeViewController: UIViewController {
     
     var jobPost = JobPost()
-    
+    var edit = Bool()
+    var jobPostEdit = JobPost()
+    var toolCount = Int()
+    var jobCoord = CLLocation()
     @IBAction func continuePressed(_ sender: Any) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM-dd-yyyy"
         var dateStamp = dateFormatter.string(from: timeAndDatePicker.date)
         jobPost.date = dateStamp
+        jobPostEdit.date  = dateStamp
+        if edit == true{
+            performSegue(withIdentifier: "EditDateToPostJob", sender: self)
+        }
         performSegue(withIdentifier: "JPStepTwoToStepThree", sender: self)
     }
 
@@ -67,6 +75,14 @@ class JobPostDateAndTimeViewController: UIViewController {
                 vc.jobPost = self.jobPost
             }
             
+        }
+        if segue.identifier == "EditDateToPostJob"{
+            if let vc = segue.destination as? ActualFinalizeViewController{
+                vc.jobCoord = self.jobCoord
+                vc.jobPost = self.jobPostEdit
+                vc.timeDifference = Int(jobPostEdit.jobDuration!)!
+                vc.toolCount = self.toolCount
+            }
         }
         
     }

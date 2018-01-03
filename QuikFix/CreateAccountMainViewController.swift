@@ -260,6 +260,8 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         defaultPicImageView.layer.cornerRadius = defaultPicImageView.frame.width/2
         selectProfilePic.layer.cornerRadius = selectProfilePic.frame.width/2
        selectProfilePic.clipsToBounds = true
+            selectProfilePic.layer.masksToBounds = true
+            userPic.layer.masksToBounds = true
         }
         //userPic.layer.cornerRadius = userPic.frame.width/2
 

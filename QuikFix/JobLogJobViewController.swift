@@ -632,6 +632,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 //vc.sender = self.sender
                 vc.senderScreen = self.senderScreen
                 vc.job = self.job
+                vc.jobType = self.jobType
 
                 
             }

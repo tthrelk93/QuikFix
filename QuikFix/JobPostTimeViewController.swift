@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import CoreLocation
 
 class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    
+    
+    var edit = Bool()
+    var jobPostEdit = JobPost()
+    var toolCount = Int()
+    var jobCoord = CLLocation()
+    
     @IBOutlet weak var amPMPicker: UIPickerView!
     @IBOutlet weak var minutePicker: UIPickerView!
     @IBOutlet weak var hourPicker: UIPickerView!
@@ -39,7 +47,12 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         print("actualDateTime: \(tempDate)")
         
         let jobTime = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
-        let tempString = "\(self.jobPost.date!) \(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        var tempString = String()
+        if edit == true {
+            tempString = "\(self.jobPostEdit.date!) \(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        } else {
+        tempString = "\(self.jobPost.date!) \(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+        }
         let dateFormatter2 = DateFormatter()
         dateFormatter2.dateFormat = "MMMM-dd-yyyy h:mm a"
         //var startTime = timeFormatter(time: startTimePicker.date)
@@ -55,13 +68,21 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         } else {
             print("selectedTime: \(tempString)")
             jobPost.startTime = jobTime
+            
+            jobPostEdit.startTime = jobTime
+            jobPostEdit.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
+            
             jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
             print(durString[durationPicker.selectedRow(inComponent: 0)])
+            if edit == true {
+                performSegue(withIdentifier: "EditTimeToPostJob", sender: self)
+            } else {
             
             if jobPost.category1 == "Moving(Home-To-Home)"{
                 performSegue(withIdentifier: "SkipLocationSegue", sender: self)
             } else {
                 performSegue(withIdentifier: "JPStep4ToStep5", sender: self)
+            }
             }
         }
     }
@@ -159,6 +180,14 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if segue.identifier == "JPStep4ToStep5"{
             if let vc = segue.destination as? JobPostLocationPickerViewController{
                 vc.jobPost = self.jobPost
+            }
+            
+        } else if segue.identifier == "EditTimeToPostJob" {
+            if let vc = segue.destination as? ActualFinalizeViewController{
+                vc.jobCoord = self.jobCoord
+                vc.jobPost = self.jobPostEdit
+                vc.timeDifference = Int(jobPostEdit.jobDuration!)!
+                vc.toolCount = self.toolCount
             }
             
         } else {

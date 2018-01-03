@@ -80,7 +80,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     
     
     
-    
+    var jobType = String()
    // @IBOutlet weak var navItem: UINavigationItem!
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()

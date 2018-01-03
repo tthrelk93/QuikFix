@@ -784,3 +784,6 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
 
 }
 
+// Handle the user's selection.
+
+

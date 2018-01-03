@@ -15,6 +15,12 @@ import CoreLocation
 class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var promoView: UIView!
+    
+    var edit = Bool()
+    var jobPostEdit = JobPost()
+    var toolCount = Int()
+    var jobCoord = CLLocation()
+    
     var jobPost = JobPost()
     var timeDifference = Int()
     
@@ -29,9 +35,14 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         if enterAdditInfoTextView.text != ""{
             if enterAdditInfoTextView.text == "Tap here to add any additional information about the job. (optional)"{
                 jobPost.additInfo = ""
+                jobPostEdit.additInfo = ""
             } else {
             jobPost.additInfo = enterAdditInfoTextView.text
+                jobPostEdit.additInfo = enterAdditInfoTextView.text
             }
+            if edit == true {
+                
+            } else {
             var calcRate = ((25 * (Int(jobPost.jobDuration!)!)) * (jobPost.workerCount as! Int))
             if jobPost.category1 == "Moving(Home-To-Home)"{
                 calcRate = calcRate + 10
@@ -48,6 +59,8 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
             
             
             
+            
+            }
             performSegue(withIdentifier:"AdditDetailsToFinalize" , sender: self)
             //let timeInterval = someDate.timeIntervalSince1970
            /* var timeString1 = jobPost.time!
@@ -194,7 +207,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         
     }
     //@IBOutlet weak var promoField: UITextField!
-    var toolCount = Int()
+    
     @IBOutlet weak var enterAdditInfoTextView: UITextView!
     var listingsArray = [String]()
     var promoSuccess = Bool()
@@ -373,10 +386,17 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ActualFinalizeViewController{
             print("jobCoordPrepareFinalize: \(self.placeCoord)")
+            if edit == false {
            vc.jobCoord = self.placeCoord
             vc.jobPost = self.jobPost
             vc.timeDifference = Int(jobPost.jobDuration!)!
             vc.toolCount = self.toolCount
+            } else {
+                vc.jobCoord = self.jobCoord
+                vc.jobPost = self.jobPostEdit
+                vc.timeDifference = Int(jobPostEdit.jobDuration!)!
+                vc.toolCount = self.toolCount
+            }
             //vc.promoSuccess = self.promoSuccess
             //vc.promoSender = self.promoSender
             //vc.promoSenderArray = self.promoSenderArray

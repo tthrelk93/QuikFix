@@ -625,17 +625,42 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
+        
+        let imageName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+        
+        
+        let uploadData = UIImageJPEGRepresentation(self.picToSave, 0.1)
+        storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                print(error as Any)
+                return
+            }
+            
+            if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                
+                var values = Dictionary<String, Any>()
+                
+                values["pic"] = profileImageUrl
+                
+             
+        
+        
         var uploadDict = [String:Any]()
-        uploadDict["experience"] = experience
-        uploadDict["school"] = editSchoolButton.titleLabel?.text
-        uploadDict["major"] = editMajorButton.titleLabel?.text
-        uploadDict["name"] = editNameTF.text
+                uploadDict["experience"] = self.experience
+        uploadDict["school"] = self.editSchoolButton.titleLabel?.text
+        uploadDict["major"] = self.editMajorButton.titleLabel?.text
+        uploadDict["name"] = self.editNameTF.text
+        uploadDict["pic"] = profileImageUrl
         //uploadDict["pic"] ==
         Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
-        editMenuView.isHidden = true
+        self.editMenuView.isHidden = true
         DispatchQueue.main.async{
             self.loadPageData()
         }
+            }
+        })
         
     }
     
@@ -1177,7 +1202,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     }
     
     
-    
+    var picToSave = UIImage()
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         var selectedImageFromPicker: UIImage?
         
@@ -1196,6 +1221,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             //selectProfilePic.setBackgroundImage(selectedImage, for: .normal)
             self.editPicImage.setBackgroundImage(selectedImage, for: .normal)
             print("selectedImage: \(selectedImage)")
+            self.picToSave = selectedImage
+            
             //self.editProfPicImageView.image = selectedImage
             
             //profileImageViewButton.set

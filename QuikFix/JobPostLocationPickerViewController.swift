@@ -28,8 +28,12 @@ class JobPostLocationPickerViewController: UIViewController {
     @IBAction func continuePressed(_ sender: Any) {
         
         //jobPost.location = self.place?.formattedAddress
-        
+        if edit == true{
+            performSegue(withIdentifier: "EditLocToPostJob", sender: self)
+        } else {
         performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+        }
+        
         
         
     }
@@ -44,6 +48,10 @@ class JobPostLocationPickerViewController: UIViewController {
                         //print("snapVal:\((snap.value as! [String]).first)")
                         
                         self.locationLabel.text = (snap.value as! [String]).first!
+                        if self.edit == true{
+                            self.jobPostEdit.location = (snap.value as! [String]).first!
+                            
+                        }
                         self.jobPost.location = (snap.value as! [String]).first!
                         let geoCoder = CLGeocoder()
                         geoCoder.geocodeAddressString(self.jobPost.location!) { (placemarks, error) in
@@ -58,7 +66,11 @@ class JobPostLocationPickerViewController: UIViewController {
                            
                             self.placeCoord = CLLocation(latitude: location.latitude, longitude: location.longitude)
                              print("jobCoordCreatedDefault: \(self.placeCoord)")
+                            if self.edit == true{
+                                self.performSegue(withIdentifier: "EditLocToPostJob", sender: self)
+                            } else {
                              self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+                            }
                             // Use your location
                         }
                        
@@ -91,6 +103,10 @@ class JobPostLocationPickerViewController: UIViewController {
         // Prevent the navigation bar from being hidden when searching.
         searchController?.hidesNavigationBarDuringPresentation = false*/
     }
+    var edit = Bool()
+    var jobPostEdit = JobPost()
+    var toolCount = Int()
+    
     var placeAddress = String()
     var place: GMSPlace?
     var placeCoord = CLLocation()
@@ -99,6 +115,15 @@ class JobPostLocationPickerViewController: UIViewController {
             if let vc = segue.destination as? Finalize{
                 vc.jobPost = self.jobPost
                 vc.placeCoord = self.placeCoord
+            }
+        }
+        if segue.identifier == "EditLocToPostJob"{
+            if let vc = segue.destination as? ActualFinalizeViewController{
+                vc.jobCoord = self.placeCoord
+                vc.jobPost = self.jobPostEdit
+                vc.timeDifference = Int(jobPostEdit.jobDuration!)!
+                vc.toolCount = self.toolCount
+                
             }
         }
     }
@@ -116,6 +141,9 @@ extension JobPostLocationPickerViewController: GMSAutocompleteViewControllerDele
         print("placeCoord: \(self.placeCoord)")
         locationLabel.text = place.formattedAddress
         jobPost.location = place.formattedAddress
+        if edit == true{
+            jobPostEdit.location = place.formattedAddress
+        }
         self.place = place
         dismiss(animated: true, completion: nil)
     }
