@@ -19,7 +19,7 @@ class ChatContainer: UIViewController {
     //vc.sender = self.sender
     var senderScreen = String()
     var job = JobPost()
-    
+    var jobType = String()
     @IBAction func backButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "ChatToJobLogJob", sender: self)
     }
@@ -54,6 +54,7 @@ class ChatContainer: UIViewController {
        // if (segue.identid)
         if (segue.identifier! as String) == "EmbeddedChat"{
             if let vc = segue.destination as? ChatViewController{
+                
                 vc.senderDisplayName = self.name
                 vc.thisSessionID = self.sessionID
                 vc.senderId = self.userID
@@ -69,6 +70,7 @@ class ChatContainer: UIViewController {
             if let vc = segue.destination as? JobLogJobViewController{
                 vc.senderScreen = self.senderScreen
                 vc.job = self.job
+                vc.jobType = self.jobType
             }
             
         }

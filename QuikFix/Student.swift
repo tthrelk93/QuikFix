@@ -21,7 +21,7 @@ class Student: NSObject {
     var jobsCompleted: [String]?
     var upcomingJobs: [String]?
     var experience: [String]?
-    var rating: Int?
+    var rating: Double?
     var totalEarned: Int?
     var city: String?
     var location: [String:Any]?
@@ -33,6 +33,8 @@ class Student: NSObject {
     var availableCredits: Int?
     var unreadMessages: Bool?
     var posterCancelled: Bool?
+    var completedWaitingReview: [String]?
+    var completedCount: Int?
     //var directMessages: [String:Any]?
     
 }

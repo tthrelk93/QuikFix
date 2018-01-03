@@ -102,10 +102,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                     if snap.key == self.jobID{
                         var sendJob = snap.value as! [String:Any]
                         sendJob["jobID"] = snap.key
+                       // sendJob["senderScreen"] = "normCharge"
+                        sendJob["posterID"] = self.posterID
                         print("charge the poster")
                         let tempCharge = ((self.chargeAmount as NSString).intValue * 100)
                         print("charge in cents: \(tempCharge)")
-                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "charge")
+                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "normCharge")
                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": false])
                     }
                 }
@@ -120,6 +122,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     let settingsVC = SettingsViewController()
 
     var containsWorkers = false
+    var readyToCharge = Bool()
     func workerInJob(){
         //self.workerInJobAlready = false
         
@@ -227,6 +230,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                             var uploadDict = [String:Any]()
                                                             uploadDict["acceptedCount"] = tempInt
                                                             Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
+                                                            if tempInt == self.job1.workers?.count {
+                                                                self.readyToCharge = true
+                                                            } else {
+                                                                self.readyToCharge = false
+                                                            }
                                                             
                                                         }
                                                     }
@@ -255,6 +263,8 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 dateFormatter.dateFormat = "MMMM-dd-yyyy hh:mm a"
                                                 let triggerDate = dateFormatter.date(from: dateToFormat)
                                                 let trigger2Date = dateFormatter.date(from: trigger2TimeString)
+                                                
+                                                if self.readyToCharge == true {
                                                 let timer2 = Timer(fireAt: trigger2Date!, interval: 0, target: self, selector: #selector(self.countDownDuration), userInfo: nil, repeats: false)
                                                 RunLoop.main.add(timer2, forMode: RunLoopMode.commonModes)
                                                 
@@ -263,6 +273,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 
                                                 let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
                                                 RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                                }
                                                // let dateFormatter2 = "MMMM-dd-yyyy"
                                                // let triggerDate2 = dateFormatter.dateFrom
                                                 
@@ -381,6 +392,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 tempInt = tempInt + 1
                                                 var uploadDict = [String:Any]()
                                                 uploadDict["acceptedCount"] = tempInt
+                                                if tempInt == self.job1.workers?.count {
+                                                    self.readyToCharge = true
+                                                } else {
+                                                    self.readyToCharge = false
+                                                }
                                                 Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                                 
                                             }
@@ -422,6 +438,8 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                     
                                     let trigger2Date = dateFormatter.date(from: trigger2TimeString)
                                     print("t2Date: \(trigger2Date!)")
+                                    
+                                    if self.readyToCharge == true{
                                     let timer2 = Timer(fireAt: trigger2Date!, interval: 0, target: self, selector: #selector(self.countDownDuration), userInfo: nil, repeats: false)
                                     RunLoop.main.add(timer2, forMode: RunLoopMode.commonModes)
                                     
@@ -430,6 +448,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                     
                                     let timer = Timer(fireAt: triggerDate!, interval: 0, target: self, selector: #selector(self.chargePoster), userInfo: nil, repeats: false)
                                     RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                                    }
                                     
                                     self.selectorJob = self.job1
                                     let trigger2Time = "\(self.job1.date!) \(self.job1.startTime!)"

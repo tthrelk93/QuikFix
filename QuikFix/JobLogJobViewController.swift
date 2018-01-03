@@ -204,7 +204,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func confirmCancel(){
         var sendJob = [String:Any]()
+        sendJob["posterID"] = Auth.auth().currentUser!.uid
         sendJob["jobID"] = self.job.jobID!
+        
         print("charge the poster for cancel")
         let tempCharge = 25 * 100
         print("charge in cents: \(tempCharge)")
@@ -372,7 +374,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     
     //This is now the cancel job button
     @IBAction func jobCompletedPressed(_ sender: Any) {
-        if self.sender == "student"{
+        if self.senderScreen == "student"{
             print("cancelByStudent")
             let alert = UIAlertController(title: "Confirm Cancel", message: "You will be charged a cancellation fee of $25.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Confirm Cancel", style: UIAlertActionStyle.default, handler: { action in
@@ -413,7 +415,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     var sender = String()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if self.jobType == "jc" || self.jobType == "cl"{
+            self.jobCompletedButton.isHidden = true
+        }
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         paymentCardTextField.delegate = self
         
@@ -447,7 +451,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     
                     for snap in snapshots {
-                        if self.job.workers != nil && self.job.workers!.contains(snap.key){
+                        if self.job.workers != nil && self.job.workers!.contains(snap.key) && Auth.auth().currentUser!.uid != snap.key{
                             var tempDict = [String:Any]()
                             tempDict[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String, "studentID": (snap.value as! [String:Any])["studentID"] as! String]
                             self.workers.append(tempDict)
@@ -455,50 +459,64 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                     }
                     
                 }
-                if self.job.workers == nil{
+                
+                    Database.database().reference().child("jobPosters").child(self.job.posterID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                            var tempDict2 = [String:Any]()
+                            var tempDict = [String:Any]()
+                            
+                            for snap in snapshots {
+                                if snap.key == "name"{
+                                    tempDict["name"] = snap.value as! String
+                                    
+                                }
+                                if snap.key == "pic"{
+                                    tempDict["pic"] = snap.value as! String
+                                    
+                                }
+                                if snap.key == "posterID"{
+                                    tempDict["posterID"] = snap.value as! String
+                                    
+                                }
+                                
+                            }
+                            tempDict2[(tempDict["posterID"] as! String)] = tempDict
+                            self.workers.append(tempDict2)
+                            self.workersCollect.delegate = self
+                            self.workersCollect.dataSource = self
+                            
+                        }
+                        
+                    })
                     
-                } else {
-                    
-                    self.workersCollect.delegate = self
-                    self.workersCollect.dataSource = self
-                }
+                
                 
                 
             })
         } else {
-            Database.database().reference().child("jobPosters").child(self.job.posterID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                    var tempDict2 = [String:Any]()
-                    var tempDict = [String:Any]()
                     
                     for snap in snapshots {
-                        if snap.key == "name"{
-                            tempDict["name"] = snap.value as! String
-                            
+                        if self.job.workers != nil && self.job.workers!.contains(snap.key) && Auth.auth().currentUser!.uid != snap.key{
+                            var tempDict = [String:Any]()
+                            tempDict[snap.key] = ["name": (snap.value as! [String:Any])["name"] as! String, "pic": (snap.value as! [String:Any])["pic"] as! String, "studentID": (snap.value as! [String:Any])["studentID"] as! String]
+                            self.workers.append(tempDict)
                         }
-                        if snap.key == "pic"{
-                            tempDict["pic"] = snap.value as! String
-                            
-                        }
-                        if snap.key == "posterID"{
-                            tempDict["posterID"] = snap.value as! String
-                           
-                        }
-                      
                     }
-                    tempDict2[(tempDict["posterID"] as! String)] = tempDict
-                    self.workers.append(tempDict2)
-                    self.workersCollect.delegate = self
-                    self.workersCollect.dataSource = self
                     
                 }
+            if self.job.workers == nil{
                 
+            } else {
+                self.workersCollect.delegate = self
+                self.workersCollect.dataSource = self
+                }
+            
             })
         }
-        
-        
-        
 
         // Do any additional setup after loading the view.
     }
@@ -568,7 +586,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
 
     
 
-    
+    var jobType = String()
     // MARK: - Navigation
     var name = String()
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -577,6 +595,8 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         if segue.identifier == "JobLogJobToChat"{
             if let vc = segue.destination as? ChatContainer{
                 self.jobID = self.job.jobID!
+                //vc.jobType = self.jobType
+                
                 if self.sender == "student"{
                     Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                         
@@ -628,6 +648,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         
         if let vc = segue.destination as? JobHistoryViewController{
             vc.senderScreen = self.senderScreen
+            vc.jobType = self.jobType
         }
         }
         // Get the new view controller using segue.destinationViewController.

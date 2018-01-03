@@ -13,12 +13,138 @@ import FirebaseDatabase
 import SwiftOverlays
 
 
-
-
-
-class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate {
+protocol RateDelegate {
+    func submitPressed(rating: Double)
     
-   // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
+}
+
+
+
+
+class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate, RateDelegate {
+    
+    @IBOutlet weak var submitRatingButton: UIButton!
+    
+    @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var statementLabel: UILabel!
+    
+    @IBAction func rateExpPressed(_ sender: Any) {
+        rateExp.isHidden = true
+        statementLabel.isHidden = true
+        rateCollect.isHidden = false
+    }
+    
+    @IBOutlet weak var rateExp: UIButton!
+    //var newRating = Int()
+    func submitPressed(rating: Double){
+        var intRating = rating
+        //
+        if (collectIndex + 1) == currentCollectData.count{
+            currentCollectData.removeAll()
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+            var containsJC = false
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    if (self.completedWaitingObjects[self.collectIndex]["workers"] as! [String]).contains(snap.key){
+                        let stud = snap.value as! [String:Any]
+                        self.currentCollectData.append(stud)
+                        
+                        let numCompleted = (stud["completedCount"] as! Int) + 1
+                        let curRating = ((stud["rating"] as! Double) + rating) / Double(numCompleted)
+                        print("updatedRating: \(curRating)")
+                        Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                            var tempArray = [String]()
+                            var tempJC = [String]()
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                
+                                for snap in snapshots{
+                                    if snap.key == "completedWaitingReview"{
+                                        var tempArray2 = snap.value as! [String]
+                                        for job in tempArray2 {
+                                            if job == self.completedWaitingObjects[self.collectIndex]["jobID"] as! String{
+                                                
+                                            } else {
+                                                tempArray.append(job)
+                                            }
+                                        }
+                                        print("tempArr: \(tempArray)")
+                                       // tempArray.remove(at: tempArray.index(of: self.completedWaitingObjects[self.collectIndex]["jobID"] as! String)!)
+                                       // print("tempArray: \(tempArray)")
+                                        //add it to jobsCompleted
+                                        
+                                        
+                                    }
+                                    
+                                    if snap.key == "jobsCompleted"{
+                                        containsJC = true
+                                        tempJC = snap.value as! [String]
+                                        tempJC.append(self.completedWaitingObjects[self.collectIndex]["jobID"] as! String)
+                                    }
+                                }
+                                if containsJC == false{
+                                tempJC = [self.completedWaitingObjects[self.collectIndex]["jobID"] as! String]
+                            }
+                                Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["completedWaitingReview": tempArray, "jobsCompleted": tempJC])
+                            }
+                        })
+                    }
+                }
+                self.collectIndex = 0
+                self.rateCollect.delegate = self
+                self.rateCollect.dataSource = self
+                DispatchQueue.main.async{
+                    self.rateCollect.reloadData()
+                }
+            }
+        })
+        } else {
+            //uploadRating and move on to next student
+            Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots{
+                        if (self.completedWaitingObjects[self.collectIndex]["workers"] as! [String]).contains(snap.key){
+                            let stud = snap.value as! [String:Any]
+                            let numCompleted = (stud["completedCount"] as! Int) + 1
+                            let curRating = ((stud["rating"] as! Double) + intRating) / Double(numCompleted)
+                            print("updatedRating: \(curRating)")
+                            
+                            Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                            
+                        }
+                    }
+            
+        
+            let collectionBounds = self.rateCollect.bounds
+            let contentOffset = CGFloat(floor(self.rateCollect.contentOffset.x + collectionBounds.size.width))
+            self.moveToFrame(contentOffset: contentOffset)
+            self.collectIndex = self.collectIndex + 1
+                }
+            })
+        
+        }
+        if self.completedWaitingObjects.count - 1 == 0{
+            jobRateView.isHidden = true
+            self.postJobsButton.isHidden = false
+            self.menuButton.isHidden = false
+        }
+        
+        
+    
+    }
+    @IBOutlet weak var jobRateTopLabel: UILabel!
+    @IBOutlet weak var rateViewStars: CosmosView!
+    @IBOutlet weak var jobRateHowDidLabel: UILabel!
+    @IBOutlet weak var jobRateCategory: UILabel!
+    // fileprivate lazy var presentationAnimator = GuillotineTransitionAnimation()
+    @IBOutlet weak var jobRateWorkerName: UILabel!
+    
+    @IBOutlet weak var jobRateView: UIView!
+    
+    @IBOutlet weak var jobRateImageView: UIImageView!
+    
     @IBOutlet weak var promoTextButton: UIButton!
     @IBOutlet weak var myJobsTextButton: UIButton!
     @IBOutlet weak var dealsTextButton: UIButton!
@@ -27,62 +153,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var navigationBar: UINavigationBar!
     //@IBOutlet weak var guillotineMenuButton: UIButton!
     @IBAction func currentListingsButtonPressed(_ sender: Any) {
-       /* for tempDict in self.currentListingsObj{
-            
-            let tempJob = JobPost()
-            tempJob.additInfo = (tempDict["additInfo"] as! String)
-            tempJob.category1 = (tempDict["category1"] as! String)
-            //tempJob.category2 = (tempDict["category2"] as! String)
-            tempJob.posterName = (tempDict["posterName"] as! String)
-            tempJob.date = (tempDict["date"] as! String)
-            tempJob.payment = (tempDict["payment"] as! String)
-            tempJob.startTime = (tempDict["startTime"] as! String)
-            tempJob.jobDuration = tempDict["jobDuration"] as! String
-            tempJob.jobID = (tempDict["jobID"] as! String)
-            tempJob.posterID = (tempDict["posterID"] as! String)
-            tempJob.completed = tempDict["completed"] as! Bool
-            
-            self.tableViewData.append(tempJob)
-            if self.calendarDict[tempJob.date!] != nil {
-                var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
-                tempJobArray.append(tempJob)
-                self.calendarDict[tempJob.date!] = tempJobArray
-            } else {
-                self.calendarDict[tempJob.date!] = [tempJob]
-            }
-            
-        }
-        for (key, _) in self.calendarDict{
-            self.datesArray.append(key)
-        }
-        //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
-        var convertedArray: [Date] = []
-        
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM-dd-yyyy"
-        
-        for dat in self.datesArray {
-            var date = dateFormatter.date(from: dat)
-            convertedArray.append(date!)
-        }
-        
-        //Approach : 1
-        convertedArray.sort(){$0 < $1}
-        self.datesArray.removeAll()
-        for dat in convertedArray{
-            let formatter = DateFormatter()
-            // initially set the format based on your datepicker date
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            
-            let myString = formatter.string(from: dat)
-            // convert your string to date
-            let yourDate = formatter.date(from: myString)
-            //then again set the date format whhich type of output you need
-            formatter.dateFormat = "MMMM-dd-yyyy"
-            // again convert your date to string
-            let dateString = formatter.string(from: yourDate!)
-            self.datesArray.append(dateString)
-        }*/
+      
         self.jobType = "cl"
         performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
         
@@ -191,25 +262,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 
                 
             })
-            /*DispatchQueue.main.async{
-                UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
-                    self.sharePromo.bounds = self.popoutMenuButton.bounds
-                    self.sharePromo.frame.origin = self.popoutMenuButton.frame.origin
-                    
-                    self.dealsButton.bounds = self.popoutMenuButton.bounds
-                    self.dealsButton.frame.origin = self.popoutMenuButton.frame.origin
-                    self.myJobs.bounds = self.popoutMenuButton.bounds
-                    self.myJobs.frame.origin = self.popoutMenuButton.frame.origin
-                    self.hideMenuButton.isHidden = true
-                    self.extended = false
-                    self.view.bringSubview(toFront: self.popoutMenuButton)
-                    
-                    //self.sharePromo.isHidden = true
-                    //self.myJobs.isHidden = true
-                    //self.dealsButton.isHidden = true
-                    
-                })*/
-            //}
+           
+            
             self.hideMenuButton.isHidden = true
             self.extended = false
             
@@ -296,13 +350,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         menuViewController.modalPresentationStyle = .custom
         menuViewController.transitioningDelegate = self
         
-       // presentationAnimator.animationDelegate = menuViewController as? GuillotineAnimationDelegate
-        //presentationAnimator.supportView = navigationController!.navigationBar
-        //presentationAnimator.presentButton = sender
-        //present(menuViewController, animated: true, completion: nil)
+       
     }
 
-   // @IBOutlet weak var menuBounds: UIBarButtonItem!
+   
     //var actualMenuBounds
     var curListBool = false
     let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
@@ -345,63 +396,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }
     
     @IBAction func upcomingJobsPressed(_ sender: Any) {
-       /* calendarDict.removeAll()
-        datesArray.removeAll()
-        for tempDict in self.upcomingJobsObj{
-            let tempJob = JobPost()
-            tempJob.additInfo = (tempDict["additInfo"] as! String)
-            tempJob.category1 = (tempDict["category1"] as! String)
-            //tempJob.category2 = (tempDict["category2"] as! String)
-            tempJob.posterName = (tempDict["posterName"] as! String)
-            tempJob.date = (tempDict["date"] as! String)
-            tempJob.payment = (tempDict["payment"] as! String)
-            tempJob.startTime = (tempDict["startTime"] as! String)
-            tempJob.jobDuration = tempDict["jobDuration"] as! String
-            tempJob.jobID = (tempDict["jobID"] as! String)
-            tempJob.posterID = (tempDict["posterID"] as! String)
-            tempJob.completed = tempDict["completed"] as! Bool
-            
-            self.tableViewData.append(tempJob)
-            if self.calendarDict[tempJob.date!] != nil {
-                var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
-                tempJobArray.append(tempJob)
-                self.calendarDict[tempJob.date!] = tempJobArray
-            } else {
-                self.calendarDict[tempJob.date!] = [tempJob]
-            }
-            
-        }
-        for (key, _) in self.calendarDict{
-            self.datesArray.append(key)
-        }
-        //var testArray = ["25 Jun, 2016", "30 Jun, 2016", "28 Jun, 2016", "2 Jul, 2016"]
-        var convertedArray: [Date] = []
-        
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM-dd-yyyy"
-        
-        for dat in self.datesArray {
-            var date = dateFormatter.date(from: dat)
-            convertedArray.append(date!)
-        }
-        
-        //Approach : 1
-        convertedArray.sort(){$0 < $1}
-        self.datesArray.removeAll()
-        for dat in convertedArray{
-            let formatter = DateFormatter()
-            // initially set the format based on your datepicker date
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            
-            let myString = formatter.string(from: dat)
-            // convert your string to date
-            let yourDate = formatter.date(from: myString)
-            //then again set the date format whhich type of output you need
-            formatter.dateFormat = "MMMM-dd-yyyy"
-            // again convert your date to string
-            let dateString = formatter.string(from: yourDate!)
-            self.datesArray.append(dateString)
-        }*/
+       
         
         self.jobType = "uj"
         performSegue(withIdentifier: "MyJobsToJobLog", sender: self)
@@ -434,12 +429,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var upcomingJobsObj = [[String:Any]]()
     //let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     var jobsCompleted = [String]()
+    var completedWaiting = [String]()
+    var completedWaitingBool = false
    // var jobsCompleted
     
     var infoBounds = CGRect()
     var infoOrigin = CGPoint()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.statementLabel.layer.cornerRadius = 7
+        self.rateCollect.register(UINib(nibName: "RateCellCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RateCell")
+        statementLabel.layer.cornerRadius = 7
+        rateExp.layer.cornerRadius = 7
         infoBounds = normalInfoView.bounds
         infoOrigin = normalInfoView.frame.origin
         sepLineVertical.isHidden = true
@@ -455,6 +456,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         print("token: \(mToken)")
         //appDelegate.deviceToken
         var tokenDict = [String: Any]()
+        
         tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
         //appDelegate.deviceToken
@@ -469,38 +471,20 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         menuButton3ExtendedOrigin = dealsButton.frame.origin
          profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
-        //sharePromo.layer.cornerRadius = sharePromo.frame.width/2
-        //sharePromo.layer.borderColor = qfRed.cgColor
-        //sharePromo.layer.borderWidth = 1
         
-       // myJobs.layer.cornerRadius = sharePromo.frame.width/2
-        //myJobs.layer.borderColor = qfRed.cgColor
-        
-       // myJobs.layer.borderWidth = 1
-        
-        //dealsButton.layer.cornerRadius = sharePromo.frame.width/2
-        //dealsButton.layer.borderColor = qfRed.cgColor
-        //dealsButton.layer.borderWidth = 1
-        
-        
-        
-        
-       /* if showJobPostedView == true{
-            self.postSuccessShadeView.isHidden = false
-            jobPostedView.isHidden = false
-            postJobsButton.isHidden = true
-            
-        }*/
-        
-        //jobPostedView.layer.cornerRadius = 10
         responseBubble.layer.cornerRadius = responseBubble.frame.width/2
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.clipsToBounds = true
         var responseBool = false
         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
+                    if snap.key == "completedWaitingReview"{
+                        
+                        self.completedWaiting = snap.value as! [String]
+                    }
                     if snap.key == "jobsCompleted"{
                         self.jobsCompleted = snap.value as! [String]
                     }
@@ -570,7 +554,40 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                            
                         } else if self.jobsCompleted.contains(snap.key){
                             //self.jobsCompleted
+                        } else if self.completedWaiting.contains(snap.key){
+                            self.completedWaitingBool = true
+                             let tempJob = snap.value as! [String:Any]
+                            self.completedWaitingObjects.append(tempJob)
                         }
+                    }
+                    if self.completedWaitingBool == true{
+                        //show rating and review page
+                        self.postJobsButton.isHidden = true
+                        self.menuButton.isHidden = true
+                        
+                        self.jobRateView.isHidden = false
+                        if self.completedWaitingObjects.count == 1{
+                             self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) job to rate"
+                        } else {
+                        
+                        self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) jobs to rate"
+                        }
+                        Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                
+                                for snap in snapshots{
+                                    if (self.completedWaitingObjects.first!["workers"] as! [String]).contains(snap.key){
+                                        let stud = snap.value as! [String:Any]
+                                        self.currentCollectData.append(stud)
+                                    }
+                                }
+                                self.rateCollect.delegate = self
+                                self.rateCollect.dataSource = self
+                            }
+                        })
+                    } else {
+                        self.jobRateView.isHidden = true
                     }
                     if self.containsInProgress == true{
                         UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
@@ -594,7 +611,9 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
 
         // Do any additional setup after loading the view.
     }
-    
+    var collectIndex = 0
+    var currentCollectData = [[String:Any]]()
+    var completedWaitingObjects = [[String:Any]]()
     @IBAction func inProgressPressed(_ sender: Any) {
     }
     
@@ -613,6 +632,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         return calendarDict.count
     }
     
+    @IBOutlet weak var rateCollect: UICollectionView!
     
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
     // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
@@ -716,6 +736,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         if segue.identifier == "PosterToMenu"{
             if let vc = segue.destination as? MenuViewController{
                 vc.promo = self.promo
+                vc.name = self.nameLabel.text!
             }
         }
         if segue.identifier == "MyJobsToJobLog"{
@@ -729,19 +750,37 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         // Pass the selected object to the new view controller.
     }
     
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.currentCollectData.count
+    }
+    var jobID = String()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RateCell", for: indexPath) as! RateCellCollectionViewCell
+        if let messageImageUrl = URL(string: currentCollectData[indexPath.row]["pic"] as! String) {
+            
+            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                cell.ratePic.image = UIImage(data: imageData as Data)
+                
+            } }
+        cell.rateName.text = currentCollectData[indexPath.row]["name"] as? String
+        cell.categoryLabel.text = completedWaitingObjects[self.collectIndex]["category1"] as? String
+        cell.questionLabel.text = "How did \(currentCollectData[indexPath.row]["name"]!) do today?"
+        cell.rateDelegate = self
+        //cell.layer.cornerRadius = cell.frame.width/2
+        
+        
+        
+        
+        return cell
+    }
+    func moveToFrame(contentOffset : CGFloat) {
+        
+        let frame: CGRect = CGRect(x : contentOffset ,y : self.rateCollect.contentOffset.y ,width : self.rateCollect.frame.width,height : self.rateCollect.frame.height)
+        self.rateCollect.scrollRectToVisible(frame, animated: true)
+    }
+    
 
 }
-/*extension JobPosterProfileViewController: UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        print("pressss")
-        presentationAnimator.mode = .presentation
-        return presentationAnimator
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        print("dissss")
-        presentationAnimator.mode = .dismissal
-        return presentationAnimator
-    }
-}*/
+

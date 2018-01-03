@@ -9,8 +9,48 @@
 import UIKit
 import GuillotineMenu
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class MenuViewController: UIViewController, GuillotineMenu {
+    
+    @IBOutlet weak var editView: UIView!
+    
+    @IBAction func closeButtonPressed(_ sender: Any) {
+        editView.isHidden = true
+    }
+    
+    @IBAction func editDefaultAddressPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var editDefaultAddress: UIButton!
+    @IBAction func editNamePressed(_ sender: Any) {
+        
+        if editPicButton.isHidden == false{
+        editPicButton.isHidden = true
+            editDefaultAddress.isHidden = true
+            editNameTextField.isHidden = false
+        editNameButton.setTitle("Save Changes", for: .normal)
+        } else {
+            editPicButton.isHidden = true
+            editDefaultAddress.isHidden = true
+            editNameTextField.isHidden = false
+            editNameButton.setTitle("Edit Name", for: .normal)
+            if editNameTextField.text == ""{
+                print("no empty vals")
+            }
+            else {
+                Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["name": editNameTextField.text!])
+            }
+        }
+    }
+    @IBOutlet weak var editNameButton: UIButton!
+    @IBOutlet weak var editNameTextField: UITextField!
+    
+    @IBOutlet weak var editPicButton: UIButton!
+    
+    @IBAction func editPicPressed(_ sender: Any) {
+    }
+    
 
   
     @IBOutlet weak var menuButtonPressed: UIButton!
@@ -33,10 +73,11 @@ class MenuViewController: UIViewController, GuillotineMenu {
     @IBOutlet weak var menuframe: UIButton!
     var dismissButton: UIButton?
     var titleLabel: UILabel?
+    var name = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+       editNameTextField.text = name
 
        /* dismissButton = {
             let button = UIButton(frame: .zero)
@@ -79,6 +120,7 @@ class MenuViewController: UIViewController, GuillotineMenu {
         // Dispose of any resources that can be recreated.
     }
     @IBAction func editProfile(_ sender: Any) {
+        editView.isHidden = false
     }
     
     @IBAction func dealsPressed(_ sender: Any) {

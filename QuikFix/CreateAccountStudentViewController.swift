@@ -55,7 +55,7 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
                 student.jobsCompleted = [String]()
                 student.upcomingJobs = [String]()
                 student.experience = [String]()
-                student.rating = Int()
+                student.rating = Double()
                 if !emailVerificationSent {
                     Auth.auth().createUser(withEmail: student.email!, password: passwordTextField.text!, completion: { (user: User?, error) in
                         if error != nil {

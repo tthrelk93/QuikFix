@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		31366FA61FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA51FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift */; };
+		31366FA91FFAD246002163E6 /* RateCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */; };
+		31366FAA1FFAD246002163E6 /* RateCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
 		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
 		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
@@ -115,6 +117,8 @@
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		31264BDD1FD7A5F60053D31A /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
 		31366FA51FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateStudentStep4EnterCardInfoViewController.swift; sourceTree = "<group>"; };
+		31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateCellCollectionViewCell.swift; sourceTree = "<group>"; };
+		31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateCellCollectionViewCell.xib; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
 		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -458,6 +462,8 @@
 				3B200B491F857C2B00D40997 /* JobReplyCollectionViewCell.swift */,
 				3B200B4B1F858F8A00D40997 /* SpecificResponseCollectionViewCell.swift */,
 				3B5A1A461FAA6E9300D55F80 /* ExpTableViewCell.swift */,
+				31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */,
+				31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -615,6 +621,7 @@
 				3B468C911F57653F001D8FEC /* LaunchScreen.storyboard in Resources */,
 				3B144E241F7ECD2D0088A1D0 /* ExperienceTableViewCell.xib in Resources */,
 				31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */,
+				31366FAA1FFAD246002163E6 /* RateCellCollectionViewCell.xib in Resources */,
 				31EF342E1FEF292100E7F4E8 /* CreateHomeOwner.storyboard in Resources */,
 				3B5238831F783518006DFDAE /* DateTableViewCell.xib in Resources */,
 				31EF342A1FEB1D4300E7F4E8 /* JobFinder.storyboard in Resources */,
@@ -923,6 +930,7 @@
 				3B5A1A491FAB740200D55F80 /* CreatePosterStep2.swift in Sources */,
 				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,
 				3B712A9A1F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift in Sources */,
+				31366FA91FFAD246002163E6 /* RateCellCollectionViewCell.swift in Sources */,
 				3B5082BE1F9FC53700BFFCE9 /* CheckoutRowView.swift in Sources */,
 				3B9802491F68769D00F785C8 /* NavigatorViewController.swift in Sources */,
 				31366FA61FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift in Sources */,

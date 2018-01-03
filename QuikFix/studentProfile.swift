@@ -813,7 +813,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         
                     }
                     else if snap.key == "rating"{
-                        self.starView.rating = Double(snap.value as! Int)
+                        self.starView.rating = snap.value as! Double
                     }
                     else if snap.key == "totalEarned"{
                         self.earnedAmount.text = ("$\(String(describing:snap.value as! Int))")

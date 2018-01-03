@@ -32,6 +32,7 @@ class JobPoster: NSObject{
     var expiredJobs: [String]?
     var unreadMessages: Bool?
     var studentCancelled: Bool?
+    var completedWaitingReview: [String]?
     
     //var city: String?
     //var state: String?

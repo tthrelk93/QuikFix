@@ -72,6 +72,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.startTime = (tempDict["startTime"] as! String)
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
+                tempJob.jobLat = tempDict["jobLat"] as! String
+                tempJob.jobLong = tempDict["jobLong"] as! String
                 tempJob.posterID = (tempDict["posterID"] as! String)
                 tempJob.completed = tempDict["completed"] as! Bool
                 if tempDict["workers"] != nil{
@@ -146,6 +148,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
                 tempJob.posterID = (tempDict["posterID"] as! String)
+                tempJob.jobLat = tempDict["jobLat"] as! String
+                tempJob.jobLong = tempDict["jobLong"] as! String
                 tempJob.completed = tempDict["completed"] as! Bool
                 if tempDict["workers"] != nil{
                 tempJob.workers = (tempDict["workers"] as! [String])
@@ -287,6 +291,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     var jobType = String()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         print("senderScreen = \(self.senderScreen)")
         if self.senderScreen == "poster"{
             print("in poster")
@@ -346,6 +351,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         tempJob.completed = tempDict["completed"] as! Bool
                         tempJob.workers = (tempDict["workers"] as! [String])
+                        tempJob.jobLat = tempDict["jobLat"] as! String
+                        tempJob.jobLong = tempDict["jobLong"] as! String
                         self.tableViewData.append(tempJob)
                         if self.calendarDict[tempJob.date!] != nil {
                             var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
@@ -513,6 +520,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         tempJob.completed = tempDict["completed"] as! Bool
                         tempJob.workers = (tempDict["workers"] as! [String])
+                        tempJob.jobLat = tempDict["jobLat"] as! String
+                        tempJob.jobLong = tempDict["jobLong"] as! String
                         self.tableViewData.append(tempJob)
                         if self.calendarDict[tempJob.date!] != nil {
                             var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
@@ -657,6 +666,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("senderScreen hist To job: \(senderScreen)")
                 vc.senderScreen = self.senderScreen
                 vc.job = self.selectedJob
+                vc.jobType = self.jobType
                 
             }
         }

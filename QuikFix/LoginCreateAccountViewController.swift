@@ -86,8 +86,9 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate, M
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
+     var isListening = false
     override func viewDidLoad() {
-        
+       
         super.viewDidLoad()
         
         userNameTextField.delegate = self
@@ -120,55 +121,10 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate, M
                 UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
             }
             
-            handle = Auth.auth().addStateDidChangeListener { auth, user in
-                if let user = user {
-                    self.authUser = user.uid
-                    Messaging.messaging().delegate = self
-                     Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
-                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                            for snap in snapshots{
-                                if snap.key == Auth.auth().currentUser?.uid{
-                                    studentBool = true
-                                    posterBool = false
-                                }
-                            }
-                            
-                        }
-                        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
-                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                for snap in snapshots{
-                                    if snap.key == Auth.auth().currentUser?.uid{
-                                        studentBool = false
-                                        posterBool = true
-                                    }
-                                }
-                                if posterBool == false && studentBool == false{
-                                    Auth.auth().currentUser?.delete(completion: { (error) in
-                                        if error != nil {
-                                            print("Error unable to delete user")
-                                            
-                                        }
-                                    })
-                                    
-                                } else if posterBool == false {
-                                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
-                                } else if studentBool == false{
-                                    SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
-                                    self.performSegue(withIdentifier: "LoginSeguePoster", sender: self)
-                                }
-                            }
-                        })
-                    })
-                    
-                } else {
-                    print("no user")
-                    // No user is signed in.
-                    //Auth.auth().removeStateDidChangeListener(<#T##listenerHandle: AuthStateDidChangeListenerHandle##AuthStateDidChangeListenerHandle#>)
-                }
-            }
+           
         
         } else {
-            
+            isListening = true
             print("in some else")
             handle = Auth.auth().addStateDidChangeListener { auth, user in
                 if let user = user {
@@ -224,7 +180,9 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate, M
     }
     var authUser = String()
     override func viewWillDisappear(_ animated: Bool) {
+        if isListening == true{
         Auth.auth().removeStateDidChangeListener(handle!)
+        }
     }
 
     override func didReceiveMemoryWarning() {

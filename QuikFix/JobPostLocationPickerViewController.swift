@@ -55,7 +55,9 @@ class JobPostLocationPickerViewController: UIViewController {
                                     print("locError")
                                     return
                             }
+                           
                             self.placeCoord = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                             print("jobCoordCreatedDefault: \(self.placeCoord)")
                              self.performSegue(withIdentifier: "Step5ToFinalize", sender: self)
                             // Use your location
                         }

@@ -349,7 +349,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                         values["email"] = self.poster.email
                         
                         values["jobsCompleted"] = self.poster.jobsCompleted
-                        
+                        values["completedCount"] = 0
                         values["address"] = [self.poster.address]
                         values["phone"] = self.poster.phone
                         var tempPromo = self.randomString(length: 6)

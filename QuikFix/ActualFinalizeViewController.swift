@@ -253,6 +253,8 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             values["date"] = jobPost.date
             
             values["additInfo"] = jobPost.additInfo
+            values["jobLat"] = String(describing: self.jobCoord.coordinate.latitude)
+            values["jobLong"] = String(describing: self.jobCoord.coordinate.longitude)
             
             values["payment"] = totalFinalCost.text
             
@@ -394,6 +396,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
         MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: self.email, name: self.tempPosterName){ responseObject, error in
             // use responseObject and error here
             //self.dataID = responseObject as! String
+            print("jobCoord")
             print("responseObject = \(responseObject!); error = \(error)")
             self.dismiss(animated: true)
             var tempDict = [String:Any]()

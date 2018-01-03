@@ -372,6 +372,7 @@ class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ActualFinalizeViewController{
+            print("jobCoordPrepareFinalize: \(self.placeCoord)")
            vc.jobCoord = self.placeCoord
             vc.jobPost = self.jobPost
             vc.timeDifference = Int(jobPost.jobDuration!)!
