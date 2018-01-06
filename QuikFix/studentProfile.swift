@@ -623,9 +623,10 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         present(picker, animated: true, completion: nil)
         
     }
+    var newPic = false
     
     @IBAction func saveButtonPressed(_ sender: Any) {
-        
+        if self.newPic == true{
         let imageName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
         
@@ -661,6 +662,20 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         }
             }
         })
+        } else {
+            var uploadDict = [String:Any]()
+            uploadDict["experience"] = self.experience
+            uploadDict["school"] = self.editSchoolButton.titleLabel?.text
+            uploadDict["major"] = self.editMajorButton.titleLabel?.text
+            uploadDict["name"] = self.editNameTF.text
+            //uploadDict["pic"] = profileImageUrl
+            //uploadDict["pic"] ==
+            Database.database().reference().child("students").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
+            self.editMenuView.isHidden = true
+            DispatchQueue.main.async{
+                self.loadPageData()
+            }
+        }
         
     }
     
@@ -1222,6 +1237,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
             self.editPicImage.setBackgroundImage(selectedImage, for: .normal)
             print("selectedImage: \(selectedImage)")
             self.picToSave = selectedImage
+            self.newPic = true
             
             //self.editProfPicImageView.image = selectedImage
             

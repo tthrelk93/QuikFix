@@ -21,6 +21,7 @@ class JobPoster: NSObject{
     var prevWorker: [String]?
     var location: [String:Any]?
     var city: String?
+    var state: String?
     var paymentVerified: Bool?
     var stripeToken: String?
     var stripeCustomer: String?
@@ -31,8 +32,12 @@ class JobPoster: NSObject{
     var deviceToken: [String: Any]?
     var expiredJobs: [String]?
     var unreadMessages: Bool?
-    var studentCancelled: Bool?
+   
     var completedWaitingReview: [String]?
+    var studentCancelled: String?
+    var twelveHoursToStart: String?
+    var threeHoursToStart: String?
+    var thirtyMinToStart: String?
     
     //var city: String?
     //var state: String?

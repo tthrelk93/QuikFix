@@ -125,6 +125,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 
                                 for snap in snapshots {
+                                    if snap.key == "name"{
+                                        self.posterWhoCancelled = snap.value as! String
+                                    }
                                     if snap.key == "upcomingJobs"{
                                         cancelUpcomingArray = snap.value as! [String]
                                         cancelUpcomingArray.remove(at: cancelUpcomingArray.index(of: job["jobID"] as! String)!)
@@ -145,6 +148,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                     var cancelUpcomingArray2 = [String]()
                                     //var tempCompletedArray = [String]()
                                     for snap in snapshots {
+                                        
                                         if snap.key == "upcomingJobs"{
                                             cancelUpcomingArray2 = snap.value as! [String]
                                             cancelUpcomingArray2.remove(at: cancelUpcomingArray2.index(of: job["jobID"] as! String)!)
@@ -153,7 +157,11 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                         
                                     }
                                     
-                                    Database.database().reference().child("students").child(worker).updateChildValues(["upcomingJobs": cancelUpcomingArray])
+                                    Database.database().reference().child("students").child(worker).updateChildValues(["upcomingJobs": cancelUpcomingArray, "posterCancelled": self.posterWhoCancelled])
+                                    
+                                    sleep(1)
+                                    Database.database().reference().child("students").child(worker).child("posterCancelled").removeValue()
+                                    
                                     
                                 }
                             })
@@ -289,6 +297,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     
                     for snap in snapshots {
+                        if snap.key == "name"{
+                            self.studentWhoCancelled = snap.value as! String
+                        }
                         if snap.key == "stripeToken"{
                             self.stripeToken = snap.value as! String
                         }
@@ -329,7 +340,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                             self.workers.remove(at: self.workers.index(of: Auth.auth().currentUser!.uid)!)
                                             Database.database().reference().child("jobs").child(job["jobID"] as! String).updateChildValues(["acceptedCount": self.removeAcceptedCount, "workers": self.workers])
                                         }
-                                        Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["studentCancelled": true])
+                                        Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["studentCancelled": self.studentWhoCancelled])
                                         Database.database().reference().child("students").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
                                             var uploadDataStudent = [String]()
                                             
@@ -393,6 +404,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
         
     }
+    var studentWhoCancelled = String()
+    var posterWhoCancelled = String()
+    
     var workers = [String]()
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

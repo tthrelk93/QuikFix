@@ -74,26 +74,17 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                             values["upcomingJobs"] = self.student.upcomingJobs
                             values["experience"] = self.student.experience
                             values["rating"] =  self.student.rating
-                            values["tShirtSize"] = self.student.tShirtSize
+                            values["tShirtSize"] = ""
                             
-                            var tempPromo = self.randomString(length: 6)
-                            
-                            while self.existingPromoCodes.contains(tempPromo){
-                                tempPromo = self.randomString(length: 6)
-                            }
-                            values["promoCode"] = ([tempPromo: [""]] as [String:Any])
-                            if self.promoSuccess == false {
-                                values["availableCredits"] = 0
-                            } else {
-                                values["availableCredits"] = 5
-                            }
+                          
+                            values["availableCredits"] = 0
                             
                             values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                             values["pic"] = profileImageUrl
                             var tempDict = [String: Any]()
                             tempDict[(user?.uid)!] = values
                             Database.database().reference().child("students").updateChildValues(tempDict)
-                            if self.promoSuccess == true{
+                           /* if self.promoSuccess == true{
                                 if self.promoType == "student"{
                                     var promo = self.promoData["promoCode"] as! [String: [String]]
                                     
@@ -130,7 +121,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                                     self.promoData["promoCode"] = promo
                                     Database.database().reference().child("jobPosters").child(self.promoSenderID).updateChildValues(self.promoData)
                                 }
-                            }
+                            }*/
                             self.performSegue(withIdentifier: "CreateStudentToProfile", sender: self)
                             
                         }
@@ -314,7 +305,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     var crypt = String()
     var locationManager = CLLocationManager()
     
-    @IBAction func createAccountPressed(_ sender: Any) {
+   /* @IBAction func createAccountPressed(_ sender: Any) {
         //var authData = Auth.auth().currentUser?.providerData["password"]
         Auth.auth().signIn(withEmail: poster.email!, password: crypt, completion: { (user: User?, error) in
             if error != nil {
@@ -383,7 +374,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
             
         })
         
-    }
+    }*/
     //var poster = JobPoster()
     var profPic = UIImage()
     var existingPromoCodes = [String]()
@@ -429,7 +420,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
         view.addSubview(paymentCardTextField)
         
         
-        Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+        /*Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if let tempDict = snap.value as? [String:Any]{
@@ -443,7 +434,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                     // Do any additional setup after loading the view.
                 }
             }
-        })
+        })*/
     }
     
     override func didReceiveMemoryWarning() {

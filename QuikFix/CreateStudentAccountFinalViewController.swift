@@ -29,11 +29,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     
     @IBAction func addButtonPressed(_ sender: Any) {
         
-        if self.curPicker == "shirt" {
-            addButton.setTitle("Add", for: .normal)
-            addButton.backgroundColor = qfGreen
-            tShirtSizeDropDownTF.text = shirtData[step3Picker.selectedRow(inComponent: 0)]
-        } else {
+       
         if experience.contains(expData[curIndex]) == false {
             experience.append(expData[curIndex])
             addButton.setTitle("Remove", for: .normal)
@@ -54,7 +50,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
             
         }
         relevantExperienceDropDownTF.text = tempString
-        }
+        
 
     }
     
@@ -71,9 +67,9 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     @IBOutlet weak var step3Picker: UIPickerView!
     var locationManager = CLLocationManager()
     @IBAction func createAccountPressed(_ sender: Any) {
-        if relevantExperienceDropDownTF.hasText == true && tShirtSizeDropDownTF.hasText == true {
+        if relevantExperienceDropDownTF.hasText == true {
             self.student.experience = self.experience
-            self.student.tShirtSize = self.tShirtSizeDropDownTF.text
+           // self.student.tShirtSize = self.tShirtSizeDropDownTF.text
             self.performSegue(withIdentifier: "CreateStudentStep3ToStep4", sender: self)
         }
             /*else{
@@ -201,9 +197,9 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     }
     
     
-    var shirtData = ["XS", "S", "M", "L", "XL", "XXL"]
+    //var shirtData = ["XS", "S", "M", "L", "XL", "XXL"]
     var expData = ["Mow", "Leaf Blowing", "Gardening", "Gutter Cleaning", "Weed-Wacking", "Hedge Clipping", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
-    @IBOutlet weak var tShirtSizeDropDownTF: UITextField!
+    //@IBOutlet weak var tShirtSizeDropDownTF: UITextField!
     @IBOutlet weak var relevantExperienceDropDownTF: UITextField!
     
     @IBOutlet weak var expLabel: UILabel!
@@ -219,7 +215,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
         
        
         addButton.layer.cornerRadius = 7
-        tShirtSizeDropDownTF.delegate = self
+        //tShirtSizeDropDownTF.delegate = self
         relevantExperienceDropDownTF.delegate = self
         step3Picker.delegate = self
         step3Picker.dataSource = self
@@ -267,22 +263,16 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if curPicker == "shirt"{
-            return shirtData.count
-            
-        } else {
+        
             return expData.count
         }
         
-    }
+    
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if curPicker == "shirt"{
-            return shirtData[row]
-            
-        } else {
+        
             return expData[row]
-        }
+        
         
         
     }
@@ -290,10 +280,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     var curIndex = Int()
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         curIndex = row
-        if curPicker == "shirt"{
-            //tShirtSizeDropDownTF.text = shirtData[row]
-            
-        } else {
+        
             if experience.contains(expData[row]){
                 addButton.setTitle("Remove", for: .normal)
                 addButton.backgroundColor = UIColor.red
@@ -301,7 +288,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
                 addButton.setTitle("Add", for: .normal)
                 addButton.backgroundColor = qfGreen
             }
-        }
+        
         //pickerView.isHidden = true
     }
     
@@ -312,14 +299,11 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     public func textFieldShouldBeginEditing(_ textField: UITextField) {
         addButton.setTitle("Add", for: .normal)
         addButton.backgroundColor = qfGreen
-        if textField == tShirtSizeDropDownTF{
-            curPicker = "shirt"
-            //addButton.isHidden = true
-        } else {
+        
             curPicker = "exp"
             addButton.isHidden = false
             
-        }
+        
         step3Picker.reloadAllComponents()
         step3Picker.isHidden = false
         
@@ -343,11 +327,11 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
             vc.student = self.student
             vc.profPic = self.profPic
             vc.crypt = self.crypt
-            vc.promoSenderID = self.promoSenderID
+            /*vc.promoSenderID = self.promoSenderID
             vc.promoType = self.promoType
             vc.promoData = self.promoData
             vc.promoSuccess = self.promoSuccess
-            vc.promoSender = self.promoSender
+            vc.promoSender = self.promoSender*/
         }
         
     }

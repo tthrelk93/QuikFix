@@ -241,7 +241,23 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
         skipButton.layer.cornerRadius = 7
         redeemButton.layer.cornerRadius = 7
         if self.sender == "step2"{
-            promoView.isHidden = false
+            if accountType == "student"{
+                 self.studentPicLabel.text = "*Select a professional looking picture. Any inappropriate content will result in a ban."
+                 promoView.isHidden = true
+            } else {
+                self.studentPicLabel.text = "*Tap the circular profile button above to select a profile picture from your photos"
+                promoView.isHidden = false
+            }
+            self.studentPicLabel.isHidden = false
+            picker.delegate = self
+            //picker.delegate = self
+            userPic.layer.cornerRadius = userPic.frame.width/2
+            defaultPicImageView.layer.cornerRadius = defaultPicImageView.frame.width/2
+            selectProfilePic.layer.cornerRadius = selectProfilePic.frame.width/2
+            selectProfilePic.clipsToBounds = true
+            selectProfilePic.layer.masksToBounds = true
+            userPic.layer.masksToBounds = true
+            
         } else {
             promoView.isHidden = true
     

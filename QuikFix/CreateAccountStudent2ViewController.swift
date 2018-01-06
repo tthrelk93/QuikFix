@@ -18,7 +18,7 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     @IBOutlet weak var gradYearTF: UITextField!
     var crypt = String()
     var profPic = UIImage()
-    var gradData = ["2017", "2018", "2019", "2020", "2021","2022","2023","2024"]
+    var gradData = ["2018", "2019", "2020", "2021","2022","2023","2024"]
     @IBAction func continuePressed(_ sender: Any) {
         if schoolDropDownTF.hasText && majorDropDownTF.hasText && gradYearTF.hasText{
             let date = Date()
@@ -552,16 +552,19 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
     public func textFieldShouldBeginEditing(_ textField: UITextField) {
         self.currentPicked = ""
         if textField == schoolDropDownTF{
+            self.currentPicked = "Rhodes College"
             self.curPicker = "school"
             schoolAndMajorPicker.reloadAllComponents()
             //dropDown2.show()
         }
         if textField == majorDropDownTF {
+            self.currentPicked = "Accounting"
             self.curPicker = "major"
            schoolAndMajorPicker.reloadAllComponents()
             //dropDown.show()
         }
             if textField == gradYearTF{
+                self.currentPicked = "2018"
                 self.curPicker = "grad"
                 schoolAndMajorPicker.reloadAllComponents()
             }
@@ -603,11 +606,11 @@ class CreateAccountStudent2ViewController: UIViewController, UITextFieldDelegate
             vc.student = self.student
             vc.profPic = self.profPic
             vc.crypt = self.crypt
-            vc.promoSenderID = self.promoSenderID
+            /*vc.promoSenderID = self.promoSenderID
             vc.promoType = self.promoType
             vc.promoData = self.promoData
             vc.promoSuccess = self.promoSuccess
-            vc.promoSender = self.promoSender
+            vc.promoSender = self.promoSender*/
             
         }
     }

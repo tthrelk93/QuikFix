@@ -24,7 +24,6 @@ class JobPost: NSObject {
     var location: String?
     var jobLat: String?
     var jobLong: String?
-    
     var completed: Any?
     var workers: [String]?
     var messages: [String:Any]?
@@ -33,9 +32,9 @@ class JobPost: NSObject {
     var dropOffLocation: String?
     var tools: [String]?
     var inProgress: Bool?
-    var twelveHoursToStart: String?
-    var threeHoursToStart: String?
-    var thirtyMinToStart: String?
+    //the following three fields are Bools that are created and immedietly destroyed
+    //12 hours, three hours, and thirty min before job is to start so that I push notification will be sent to the students and poster reminding them
+    
     
     
     

@@ -287,11 +287,11 @@ class CreateAccountStudentViewController: UIViewController, CLLocationManagerDel
             vc.student = self.student
             vc.profPic = self.profPic!
             vc.crypt = self.crypt
-            vc.promoType = self.promoType
+            /*vc.promoType = self.promoType
             vc.promoSenderID = self.promoSenderID
             vc.promoSuccess = self.promoSuccess
             vc.promoData = self.promoData
-            vc.promoSender = self.promoSender
+            vc.promoSender = self.promoSender*/
         }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
