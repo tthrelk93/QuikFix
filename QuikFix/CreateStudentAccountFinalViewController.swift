@@ -198,7 +198,7 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     
     
     //var shirtData = ["XS", "S", "M", "L", "XL", "XXL"]
-    var expData = ["Mow", "Leaf Blowing", "Gardening", "Gutter Cleaning", "Weed-Wacking", "Hedge Clipping", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
+    var expData = ["Leaf Blowing", "Gardening", "Gutter Cleaning", "Lawn Care", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
     //@IBOutlet weak var tShirtSizeDropDownTF: UITextField!
     @IBOutlet weak var relevantExperienceDropDownTF: UITextField!
     

@@ -1299,7 +1299,7 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
         }
     }
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         var tokenDict = [String: Any]()
         

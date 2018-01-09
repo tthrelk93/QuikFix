@@ -11,6 +11,18 @@ import FirebaseAuth
 import FirebaseMessaging
 import FirebaseDatabase
 import SwiftOverlays
+import MessageUI
+import FacebookCore
+//import FacebookShare
+import FBSDKCoreKit
+import FBSDKShareKit
+import Contacts
+import ContactsUI
+import Social
+import CoreLocation
+//import GoogleAPIClientForREST
+//import GoogleSignIn
+
 
 
 protocol RateDelegate {
@@ -21,12 +33,243 @@ protocol RateDelegate {
 
 
 
-class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate, RateDelegate {
+
+class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate, RateDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, CNContactPickerDelegate {
     
     @IBOutlet weak var submitRatingButton: UIButton!
     
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var statementLabel: UILabel!
+    
+    
+    @IBAction func shareOnFacebookPressed(_ sender: Any) {
+        let vc = SLComposeViewController(forServiceType:SLServiceTypeFacebook)
+        //vc.add(imageView.image!)
+        //vc.add(URL(string: "http://www.example.com/"))
+        vc?.setInitialText("Download QuikFix!")
+        self.present(vc!, animated: true, completion: nil)
+    }
+    /*private let scopes = [kGTLRAuthScopeGmailReadonly]
+    
+    private let service = GTLRGmailService()
+    let signInButton = GIDSignInButton()
+    let output = UITextView()*/
+    @IBAction func shareGmailPressed(_ sender: Any) {
+        /*var gtlMessage = GTLGmailMessage()
+        gtlMessage.raw = self.generateRawString()
+        
+        let appd = UIApplication.shared().delegate as! AppDelegate
+        let query = GTLQueryGmail.queryForUsersMessagesSendWithUploadParameters(nil)
+        query.message = gtlMessage
+        
+        appd.service.executeQuery(query, completionHandler: { (ticket, response, error) -> Void in
+            println("ticket \(ticket)")
+            println("response \(response)")
+            println("error \(error)")
+        })*/
+    }
+    /*func generateRawString() -> String {
+        
+        var dateFormatter:NSDateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
+        var todayString:String = dateFormatter.stringFromDate(NSDate())
+        
+        var rawMessage = "" +
+            "Date: \(todayString)\r\n" +
+            "From: <mail>\r\n" +
+            "To: username <mail>\r\n" +
+            "Subject: Test send email\r\n\r\n" +
+        "Test body"
+        
+        println("message \(rawMessage)")
+        
+        return GTLEncodeWebSafeBase64(rawMessage.dataUsingEncoding(NSUTF8StringEncoding))
+    }
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let error = error {
+            showAlert(title: "Authentication Error", message: error.localizedDescription)
+            self.service.authorizer = nil
+        } else {
+            self.signInButton.isHidden = true
+            self.output.isHidden = false
+            self.service.authorizer = user.authentication.fetcherAuthorizer()
+            fetchLabels()
+        }
+    }
+    
+    // Construct a query and get a list of upcoming labels from the gmail API
+    func fetchLabels() {
+        output.text = "Getting labels..."
+        
+        let query = GTLRGmailQuery_UsersLabelsList.query(withUserId: "me")
+        service.executeQuery(query,
+                             delegate: self,
+                             didFinish: #selector(displayResultWithTicket(ticket:finishedWithObject:error:))
+        )
+    }
+    
+    // Display the labels in the UITextView
+    func displayResultWithTicket(ticket : GTLRServiceTicket,
+                                 finishedWithObject labelsResponse : GTLRGmail_ListLabelsResponse,
+                                 error : NSError?) {
+        if let error = error {
+            showAlert(title: "Error", message: error.localizedDescription)
+            return
+        }
+        var labelString = ""
+        if let labels = labelsResponse.labels, labels.count > 0 {
+            labelString += "Labels:\n"
+            for label in labels {
+                labelString += "\(label.name!)\n"
+            }
+        } else {
+            labelString = "No labels found."
+        }
+        output.text = labelString
+    }
+    
+    
+    // Helper for showing an alert
+    func showAlert(title : String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        let ok = UIAlertAction(
+            title: "OK",
+            style: UIAlertActionStyle.default,
+            handler: nil
+        )
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }*/
+
+    
+    @IBAction func shareTwitterPressed(_ sender: Any) {
+        let vc = SLComposeViewController(forServiceType:SLServiceTypeTwitter)
+        //vc.add(imageView.image!)
+        //vc.add(URL(string: "http://www.example.com/"))
+        vc?.setInitialText("Download QuikFix!")
+        self.present(vc!, animated: true, completion: nil)
+    }
+    @IBAction func shareSMSPressed(_ sender: Any) {
+        print("supdewd")
+        self.contactType = "phone"
+        let contactPicker = CNContactPickerViewController()
+        contactPicker.delegate = self
+        self.present(contactPicker, animated: true, completion: nil)
+        
+        
+        
+    }
+    public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        //... handle sms screen actions
+        print("sup")
+        self.dismiss(animated: true, completion: nil)
+    }
+    var contactType = String()
+    public func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact){
+        print("in contact delegate")
+        print("contactType: \(self.contactType)")
+        if contactType == "phone"{
+        if contact.phoneNumbers.count > 0 {
+            print("can send text")
+            var contactText = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            if (MFMessageComposeViewController.canSendText()) {
+                let controller = MFMessageComposeViewController()
+                // add in app store link when ready
+                controller.body = "Download QuikFix using the promo code \(self.promoCode.text!) and receive $5 off your first job!"
+                controller.recipients = [contactText!]
+                controller.messageComposeDelegate = self
+                DispatchQueue.main.async{
+                    self.present(controller, animated: true, completion: nil)
+                }
+            }
+        } else {
+            print("can't send text")
+            //self.txtP1.text = ""
+        }
+        } else {
+            print("in email")
+                if contact.emailAddresses.count > 0 {
+                    let email = "\(contact.emailAddresses[0].value)"
+                    
+                    print("no mail error")
+                    if MFMailComposeViewController.canSendMail() {
+                        print("really no mail error")
+                        
+                        
+                        DispatchQueue.main.async{
+                            let controller = MFMailComposeViewController()
+                            controller.setMessageBody("Need help moving, doing yard work, assembling furniture, installing electronics? Download Quikfix on the iOS App Store and instantly find local hardworking students who are eager and qualified to get jobs like these done and off your to-do list. Download QuikFix using the promo code \(self.promoCode.text!) and receive $5 off your first job!", isHTML: false)
+                            controller.setToRecipients([email])
+                            controller.setSubject("Download QuikFix today and get $5 off your first job!")
+                            controller.mailComposeDelegate = self
+                            self.present(controller, animated: true, completion: nil)
+                        }
+                        
+                    } else {
+                        print("mail error")
+                        showMailError()
+                    }
+                    //self.lblE1.text = eLabel3[0] //Work
+                } else {
+                    print("no email address bitchhhh")
+                   // self.txtE1.text = ""
+                   // self.lblE1.text = "Email 1"
+                }
+            }
+        
+        
+    }
+    
+    public func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty){
+        
+    }
+    
+    
+    
+    
+    
+    
+    @IBAction func shareEmailPressed(_ sender: Any) {
+        print("shareEmail")
+        self.contactType = "email"
+        let contactPicker = CNContactPickerViewController()
+        contactPicker.delegate = self
+        self.present(contactPicker, animated: true, completion: nil)
+    }
+    func configureMailController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        
+        mailComposerVC.setToRecipients(["andrew@seemuapps.com"])
+        mailComposerVC.setSubject("Hello")
+        mailComposerVC.setMessageBody("How are you doing?", isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showMailError() {
+        let sendMailErrorAlert = UIAlertController(title: "Could not send email", message: "Your device could not send email", preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        sendMailErrorAlert.addAction(dismiss)
+        self.present(sendMailErrorAlert, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        print("done")
+        DispatchQueue.main.async {
+            controller.dismiss(animated: true, completion: nil)
+        }
+        
+    }
+
+    
+    
+    
     
     @IBAction func rateExpPressed(_ sender: Any) {
         rateExp.isHidden = true
@@ -285,6 +528,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             currentListingsCount.isHidden = true
             jobsCompletedCount.isHidden = true
             sepLineVertical.isHidden = true
+            self.askForContactAccess()
         } else {
             promoCodeView.isHidden = true
             currentListingsLabel.isHidden = false
@@ -345,6 +589,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
     var currentListings = [String]()
     var currentListingsObj = [[String:Any]]()
+    
+    
+    @IBOutlet weak var cityLabel: UILabel!
+    
     @IBAction func showMenuAction(_ sender: UIButton) {
         let menuViewController = storyboard!.instantiateViewController(withIdentifier: "MenuViewController")
         menuViewController.modalPresentationStyle = .custom
@@ -423,7 +671,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     @IBOutlet weak var metalBar: UIImageView!
     @IBOutlet weak var hideMenuButton: UIButton!
     var inProgressObj = [[String:Any]]()
-    
+    var location = CLLocation()
     var mToken = String()
     var upcomingJobs = [String]()
     var upcomingJobsObj = [[String:Any]]()
@@ -433,6 +681,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var completedWaitingBool = false
    // var jobsCompleted
     
+    @IBOutlet weak var facebookShareButtonBounds: UIButton!
     var infoBounds = CGRect()
     var infoOrigin = CGPoint()
     override func viewDidLoad() {
@@ -444,6 +693,25 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         infoBounds = normalInfoView.bounds
         infoOrigin = normalInfoView.frame.origin
         sepLineVertical.isHidden = true
+        
+        //let content1 = FacebookShareLinkContent()
+        var content = FBSDKShareLinkContent()
+        
+        content.contentURL = NSURL(string: "www.google.com")! as URL
+        
+        content.contentTitle = "Download QuikFix!"
+        content.contentDescription = "Use promo code \(self.promoCode.text) during sign up and get $5 off you're first QuikFix job!"
+       // content.imageURL = NSURL(string: "<INSERT STRING HERE>") as! URL
+        
+        let button = FBSDKShareButton()
+        button.shareContent = content
+        button.isHidden = true
+        
+        button.frame = facebookShareButtonBounds.frame
+        button.bounds = facebookShareButtonBounds.bounds
+        
+        self.promoCodeView.addSubview(button)
+        self.promoCodeView.bringSubview(toFront: button)
         self.promoTextButton.setTitleColor(qfGreen, for: .normal)
         self.myJobsTextButton.setTitleColor(qfGreen, for: .normal)
         self.dealsTextButton.setTitleColor(qfGreen, for: .normal)
@@ -517,6 +785,37 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         self.upcomingJobs = snap.value as! [String]
                         
                         self.jobsCompletedCount.text = String(describing: (snap.value as! [String]).count)
+                        
+                        
+                    } else if snap.key == "location"{
+                        var tempDict = snap.value as! [String: Any]
+                        self.location = CLLocation(latitude: tempDict["lat"] as! CLLocationDegrees, longitude: tempDict["long"] as! CLLocationDegrees)
+                        
+                        let geoCoder = CLGeocoder()
+                        
+                        geoCoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) -> Void in
+                            
+                            // Place details
+                            var placeMark: CLPlacemark!
+                            placeMark = placemarks?[0]
+                            
+                            // Address dictionary
+                            print(placeMark.addressDictionary as Any)
+                            
+                            // City
+                            if let city = placeMark.addressDictionary!["City"] as? NSString {
+                                print(city)
+                                
+                                
+                                
+                                
+                                self.cityLabel.text = city as String
+                            }
+                        })
+                        
+                        
+                        
+                        //self.editCityTextField.placeholder = snap.value as! String
                         
                         
                     }
@@ -689,6 +988,40 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         // Dispose of any resources that can be recreated.
     }
     
+    func askForContactAccess() {
+        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
+        
+        switch authorizationStatus {
+        case .denied, .notDetermined:
+            self.contactStore.requestAccess(for: CNEntityType.contacts, completionHandler: { (access, accessError) -> Void in
+                if !access {
+                    if authorizationStatus == CNAuthorizationStatus.denied {
+                        DispatchQueue.main.async{
+                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts."
+                            let alertController = UIAlertController(title: "Contacts", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                            
+                            let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
+                            
+                                
+                                
+                                
+                            }
+                            
+                            alertController.addAction(dismissAction)
+                            
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            })
+            break
+        default:
+            break
+        }
+    }
+    
+    var contactStore = CNContactStore()
+    
    /* @available(iOS 2.0, *)
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning?{
         print("pressss")
@@ -712,7 +1045,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         }
     }*/
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         var tokenDict = [String: Any]()
         

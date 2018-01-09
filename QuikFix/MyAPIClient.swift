@@ -80,11 +80,65 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     //var job = [String:Any]()
    // var poster = String()
     var removeAcceptedCount = Int()
+    var creditHours = Int()
     
     func completeCharge(amount: Int,
                         poster: String, job: [String:Any], senderScreen: String) {
         
         print("senderScreen: \(senderScreen)")
+        if senderScreen == "dealsGrad" || senderScreen == "dealsUnderGrad"{
+            Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots {
+                        if snap.key == "stripeToken"{
+                            self.stripeToken = snap.value as! String
+                        }
+                    }
+                    print("stripeToken inside charge: \(self.stripeToken)")
+                    let url = self.baseURL.appendingPathComponent("charge")
+                    let params: [String: Any] = [
+                        "amount": amount,
+                        "customer_id": self.stripeToken
+                    ]
+                    
+                    
+                    //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
+                    
+                    Alamofire.request(url, method: .post, parameters: params)
+                        .validate(statusCode: 200..<300)
+                        .responseString { response in
+                            switch response.result {
+                            case .success:
+                                //completion(nil)
+                                Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    
+                                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                                
+                                                for snap in snapshots {
+                                                    if snap.key == "creditHours"{
+                                                        self.creditHours = snap.value as! Int
+                                                        if senderScreen == "dealsGrad"{
+                                                        self.creditHours = self.creditHours + 10
+                                                        } else {
+                                                            self.creditHours = self.creditHours + 5
+                                                        }
+                                                    }
+                                                }
+                                                 Database.database().reference().child("jobPosters").child(poster).updateChildValues(["creditHours": self.creditHours])
+                                            }
+                                    })
+                            
+                            case .failure(let error):
+                            print(error)
+                            //completion(error)
+                            }
+                    }
+                }
+            })
+                                    
+        }
         if senderScreen == "cancelJob" || senderScreen == "normCharge" {
             
          Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in

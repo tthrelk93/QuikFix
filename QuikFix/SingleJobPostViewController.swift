@@ -13,6 +13,10 @@ import FirebaseMessaging
 import Stripe
 
 class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPaymentContextDelegate {
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("hereeee")
+    }
+    
     
     // 1) To get started with this demo, first head to https://dashboard.stripe.com/account/apikeys
     // and copy your "Test Publishable Key" (it looks like pk_test_abcdef) into the line below.

@@ -13,12 +13,22 @@ import FirebaseStorage
 import CoreLocation
 import SwiftOverlays
 import Stripe
+import WebKit
 
-class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, DataDelegate {
+class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, DataDelegate, WKUIDelegate {
     var dataID = String()
     func getID(id: String) {
         self.dataID = id
     }
+    
+    
+    @IBOutlet weak var termsWebView: UIView!
+    
+    @IBOutlet weak var termsView: UIView!
+    
+    
+    
+   
     var stripeToken = String()
     let settingsVC = SettingsViewController()
     @IBOutlet var orLabel: UILabel!
@@ -284,6 +294,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     }
     
     @IBAction func termsOfServicePressed(_ sender: Any) {
+        termsView.isHidden = false
     }
     func handlePaymentMethodsButtonTapped() {
         // Setup customer context
@@ -429,8 +440,33 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     var locDict = [String:Any]()
     var creditButtonOrigin = CGPoint()
     var creditViewOrigin = CGPoint()
+    var termsWebView2: WKWebView!
+    
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: webConfiguration)
+        termsWebView2.uiDelegate = self
+        view = termsWebView2
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        let url = URL(string: "https://getquikfix.com/terms")
+        if let unwrappedURL = url {
+            let request = URLRequest(url: unwrappedURL)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) {(data, response, error) in
+                if error == nil {
+                    self.termsWebView2.load(request)
+                } else {
+                    print("ERROR: \(String(describing: error))")
+                }
+            }
+            task.resume()
+        }
         enterInfoView.layer.cornerRadius = 7
         saveButton.layer.cornerRadius = 7
         skipButton.layer.cornerRadius = 7

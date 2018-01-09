@@ -10,11 +10,13 @@ import UIKit
 import GooglePlaces
 import GoogleMaps
 import GooglePlacePicker
+//import Google
+//import GoogleSignIn
 import FirebaseCore
 import FirebaseAuth
 import FirebaseMessaging
 import UserNotifications
-import Firebase
+
 import Stripe
 import IQKeyboardManagerSwift
 //import HockeySDK
@@ -66,7 +68,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         //config.requiredShippingAddressFields = settings.requiredShippingAddressFields
         // config.shippingType = settings.shippingType
        // config.additionalPaymentMethods = settings.additionalPaymentMethods
+        
+        /*var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")*/
+
         Messaging.messaging().delegate = self
+        
         
         
             // iOS 10 support
@@ -74,6 +82,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         return true
     }
+    /*@available(iOS 9.0, *)
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
+        let annotation = options[UIApplicationOpenURLOptionsKey.annotation]
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    }
+    
+    func application(_ application: UIApplication,
+                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    }*/
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

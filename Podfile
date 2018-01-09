@@ -7,11 +7,13 @@ target 'QuikFix' do
 
   # Pods for QuikFix
 
-pod 'Firebase/Core'
-pod 'Firebase/Database'
-pod 'Firebase/Auth'
-pod 'Firebase/Storage'
-pod 'Firebase/Messaging'
+pod 'Firebase', '~> 4.0.0'
+pod 'Firebase/Auth', '~> 4.0.0'
+pod 'Firebase/Core', '~> 4.0.0'
+pod 'Firebase/Storage', '~> 4.0.0'
+pod 'Firebase/Database', '~> 4.0.0'
+pod 'Firebase/Crash', '~> 4.0.0'
+pod 'Firebase/Messaging', '~> 4.0.0'
 pod 'GuillotineMenu', '~> 3.0'	
 pod "Koyomi"
 pod 'GooglePlaces'
@@ -24,6 +26,10 @@ pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
 pod 'UICircularProgressRing'
+pod 'GoogleAPIClientForREST/Gmail', '~> 1.2.1'
+
+pod 'FacebookCore', '~> 0.2'
+pod 'FacebookShare', '~> 0.2'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
 
@@ -32,11 +38,15 @@ pod 'Crashlytics', '~> 3.9.3'
     inherit! :search_paths
     # Pods for testing
 
-pod 'Firebase/Core'
-pod 'Firebase/Database'
-pod 'Firebase/Auth'	
-pod 'Firebase/Storage'
-pod 'Firebase/Messaging'
+
+pod 'Firebase', '~> 4.0.0'
+pod 'Firebase/Auth', '~> 4.0.0'
+pod 'Firebase/Core', '~> 4.0.0'
+pod 'Firebase/Storage', '~> 4.0.0'
+pod 'Firebase/Database', '~> 4.0.0'
+pod 'Firebase/Crash', '~> 4.0.0'
+pod 'Firebase/Messaging', '~> 4.0.0'
+
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
 pod 'GooglePlaces'
@@ -49,6 +59,10 @@ pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
 pod 'UICircularProgressRing'
+pod 'GoogleAPIClientForREST/Gmail', '~> 1.2.1'
+
+pod 'FacebookCore', '~> 0.2'
+pod 'FacebookShare', '~> 0.2'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
 
@@ -59,11 +73,15 @@ pod 'Crashlytics', '~> 3.9.3'
     inherit! :search_paths
     # Pods for testing
 
-pod 'Firebase/Core'
-pod 'Firebase/Database'
-pod 'Firebase/Auth'
-pod 'Firebase/Storage'
-pod 'Firebase/Messaging'	
+
+pod 'Firebase', '~> 4.0.0'
+pod 'Firebase/Auth', '~> 4.0.0'
+pod 'Firebase/Core', '~> 4.0.0'
+pod 'Firebase/Storage', '~> 4.0.0'
+pod 'Firebase/Database', '~> 4.0.0'
+pod 'Firebase/Crash', '~> 4.0.0'
+pod 'Firebase/Messaging', '~> 4.0.0'
+
 pod 'GuillotineMenu', '~> 3.0'
 pod "Koyomi"
 pod 'GoogleMaps’
@@ -75,6 +93,12 @@ pod 'IQKeyboardManagerSwift'
 pod ‘DropDown’
 pod 'Alamofire', '~> 4.5'
 pod 'UICircularProgressRing'
+pod 'GoogleAPIClientForREST/Gmail', '~> 1.2.1'
+
+pod 'FacebookCore', '~> 0.2'
+pod 'FacebookShare', '~> 0.2'
+pod 'FBSDKCoreKit', '~> 4.22.1'
+pod 'FBSDKShareKit', '~> 4.22.1'
 pod 'Fabric', '~> 1.7.2'
 pod 'Crashlytics', '~> 3.9.3'
 

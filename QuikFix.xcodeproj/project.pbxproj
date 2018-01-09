@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		266E7DB0A3E99C885FF4713B /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA73056D7388DDE22557BA3 /* Pods_QuikFixUITests.framework */; };
 		31366FA61FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA51FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift */; };
 		31366FA91FFAD246002163E6 /* RateCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */; };
 		31366FAA1FFAD246002163E6 /* RateCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */; };
@@ -24,6 +25,7 @@
 		31CE1FF61FDCB65500B783CF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FF51FDCB65500B783CF /* libc++.tbd */; };
 		31D88DA81FF42E9C001C2D8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31D88DA71FF42E9B001C2D8A /* GoogleService-Info.plist */; };
 		31D994DD1FD0B6070038C9C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D994DC1FD0B6070038C9C0 /* Main.storyboard */; };
+		31E5026720054EF300CD4CA6 /* DealsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E5026620054EF300CD4CA6 /* DealsViewController.swift */; };
 		31EF342A1FEB1D4300E7F4E8 /* JobFinder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */; };
 		31EF342C1FEDB02200E7F4E8 /* StudentProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */; };
 		31EF342E1FEF292100E7F4E8 /* CreateHomeOwner.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31EF342D1FEF292100E7F4E8 /* CreateHomeOwner.storyboard */; };
@@ -88,9 +90,8 @@
 		3B9F21A51F6354F10068D7EB /* JobPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F21A41F6354F10068D7EB /* JobPost.swift */; };
 		3BB8CC7E1F71A5A3002EAEF3 /* JobPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */; };
 		3BFE648B1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */; };
-		ADE4F47A6DCBC0677D70CA85 /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */; };
-		C3B3B6F942B07C511D22766A /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */; };
-		F0CF21939BC87CE5C5995D30 /* Pods_QuikFixUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */; };
+		B25226103573E55CEDD90B85 /* Pods_QuikFixTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6474737038597D3A141C127 /* Pods_QuikFixTests.framework */; };
+		EDFD91AEA4428E6757F11FDE /* Pods_QuikFix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45AEA34B31B68E70ED9127 /* Pods_QuikFix.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,9 +112,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		149408F4B79C7CF31E0217FA /* Pods-QuikFix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.release.xcconfig"; sourceTree = "<group>"; };
-		25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A0450F20CB4777F8272F2D0 /* Pods-QuikFixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		31264BDD1FD7A5F60053D31A /* QuikFix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuikFix.entitlements; sourceTree = "<group>"; };
 		31366FA51FF83D51002163E6 /* CreateStudentStep4EnterCardInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateStudentStep4EnterCardInfoViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +132,7 @@
 		31CE1FF51FDCB65500B783CF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		31D88DA71FF42E9B001C2D8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31D994DC1FD0B6070038C9C0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = /Users/tthrelk/Documents/QuikFix/QuikFix/Main.storyboard; sourceTree = "<absolute>"; };
+		31E5026620054EF300CD4CA6 /* DealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsViewController.swift; sourceTree = "<group>"; };
 		31EF34291FEB1D4300E7F4E8 /* JobFinder.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JobFinder.storyboard; sourceTree = "<group>"; };
 		31EF342B1FEDB02200E7F4E8 /* StudentProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StudentProfile.storyboard; sourceTree = "<group>"; };
 		31EF342D1FEF292100E7F4E8 /* CreateHomeOwner.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateHomeOwner.storyboard; sourceTree = "<group>"; };
@@ -204,9 +204,11 @@
 		3B9F21A41F6354F10068D7EB /* JobPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPost.swift; sourceTree = "<group>"; };
 		3BB8CC7D1F71A5A3002EAEF3 /* JobPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostViewController.swift; sourceTree = "<group>"; };
 		3BFE648A1F8FD30A00A36AFB /* JobPostLocationPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobPostLocationPickerViewController.swift; sourceTree = "<group>"; };
-		7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E45AEA34B31B68E70ED9127 /* Pods_QuikFix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8867144E2BB4C75C2D4B1234 /* Pods-QuikFixUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8DA73056D7388DDE22557BA3 /* Pods_QuikFixUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DC1A85FDAE22099A01722CF /* Pods-QuikFix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix.debug.xcconfig"; sourceTree = "<group>"; };
+		D6474737038597D3A141C127 /* Pods_QuikFixTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuikFixTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7ECA5030CCF68E5D95CD9D5 /* Pods-QuikFixTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E431C7C480AA6C2B3DA795EF /* Pods-QuikFixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuikFixTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -227,7 +229,7 @@
 				31CE1FE61FDCB5DA00B783CF /* CoreText.framework in Frameworks */,
 				31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */,
 				31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */,
-				C3B3B6F942B07C511D22766A /* Pods_QuikFix.framework in Frameworks */,
+				EDFD91AEA4428E6757F11FDE /* Pods_QuikFix.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +237,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADE4F47A6DCBC0677D70CA85 /* Pods_QuikFixTests.framework in Frameworks */,
+				B25226103573E55CEDD90B85 /* Pods_QuikFixTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +245,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0CF21939BC87CE5C5995D30 /* Pods_QuikFixUITests.framework in Frameworks */,
+				266E7DB0A3E99C885FF4713B /* Pods_QuikFixUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +390,7 @@
 				3B2007981F9A7CE3000C008D /* ChatViewController.swift */,
 				3B2007991F9A7CE3000C008D /* ChatContainer.swift */,
 				314C313D1FCC8CD900345E8E /* convertcsv.json */,
+				31E5026620054EF300CD4CA6 /* DealsViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -482,9 +485,9 @@
 				31CE1FE51FDCB5DA00B783CF /* CoreText.framework */,
 				31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */,
 				31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */,
-				7B41D2A418085C3E6FF5D317 /* Pods_QuikFix.framework */,
-				053DEB56DC95A4F2FD2E83D6 /* Pods_QuikFixTests.framework */,
-				25E8BED924DEAD31F82D0CF7 /* Pods_QuikFixUITests.framework */,
+				3E45AEA34B31B68E70ED9127 /* Pods_QuikFix.framework */,
+				D6474737038597D3A141C127 /* Pods_QuikFixTests.framework */,
+				8DA73056D7388DDE22557BA3 /* Pods_QuikFixUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -727,8 +730,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-QuikFix/Pods-QuikFix-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GuillotineMenu/GuillotineMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
@@ -739,14 +748,19 @@
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftOverlays/SwiftOverlays.framework",
 				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GuillotineMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
@@ -757,7 +771,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOverlays.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -793,8 +806,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixUITests/Pods-QuikFixUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GuillotineMenu/GuillotineMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
@@ -805,14 +824,19 @@
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftOverlays/SwiftOverlays.framework",
 				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GuillotineMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
@@ -823,7 +847,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOverlays.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -859,8 +882,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-QuikFixTests/Pods-QuikFixTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GuillotineMenu/GuillotineMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
@@ -871,14 +900,19 @@
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftOverlays/SwiftOverlays.framework",
 				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GuillotineMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
@@ -889,7 +923,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOverlays.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -926,6 +959,7 @@
 			files = (
 				3B5238821F783518006DFDAE /* DateTableViewCell.swift in Sources */,
 				3B2007341F97B009000C008D /* ForgotPasswordViewController1.swift in Sources */,
+				31E5026720054EF300CD4CA6 /* DealsViewController.swift in Sources */,
 				3B5082C81F9FCE5300BFFCE9 /* Buttons.swift in Sources */,
 				3B5A1A491FAB740200D55F80 /* CreatePosterStep2.swift in Sources */,
 				3B712A981F649AB500FC6567 /* JobPostCategoryViewController.swift in Sources */,

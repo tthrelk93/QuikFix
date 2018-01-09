@@ -13,8 +13,9 @@ import FirebaseStorage
 import CoreLocation
 import SwiftOverlays
 import Stripe
+import WebKit
 
-class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, DataDelegate {
+class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate, DataDelegate, WKUIDelegate  {
     var dataID = String()
     func getID(id: String) {
         self.dataID = id
@@ -24,6 +25,13 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     
     var student = Student()
     var promoSender = [String: String]()
+    
+    @IBOutlet weak var termsView: UIView!
+    
+    
+    @IBOutlet weak var termsWebView: UIView!
+    var termsWebView2: WKWebView!
+    
     
     @IBOutlet var orLabel: UILabel!
     @IBOutlet var step4Label: UILabel!
@@ -75,7 +83,12 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                             values["experience"] = self.student.experience
                             values["rating"] =  self.student.rating
                             values["tShirtSize"] = ""
+                            var tempPromo = self.randomString(length: 6)
                             
+                            while self.existingPromoCodes.contains(tempPromo){
+                                tempPromo = self.randomString(length: 6)
+                            }
+                            values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                           
                             values["availableCredits"] = 0
                             
@@ -252,6 +265,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     }
     
     @IBAction func termsOfServicePressed(_ sender: Any) {
+        termsView.isHidden = false
     }
     func handlePaymentMethodsButtonTapped() {
         // Setup customer context
@@ -397,8 +411,32 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     var locDict = [String:Any]()
     var creditButtonOrigin = CGPoint()
     var creditViewOrigin = CGPoint()
+    
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: webConfiguration)
+        termsWebView2.uiDelegate = self
+        view = termsWebView2
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        let url = URL(string: "https://getquikfix.com/terms")
+        if let unwrappedURL = url {
+            let request = URLRequest(url: unwrappedURL)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) {(data, response, error) in
+                if error == nil {
+                    self.termsWebView2.load(request)
+                } else {
+                    print("ERROR: \(String(describing: error))")
+                }
+            }
+            task.resume()
+        }
+        
+        
         enterInfoView.layer.cornerRadius = 7
         saveButton.layer.cornerRadius = 7
         skipButton.layer.cornerRadius = 7
@@ -420,7 +458,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
         view.addSubview(paymentCardTextField)
         
         
-        /*Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
+    Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if let tempDict = snap.value as? [String:Any]{
@@ -434,7 +472,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                     // Do any additional setup after loading the view.
                 }
             }
-        })*/
+        })
     }
     
     override func didReceiveMemoryWarning() {

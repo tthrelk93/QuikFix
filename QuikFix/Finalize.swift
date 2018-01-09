@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
-import Firebase
+
 import CoreLocation
 
 class Finalize: UIViewController, UITextViewDelegate, UITextFieldDelegate {

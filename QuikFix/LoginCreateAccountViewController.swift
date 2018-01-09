@@ -197,7 +197,7 @@ class LoginCreateAccountViewController: UIViewController, UITextFieldDelegate, M
         return false
     }
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         var tokenDict = [String: Any]()
         

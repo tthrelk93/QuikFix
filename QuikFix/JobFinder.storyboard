@@ -546,7 +546,6 @@
         <image name="icons8-User-30" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cyv-Qa-uIV"/>
         <segue reference="KBz-U4-oei"/>
         <segue reference="zeB-RM-kRr"/>
     </inferredMetricsTieBreakers>

@@ -9,7 +9,7 @@
 import UIKit
 
 class JobTypePickerViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
-    var jobTypes = ["All","Full Lawn Package", "Mow", "Leaf Blowing", "Gardening", "Gutter Cleaning", "Weed-Wacking", "Hedge Clipping", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
+    var jobTypes = ["All","Lawn Care", "Leaf Blowing", "Gardening", "Gutter Cleaning", "Installations(Electronics)", "Installations(Decorations)", "Furniture Assembly","Moving(In-Home)", "Moving(Home-To-Home)", "Hauling Away"]
 
     @IBAction func searchButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: "SelectJobTypeToJobFinder", sender: self)
