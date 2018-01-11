@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import Stripe
 import CoreLocation
+import SwiftOverlays
 
 
 class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
@@ -251,6 +252,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
     @IBAction func postJobPressed(_ sender: Any) {
         print("in post job Pressed")
         if self.cardConnected == true {
+            SwiftOverlays.showBlockingTextOverlay("Posting Job...")
             print("cardTrue")
             var values = [String:Any]()
             var ref = Database.database().reference().child("jobs").childByAutoId()

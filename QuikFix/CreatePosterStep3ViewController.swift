@@ -151,6 +151,7 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             values["posterID"] = Auth.auth().currentUser!.uid
                             values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                             values["availableCredits"] = 0
+                            values["creditHours"] = 0.0
                             values["upcomingJobs"] = self.poster.upcomingJobs
                             //values["experience"] = self.student.experience
                             //values["rating"] =  self.student.rating
@@ -294,8 +295,35 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     }
     
     @IBAction func termsOfServicePressed(_ sender: Any) {
+        
+       
+        termsWebView2.uiDelegate = self
+        termsWebView = termsWebView2
+        let url = URL(string: "https://getquikfix.com/terms")
+        if let unwrappedURL = url {
+            let request = URLRequest(url: unwrappedURL)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) {(data, response, error) in
+                if error == nil {
+                    self.termsWebView2.load(request)
+                } else {
+                    print("ERROR: \(String(describing: error))")
+                }
+            }
+            task.resume()
+        }
+        termsWebView2.isHidden = false
         termsView.isHidden = false
     }
+    
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView?{
+        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: configuration)
+        self.termsView.addSubview(termsWebView2)
+       return termsWebView2
+    }
+    
+    
+    
     func handlePaymentMethodsButtonTapped() {
         // Setup customer context
         print("handlemethodstouched")
@@ -392,7 +420,9 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             tempPromo = self.randomString(length: 6)
                         }
                         values["promoCode"] = ([tempPromo: [""]] as [String:Any])
+                        values["creditHours"] = 0.0
                         values["availableCredits"] = 0
+                        
                         values["deviceToken"] = ""
                         
                         values["upcomingJobs"] = self.poster.upcomingJobs
@@ -440,39 +470,24 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
     var locDict = [String:Any]()
     var creditButtonOrigin = CGPoint()
     var creditViewOrigin = CGPoint()
-    var termsWebView2: WKWebView!
+    var termsWebView2 = WKWebView()
     
-    override func loadView() {
-        let webConfiguration = WKWebViewConfiguration()
-        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: webConfiguration)
-        termsWebView2.uiDelegate = self
-        view = termsWebView2
+    
+    
+    override func viewDidLayoutSubviews() {
+        
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        //termsView.addSubview(termsWebView2)
         
         
-        let url = URL(string: "https://getquikfix.com/terms")
-        if let unwrappedURL = url {
-            let request = URLRequest(url: unwrappedURL)
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) {(data, response, error) in
-                if error == nil {
-                    self.termsWebView2.load(request)
-                } else {
-                    print("ERROR: \(String(describing: error))")
-                }
-            }
-            task.resume()
-        }
         enterInfoView.layer.cornerRadius = 7
         saveButton.layer.cornerRadius = 7
         skipButton.layer.cornerRadius = 7
-       //creditCardNumberTF.delegate = self
+        //creditCardNumberTF.delegate = self
         //expDate.delegate = self
-       // cvvTF.delegate = self
+        // cvvTF.delegate = self
         creditButton.layer.cornerRadius = 7
         creditButtonFrame = creditButton.bounds
         creditButtonOrigin = creditButton.frame.origin
@@ -487,6 +502,13 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
         // Add payment card text field to view
         view.addSubview(paymentCardTextField)
         
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+       
         
         Database.database().reference().child("jobPosters").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{

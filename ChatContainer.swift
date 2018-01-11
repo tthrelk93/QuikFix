@@ -20,9 +20,9 @@ class ChatContainer: UIViewController {
     var senderScreen = String()
     var job = JobPost()
     var jobType = String()
-    @IBAction func backButtonPressed(_ sender: Any) {
+   /* @IBAction func backButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "ChatToJobLogJob", sender: self)
-    }
+    }*/
 
     
     override func viewDidLoad() {

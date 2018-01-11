@@ -176,10 +176,37 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         dismiss(animated: true)
     }
     
+    @IBAction func addSubtractTimePressed(_ sender: Any) {
+    }
+    
+    @IBOutlet weak var detailsLabel: UILabel!
+    
+    @IBOutlet weak var detailsButton: UIButton!
+    
+    let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     
     
+    @IBAction func detailsButtonPressed(_ sender: Any) {
+        if detailsButton.backgroundColor == UIColor.white {
+            detailsButton.backgroundColor = UIColor.clear
+            detailsButton.setTitleColor(qfGreen, for: .normal)
+            groupChatButton.setTitleColor(UIColor.lightGray, for: .normal)
+            groupChatButton.backgroundColor = UIColor.white
+            messageContainer.isHidden = true
+            
+        } else {
+            /*detailsButton.setTitleColor(UIColor.lightGray, for: .normal)*/
+        }
+        
+        
+    }
     
-
+    @IBOutlet weak var lowerButtonSep3: UIView!
+    @IBOutlet weak var lowerButtonSep2: UIView!
+    @IBOutlet weak var lowerButtonSep1: UIView!
+    @IBAction func showDirectionsPressed(_ sender: Any) {
+    }
+    
     @IBAction func backButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "JobLogJobToJobLog", sender: self)
     }
@@ -192,9 +219,24 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBOutlet weak var detailsTextView: UITextView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var messageContainer: UIView!
     
     @IBAction func groupChatPressed(_ sender: Any) {
-        performSegue(withIdentifier: "JobLogJobToChat", sender: self)
+       // performSegue(withIdentifier: "JobLogJobToChat", sender: self)
+        if groupChatButton.backgroundColor == UIColor.white {
+            groupChatButton.backgroundColor = UIColor.clear
+            groupChatButton.setTitleColor(qfGreen, for: .normal)
+            detailsButton.setTitleColor(UIColor.lightGray, for: .normal)
+            detailsButton.backgroundColor = UIColor.white
+            //performSegue(withIdentifier: "", sender: <#T##Any?#>)
+            messageContainer.isHidden = false
+            
+            
+            
+        } else {
+            /*detailsButton.setTitleColor(UIColor.lightGray, for: .normal)*/
+        }
+        
         
         
     }
@@ -410,6 +452,8 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     // Heroku URL (it looks like https://blazing-sunrise-1234.herokuapp.com ).
     let backendBaseURL = "https://quikfix123.herokuapp.com"
     
+    @IBOutlet weak var addSubtractButton: UIButton!
+    @IBOutlet weak var mapButton: UIButton!
     
     @IBOutlet weak var posterLabel: UILabel!
     var sender = String()
@@ -417,30 +461,115 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewDidLoad()
         if self.jobType == "jc" || self.jobType == "cl"{
             self.jobCompletedButton.isHidden = true
+            self.addSubtractButton.isHidden = true
+            lowerButtonSep1.isHidden = true
+            lowerButtonSep2.isHidden = true
+            lowerButtonSep3.isHidden = true
+        }
+        if job.workers == nil {
+            groupChatButton.isEnabled = false
+        } else {
+            groupChatButton.isEnabled = true
         }
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         paymentCardTextField.delegate = self
         
+        groupChatButton.layer.borderColor = UIColor.lightGray.cgColor
+        groupChatButton.layer.borderWidth = 1
         
-        groupChatButton.layer.cornerRadius = 10
-        posterLabel.text = job.posterName!
+        detailsButton.layer.borderColor = UIColor.lightGray.cgColor
+        detailsButton.layer.borderWidth = 1
+        
+        var attributedString = NSMutableAttributedString(string: "Job Poster: ")
+        let attrs = [NSFontAttributeName : UIFont.systemFont(ofSize: 20.0)]
+        var tempString = NSMutableAttributedString(string: job.posterName!, attributes:attrs)
+        attributedString.append(tempString)
+        posterLabel.attributedText = attributedString
+        
+        
+        jobCatLabel.text = job.category1
+        
+        attributedString = NSMutableAttributedString(string: "Job Start Date: ")
+        tempString = NSMutableAttributedString(string: job.date!, attributes:attrs)
+        attributedString.append(tempString)
+        dateLabel.attributedText = attributedString
+        
+        attributedString = NSMutableAttributedString(string: "Job Start Time: ")
+        tempString = NSMutableAttributedString(string: job.startTime!, attributes:attrs)
+        attributedString.append(tempString)
+        timeLabel.attributedText = attributedString
+        
         cellSelectedPic.layer.cornerRadius = cellSelectedPic.frame.width/2
-        jobCatLabel.text = job.category1!
-        dateLabel.text = job.date!
-        timeLabel.text = job.startTime!
-        durationLabel.text = "\(job.jobDuration!) hour estimated completion time"
-        totalCostLabel.text = "\(job.payment!)"
+        
+        attributedString = NSMutableAttributedString(string: "Estimated Completion Time: ")
+        tempString = NSMutableAttributedString(string: "\(job.jobDuration!) hours", attributes:attrs)
+        attributedString.append(tempString)
+        durationLabel.attributedText = attributedString
+        
+        if job.additInfo == nil {
+            
+        } else {
+        attributedString = NSMutableAttributedString(string: "Details: ")
+        tempString = NSMutableAttributedString(string: job.additInfo!, attributes:attrs)
+        attributedString.append(tempString)
+        detailsLabel.attributedText = attributedString
+        }
+        
+        
+        if sender == "student"{
+            if job.tools?.count == 0{
+                var tempPayString = job.payment!
+                let chargeAmount = tempPayString.substring(from: 1)
+                tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                let tempPayDouble = ((Double(tempPayString)! * 0.6) / (job.workerCount as! Double))
+                tempPayString = "$\(tempPayDouble)"
+                
+                attributedString = NSMutableAttributedString(string: "Payment: ")
+                tempString = NSMutableAttributedString(string: tempPayString, attributes:attrs)
+                attributedString.append(tempString)
+                totalCostLabel.attributedText = attributedString
+                
+                
+            } else {
+                var tempPayString = job.payment!
+                let chargeAmount = tempPayString.substring(from: 1)
+                tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
+                let postToolFeeRemovalDouble = (Double(tempPayString)! - 5.0)
+                let tempPayDouble = ((postToolFeeRemovalDouble * 0.6) / (job.workerCount as! Double))
+                tempPayString = "$\(tempPayDouble)"
+                attributedString = NSMutableAttributedString(string: "Payment: ")
+                tempString = NSMutableAttributedString(string: tempPayString, attributes:attrs)
+                attributedString.append(tempString)
+                totalCostLabel.attributedText = attributedString
+                totalCostLabel.text = "Total Cost \(tempPayString)"
+                
+            }
+        } else {
+            attributedString = NSMutableAttributedString(string: "Payment: ")
+            tempString = NSMutableAttributedString(string: job.payment!, attributes:attrs)
+            attributedString.append(tempString)
+            totalCostLabel.attributedText = attributedString
+            //totalCostLabel.text = "Total Cost \(job.payment!)"
+        }
        
         if job.workers != nil {
             if self.sender != "student" {
-                if job.workers?.count as! Int > 1{
-                    numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
-                } else {
-                 numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix student"
-                }
+                
             }
             else {
-                numberOfStudentsLabel.text = "Job Poster"
+               /* numberOfStudentsLabel.text = "Job Poster"*/
+                if job.workers?.count as! Int > 1 {
+                    numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
+                } else {
+                    numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix student"
+                }
+            }
+        } else {
+            if self.sender == "student" {
+                
+            }
+            else {
+            numberOfStudentsLabel.text = "0 QuikFix Students"
             }
         }
         
@@ -592,7 +721,21 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var studentIDFromResponse = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "JobLogJobToChat"{
+        if (segue.identifier! as String) == "EmbeddedChat"{
+            if let vc = segue.destination as? ChatViewController{
+                
+                vc.senderDisplayName = self.name
+                vc.thisSessionID = String()
+                vc.senderId = (Auth.auth().currentUser?.uid)!
+                vc.senderName = (Auth.auth().currentUser?.uid)!
+                vc.senderView = self.senderScreen
+                vc.jobID = self.job.jobID!
+                vc.job = self.job
+                vc.jobType = self.jobType
+                
+                
+            }
+        } else if segue.identifier == "JobLogJobToChat"{
             if let vc = segue.destination as? ChatContainer{
                 self.jobID = self.job.jobID!
                 //vc.jobType = self.jobType

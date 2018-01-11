@@ -299,7 +299,9 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         // 1
-        
+        if self.job.workers == nil {
+            
+        } else {
         var workerArray = self.job.workers!
         var count = 0
         var removeBool = false
@@ -347,6 +349,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         // 5
         finishSendingMessage()
         isTyping = false
+        }
     }
     
     func sendPhotoMessage() -> String? {

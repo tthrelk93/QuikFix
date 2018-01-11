@@ -278,9 +278,16 @@ class CreateStudentAccountFinalViewController: UIViewController, UITextFieldDele
     }
     let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
     var curIndex = Int()
+    
+    @IBOutlet weak var lawncareLabel: UILabel!
+    
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         curIndex = row
-        
+        if expData[row] == "Lawn Care"{
+            lawncareLabel.isHidden = false
+        } else {
+            lawncareLabel.isHidden = true
+        }
             if experience.contains(expData[row]){
                 addButton.setTitle("Remove", for: .normal)
                 addButton.backgroundColor = UIColor.red

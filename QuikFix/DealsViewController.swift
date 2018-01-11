@@ -10,6 +10,7 @@ import UIKit
 import Stripe
 import FirebaseDatabase
 import FirebaseAuth
+import SwiftOverlays
 
 
 class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
@@ -52,6 +53,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
     @IBAction func gradPressed(_ sender: Any) {
         self.buttonPressed = "grad"
         if self.cardConnected == true {
+            SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
             var sendJob = [String:Any]()
             sendJob["posterID"] = Auth.auth().currentUser!.uid
             sendJob["jobID"] = ""
@@ -60,8 +62,13 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
             let tempCharge = 200 * 100
             print("charge in cents: \(tempCharge)")
             MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad")
+            DispatchQueue.main.async{
+                sleep(2)
+                SwiftOverlays.removeAllBlockingOverlays()
+            }
         
         } else {
+            
             let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
                 self.showAddCard()
@@ -73,6 +80,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
     @IBAction func undergradPressed(_ sender: Any) {
         self.buttonPressed = "underGrad"
         if self.cardConnected == true {
+            SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
             var sendJob = [String:Any]()
             sendJob["posterID"] = Auth.auth().currentUser!.uid
             sendJob["jobID"] = ""
@@ -81,6 +89,10 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
             let tempCharge = 100 * 100
             print("charge in cents: \(tempCharge)")
             MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad")
+            DispatchQueue.main.async{
+                sleep(2)
+                SwiftOverlays.removeAllBlockingOverlays()
+            }
             
         } else {
             let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
@@ -154,6 +166,10 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
                     let tempCharge = 100 * 100
                     print("charge in cents: \(tempCharge)")
                     MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad")
+                    /*DispatchQueue.main.async{
+                        sleep(2)
+                        self.performSegue(withIdentifier: "DealsToProf", sender: self)
+                    }*/
                 }
             }
         }
@@ -252,8 +268,12 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
                     if snap.key == "name"{
                         self.name = snap.value as! String
                     }
-                    if snap.key == "stripeToken"{
-                        self.cardConnected = true
+                    if snap.key == "stripeToken" {
+                        if (snap.value as! String) != "" {
+                            self.cardConnected = true
+                        } else {
+                            self.cardConnected = false
+                        }
                     }
                     if snap.key == "email"{
                         self.email = snap.value as! String

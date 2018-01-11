@@ -559,12 +559,14 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
     }
     
+    @IBOutlet weak var availableHoursLabel: UILabel!
     @IBAction func dealsPressed(_ sender: Any) {
         promoCodeView.isHidden = true
         currentListingsLabel.isHidden = false
         upcomingJobsLabel.isHidden = false
         currentListingsCount.isHidden = false
         jobsCompletedCount.isHidden = false
+        performSegue(withIdentifier: "ProfToDeals", sender: self)
        // sepLineVertical.isHidden = false
     }
     @IBOutlet weak var dealsButton: UIButton!
@@ -756,7 +758,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     if snap.key == "jobsCompleted"{
                         self.jobsCompleted = snap.value as! [String]
                     }
-                   
+                    if snap.key == "creditHours"{
+                        print("creditHours")
+                        self.availableHoursLabel.text = "\(Int((snap.value as? Double)!)) prepaid hours"
+                    }
                     if snap.key == "name"{
                         //(self.navigationBar as UINavigationBar). //
                         self.nameLabel.text = snap.value as! String

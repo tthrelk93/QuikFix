@@ -80,7 +80,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     //var job = [String:Any]()
    // var poster = String()
     var removeAcceptedCount = Int()
-    var creditHours = Int()
+    var creditHours = Double()
     
     func completeCharge(amount: Int,
                         poster: String, job: [String:Any], senderScreen: String) {
@@ -118,11 +118,11 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                                 
                                                 for snap in snapshots {
                                                     if snap.key == "creditHours"{
-                                                        self.creditHours = snap.value as! Int
+                                                        self.creditHours = snap.value as! Double
                                                         if senderScreen == "dealsGrad"{
-                                                        self.creditHours = self.creditHours + 10
+                                                        self.creditHours = self.creditHours + 10.0
                                                         } else {
-                                                            self.creditHours = self.creditHours + 5
+                                                            self.creditHours = self.creditHours + 5.0
                                                         }
                                                     }
                                                 }

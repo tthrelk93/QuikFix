@@ -127,7 +127,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                         self.emailVerificationSent = true
                         } else {
                             print("emailVer == true")
-                            self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                            //self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
                         }
                         
                         
@@ -171,6 +171,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                     
                     self.verificationTimer.invalidate()     //Kill the timer
                     self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                    return
                 } else {
                     
                     print("It aint verified yet")

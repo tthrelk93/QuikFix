@@ -30,7 +30,7 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     
     
     @IBOutlet weak var termsWebView: UIView!
-    var termsWebView2: WKWebView!
+    var termsWebView2 = WKWebView()
     
     
     @IBOutlet var orLabel: UILabel!
@@ -90,7 +90,8 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
                             }
                             values["promoCode"] = ([tempPromo: [""]] as [String:Any])
                           
-                            values["availableCredits"] = 0
+                            values["creditHours"] = 0.0
+                             values["availableCredits"] = 0
                             
                             values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
                             values["pic"] = profileImageUrl
@@ -265,8 +266,31 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     }
     
     @IBAction func termsOfServicePressed(_ sender: Any) {
+        termsWebView2.uiDelegate = self
+        termsWebView = termsWebView2
+        let url = URL(string: "https://getquikfix.com/terms")
+        if let unwrappedURL = url {
+            let request = URLRequest(url: unwrappedURL)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) {(data, response, error) in
+                if error == nil {
+                    self.termsWebView2.load(request)
+                } else {
+                    print("ERROR: \(String(describing: error))")
+                }
+            }
+            task.resume()
+        }
+        termsWebView2.isHidden = false
         termsView.isHidden = false
     }
+    
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView?{
+        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: configuration)
+        self.termsView.addSubview(termsWebView2)
+        return termsWebView2
+    }
+    
     func handlePaymentMethodsButtonTapped() {
         // Setup customer context
         print("handlemethodstouched")
@@ -412,29 +436,13 @@ class CreateStudentStep4EnterCardInfoViewController: UIViewController, STPAddCar
     var creditButtonOrigin = CGPoint()
     var creditViewOrigin = CGPoint()
     
-    override func loadView() {
-        let webConfiguration = WKWebViewConfiguration()
-        termsWebView2 = WKWebView(frame: termsWebView.frame, configuration: webConfiguration)
-        termsWebView2.uiDelegate = self
-        view = termsWebView2
-    }
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        let url = URL(string: "https://getquikfix.com/terms")
-        if let unwrappedURL = url {
-            let request = URLRequest(url: unwrappedURL)
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) {(data, response, error) in
-                if error == nil {
-                    self.termsWebView2.load(request)
-                } else {
-                    print("ERROR: \(String(describing: error))")
-                }
-            }
-            task.resume()
-        }
+       
+        
         
         
         enterInfoView.layer.cornerRadius = 7

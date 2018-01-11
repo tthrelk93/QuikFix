@@ -37,6 +37,7 @@ class Student: NSObject {
     
     var promoCode: [String:Any]?
     var availableCredits: Int?
+    var creditHours: Double?
     var unreadMessages: Bool?
     var posterCancelled: String?
     var completedCount: Int?
