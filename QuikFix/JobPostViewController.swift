@@ -36,9 +36,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     @IBOutlet weak var tabBar: UITabBar!
-    var currentListings: [String]?
-    var expiredJobs: [String]?
+    var currentListings: [String: [String:Any]]?
+    var expiredJobs: [String: [String:Any]]?
     var categoryType = String()
+    var clKeys = [String]()
+    var expKeys = [String]()
         @IBOutlet weak var calendarTableView: UITableView!
     
     //var dGroup = DispatchGroup()
@@ -74,10 +76,18 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                     let snapshots1 = snapshot.children.allObjects as! [DataSnapshot]
                     for snap in snapshots1{
                         if snap.key == "currentListings"{
-                            self.currentListings = snap.value as? [String]
+                            self.currentListings = snap.value as? [String:[String:Any]]
                         } else if snap.key == "expiredJobs"{
-                            self.expiredJobs = snap.value as? [String]
+                            self.expiredJobs = snap.value as? [String:[String:Any]]
                         }
+                    }
+                    for (key, _) in self.currentListings!{
+                        self.clKeys.append(key)
+                    }
+                    if self.expiredJobs != nil {
+                    for (key, _) in self.expiredJobs!{
+                        self.expKeys.append(key)
+                    }
                     }
                 
                 let trigger2TimeString = "\(String(describing: tempDict["date"]!)) \(String(describing: tempDict["startTime"]!))"
@@ -91,22 +101,25 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         
                     } else {
                     if today > trigger2Date! &&
-                        (self.currentListings?.contains(tempDict["jobID"] as! String))! {
+                        (self.clKeys.contains(tempDict["jobID"] as! String)) {
                         //send poster push notification asking if they would like to repost the job or scrap it
-                        let index = self.currentListings?.index(of: tempDict["jobID"] as! String)
+                        let index = self.clKeys.index(of: tempDict["jobID"] as! String)
                         
                         print("removeCL: \(String(describing: self.currentListings))")
-                        self.currentListings?.remove(at: index!)
+                        //self.currentListings?.remove(at: index!)
+                        self.currentListings?.removeValue(forKey: tempDict["jobID"] as! String)
                         
                         
                         //var tempArray2 = tempDict["expiredJobs"] as! [String]
-                        if self.expiredJobs == nil{
-                            self.expiredJobs = [tempDict["jobID"] as! String]
+                        if self.expiredJobs != nil{
+                            self.expiredJobs![tempDict["jobID"] as! String] = tempDict
+                            Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs!])
                         } else {
-                            self.expiredJobs!.append(tempDict["jobID"] as! String)
+                            //self.expiredJobs![tempDict["jobID"] as! String] = tempDict
+                            Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!])
                         }
                         
-                        Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs!])
+                        
                         }
                     }
                 }
@@ -351,6 +364,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SingleJobSelected"{
             if let vc = segue.destination as? SingleJobPostViewController{
+                
                 let tempString = self.selectedJob.payment?.substring(from: 1)
                 let tempInt = (tempString! as NSString).integerValue
                 vc.jobID = self.selectedJobID
@@ -364,7 +378,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                     
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         let tempDict = snapshot.value as! [String:Any]
-                        
+                        vc.uploadJob = tempDict
                         for snap in snapshots{
                             if snap.key == "workers"{
                                 let tempArray = snap.value as! [String]

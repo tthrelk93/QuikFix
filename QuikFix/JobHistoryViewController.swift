@@ -53,8 +53,9 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
         {
         case 0:
             
-            for tempDict in self.jobsCompletedObj{
+            for (key, tempDict) in self.jobsCompleted{
                 let tempJob = JobPost()
+                self.sendJob = tempDict
                 tempJob.additInfo = (tempDict["additInfo"] as! String)
                 tempJob.category1 = (tempDict["category1"] as! String)
                 //tempJob.category2 = (tempDict["category2"] as! String)
@@ -72,6 +73,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.startTime = (tempDict["startTime"] as! String)
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
+                tempJob.location = tempDict["location"] as! String
+                tempJob.workers = tempDict["workers"] as! [String]
                 tempJob.jobLat = tempDict["jobLat"] as! String
                 tempJob.jobLong = tempDict["jobLong"] as! String
                 tempJob.posterID = (tempDict["posterID"] as! String)
@@ -128,8 +131,9 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
 
             
         case 1:
-            for tempDict in self.upcomingJobsObj{
+            for (key, tempDict) in self.upcomingJobs{
                 let tempJob = JobPost()
+                self.sendJob = tempDict
                 tempJob.additInfo = (tempDict["additInfo"] as! String)
                 tempJob.category1 = (tempDict["category1"] as! String)
                 //tempJob.category2 = (tempDict["category2"] as! String)
@@ -145,6 +149,8 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                     tempJob.payment = (tempDict["payment"] as! String)
                 }
                 tempJob.startTime = (tempDict["startTime"] as! String)
+                tempJob.location = tempDict["location"] as! String
+                tempJob.workers = tempDict["workers"] as! [String]
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
                 tempJob.posterID = (tempDict["posterID"] as! String)
@@ -281,13 +287,13 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var jobTypeSegment: UISegmentedControl!
     var datesArray = [String]()
     var senderScreen = String()
-    var currentListings = [String]()
-    var jobsCompleted = [String]()
-    var upcomingJobs = [String]()
-    var currentListingsObj = [[String:Any]]()
-    var jobsCompletedObj = [[String:Any]]()
+    var currentListings = [String: [String:Any]]()
+    var jobsCompleted = [String: [String:Any]]()
+    var upcomingJobs = [String: [String:Any]]()
+    //var currentListingsObj = [[String:Any]]()
+    //var jobsCompletedObj = [[String:Any]]()
     var tableViewData = [JobPost]()
-    var upcomingJobsObj = [[String:Any]]()
+    //var upcomingJobsObj = [[String:Any]]()
     var jobType = String()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -304,43 +310,29 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 for snap in snapshots {
                     if snap.key == "jobsCompleted"{
-                        self.jobsCompleted = snap.value as! [String]
+                        self.jobsCompleted = snap.value as! [String: [String:Any]]
                     }
 
                     if snap.key == "currentListings"{
-                        self.currentListings = snap.value  as! [String]
+                        self.currentListings = snap.value  as! [String: [String:Any]]
                     }
                     if snap.key == "upcomingJobs"{
-                            self.upcomingJobs = snap.value as! [String]
+                        self.upcomingJobs = snap.value as! [String: [String:Any]]
                     }
                     }
                 }
                 
-                Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        
-                        for snap in snapshots {
-                            if self.jobsCompleted.contains(snap.key){
-                                self.jobsCompletedObj.append(snap.value as! [String:Any])
-                                
-                            }
-                            if self.upcomingJobs.contains(snap.key){
-                                self.upcomingJobsObj.append(snap.value as! [String:Any])
-                                
-                            }
-                            if self.currentListings.contains(snap.key){
-                                self.currentListingsObj.append(snap.value as! [String:Any])
-                            }
-                        }
-                    }
+                
                     print("im hereeee")
                     if self.jobType == "jc"{
-                    for tempDict in self.jobsCompletedObj{
+                    for (key, tempDict) in self.jobsCompleted{
                         let tempJob = JobPost()
+                        self.sendJob = tempDict
                         tempJob.additInfo = (tempDict["additInfo"] as! String)
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
+                        tempJob.workers = tempDict["workers"] as! [String]
+                        tempJob.location = tempDict["location"] as! String
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
                         
@@ -364,14 +356,16 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
 
                     }
                     } else if self.jobType == "cl"{
-                        for tempDict in self.currentListingsObj{
+                        for (key, tempDict) in self.currentListings{
                             let tempJob = JobPost()
+                            self.sendJob = tempDict
                             tempJob.additInfo = (tempDict["additInfo"] as! String)
                             tempJob.category1 = (tempDict["category1"] as! String)
                             //tempJob.category2 = (tempDict["category2"] as! String)
                             tempJob.posterName = (tempDict["posterName"] as! String)
                             tempJob.date = (tempDict["date"] as! String)
-                            
+                          //  tempJob.workers = tempDict["workers"] as! [String]
+                            tempJob.location = tempDict["location"] as! String
                             tempJob.payment = (tempDict["payment"] as! String)
                             tempJob.startTime = (tempDict["startTime"] as! String)
                             tempJob.jobDuration = tempDict["jobDuration"] as! String
@@ -394,14 +388,16 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             
                         }
                     } else {
-                            for tempDict in self.upcomingJobsObj{
+                            for (key, tempDict) in self.upcomingJobs{
                                 let tempJob = JobPost()
+                                self.sendJob = tempDict
                                 tempJob.additInfo = (tempDict["additInfo"] as! String)
                                 tempJob.category1 = (tempDict["category1"] as! String)
                                 //tempJob.category2 = (tempDict["category2"] as! String)
                                 tempJob.posterName = (tempDict["posterName"] as! String)
                                 tempJob.date = (tempDict["date"] as! String)
-                                
+                                tempJob.workers = tempDict["workers"] as! [String]
+                                tempJob.location = tempDict["location"] as! String
                                 tempJob.payment = (tempDict["payment"] as! String)
                                 tempJob.startTime = (tempDict["startTime"] as! String)
                                 tempJob.jobDuration = tempDict["jobDuration"] as! String
@@ -462,7 +458,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
 
                 })
-            })
+            
         } else {
             print("in student")
             tabBar.delegate = self
@@ -476,39 +472,28 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                     for snap in snapshots {
                         if snap.key == "upcomingJobs"{
-                            self.upcomingJobs = snap.value as! [String]
+                            self.upcomingJobs = snap.value as! [String: [String:Any]]
                         }
                         
                         if snap.key == "jobsCompleted"{
-                            self.jobsCompleted = snap.value  as! [String]
+                            self.jobsCompleted = snap.value as! [String: [String:Any]]
                         }
                         
                     }
                 }
                 
-                Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
+                
                     
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        
-                        for snap in snapshots {
-                            if self.jobsCompleted.contains(snap.key){
-                                self.jobsCompletedObj.append(snap.value as! [String:Any])
-                                
-                            }
-                            if self.upcomingJobs.contains(snap.key){
-                                self.upcomingJobsObj.append(snap.value as! [String:Any])
-                                
-                            }
-                        }
-                    }
-                    
-                    for tempDict in self.jobsCompletedObj{
+                    for (key, tempDict) in self.jobsCompleted{
                         let tempJob = JobPost()
+                        self.sendJob = tempDict
                         tempJob.additInfo = (tempDict["additInfo"] as! String)
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
+                        tempJob.location = tempDict["location"] as! String
+                        tempJob.workers = tempDict["workers"] as! [String]
                         var tempPayString = tempDict["payment"] as! String
                         tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                         let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
@@ -573,7 +558,6 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                     
                 })
-            })
 
         }
         
@@ -660,6 +644,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var sendJob = [String:Any]()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "JobLogToJob"{
             if let vc = segue.destination as? JobLogJobViewController{
@@ -667,6 +652,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 vc.senderScreen = self.senderScreen
                 vc.job = self.selectedJob
                 vc.jobType = self.jobType
+                vc.sendJob = self.sendJob
                 
             }
         }

@@ -77,9 +77,9 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
                // poster.password = passwordTextField.text
                 //student.school = ""
                 //student.major = ""
-                poster.jobsCompleted = [String]()
-                poster.upcomingJobs = [String]()
-                poster.currentListings = [String]()
+                poster.jobsCompleted = [String: [String:Any]]()
+                poster.upcomingJobs = [String: [String:Any]]()
+                poster.currentListings = [String: [String:Any]]()
                // student.rating = Int()
                 poster.responses = [String:Any]()
                 poster.phone = cellPhoneTextField.text!

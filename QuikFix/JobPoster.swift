@@ -13,9 +13,9 @@ class JobPoster: NSObject{
     var email: String?
     var posterID: String?
     var pic: String?
-    var currentListings: [String]?
-    var upcomingJobs: [String]?
-    var jobsCompleted: [String]?
+    var currentListings: [String: Any]?
+    var upcomingJobs: [String: Any]?
+    var jobsCompleted: [String: Any]?
     var address: String?
     var responses: [String:Any]?
     var prevWorker: [String]?
@@ -31,10 +31,10 @@ class JobPoster: NSObject{
     var creditHours: Double?
     var creditAmount: Int?
     var deviceToken: [String: Any]?
-    var expiredJobs: [String]?
+    var expiredJobs: [String: Any]?
     var unreadMessages: Bool?
    
-    var completedWaitingReview: [String]?
+    var completedWaitingReview: [String: Any]?
     var studentCancelled: String?
     var twelveHoursToStart: String?
     var threeHoursToStart: String?

@@ -90,7 +90,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
         
     
     }
-    
+    var uploadJob = [String:Any]()
     func countDownDuration(){
         print("hey : \(self.jobID)")
         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": true])
@@ -111,7 +111,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                         print("charge the poster")
                         let tempCharge = ((self.chargeAmount as NSString).intValue * 100)
                         print("charge in cents: \(tempCharge)")
-                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "normCharge")
+                        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "normCharge", jobDict: self.uploadJob)
                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": false])
                     }
                 }
@@ -156,9 +156,17 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                         for snap in snapshots{
                                             if snap.key == "currentListings"{
                                                 containsCurrentListings = true
-                                                var tempJobArray = snap.value as! [String]
-                                                tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
+                                                var tempJobArray = snap.value as! [String: [String:Any]]
+                                                
+                                                var tempWorkers = self.uploadJob["workers"] as! [String]
+                                                tempWorkers.append(Auth.auth().currentUser!.uid)
+                                                self.uploadJob["workers"] = tempWorkers
+                                                var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                                acceptCount = acceptCount + 1
+                                                self.uploadJob["acceptedCount"] = acceptCount
+                                                tempJobArray[self.jobID] = self.uploadJob
                                                 //var keyInDictBool = false
+                                                //tempJobDict[self.jobID] = self.job
                                                 //var tempIDArray = [String]()
                                                 var uploadDict = [String:Any]()
                                                 uploadDict["currentListings"] = tempJobArray
@@ -166,8 +174,15 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 
                                             } else if snap.key == "upcomingJobs"{
                                                 containsUpcomingJobs = true
-                                                var tempJobArray = snap.value as! [String]
-                                                tempJobArray.append(self.jobID)
+                                                var tempJobArray = snap.value as! [String: [String:Any]]
+                                                
+                                                var tempWorkers = self.uploadJob["workers"] as! [String]
+                                                tempWorkers.append(Auth.auth().currentUser!.uid)
+                                                self.uploadJob["workers"] = tempWorkers
+                                                var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                                acceptCount = acceptCount + 1
+                                                self.uploadJob["acceptedCount"] = acceptCount
+                                                tempJobArray[self.jobID] = self.uploadJob
                                                 //var keyInDictBool = false
                                                 //tempJobDict[self.jobID] = self.job
                                                 //var tempIDArray = [String]()
@@ -186,8 +201,15 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                             Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
                                         }
                                         if containsCurrentListings == false{
-                                            var uploadData = [String]()
-                                            uploadData.append(self.jobID)
+                                            var uploadData = [String:[String:Any]]()
+                                            var tempJobArray = snap.value as! [String: [String:Any]]
+                                            var tempWorkers = self.uploadJob["workers"] as! [String]
+                                            tempWorkers.append(Auth.auth().currentUser!.uid)
+                                            self.uploadJob["workers"] = tempWorkers
+                                            var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                            acceptCount = acceptCount + 1
+                                            self.uploadJob["acceptedCount"] = acceptCount
+                                            uploadData[self.jobID] = self.uploadJob
                                             var uploadDict = [String:Any]()
                                             uploadDict["currentListings"] = uploadData
                                             
@@ -197,19 +219,31 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                                                 var containsJobs = false
-                                                var upcomingArray = [String]()
+                                                var upcomingArray = [String: [String:Any]]()
                                                 for snap in snapshots {
                                                     
                                                     if snap.key == "upcomingJobs"{
-                                                        upcomingArray = snap.value as! [String]
-                                                        upcomingArray.append(self.jobID)
+                                                        upcomingArray = snap.value as! [String: [String: Any]]
+                                                        
+                                                        var tempWorkers = self.uploadJob["workers"] as! [String]
+                                                        tempWorkers.append(Auth.auth().currentUser!.uid)
+                                                        self.uploadJob["workers"] = tempWorkers
+                                                        upcomingArray[self.jobID] = self.uploadJob
                                                         containsJobs = true
                                                     }
                                                     var uploadDict2 = [String:Any]()
                                                     if containsJobs == false{
                                                         
-                                                        uploadDict2["upcomingJobs"] = [self.jobID]
-                                                    }else {
+                                                        var tempWorkers = self.uploadJob["workers"] as! [String]
+                                                
+                                                        tempWorkers.append(Auth.auth().currentUser!.uid)
+                                                        self.uploadJob["workers"] = tempWorkers
+                                                        var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                                        acceptCount = acceptCount + 1
+                                                        self.uploadJob["acceptedCount"] = acceptCount
+                                                         upcomingArray[self.jobID] = self.uploadJob
+                                                        uploadDict2["upcomingJobs"] = upcomingArray
+                                                    } else {
                                                         uploadDict2["upcomingJobs"] = upcomingArray
                                                     }
                                                     Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
@@ -319,8 +353,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             for snap in snapshots{
                                 if snap.key == "currentListings"{
                                     containsCurrentListings = true
-                                    var tempJobArray = snap.value as! [String]
-                                    tempJobArray.remove(at: tempJobArray.index(of: self.job1.jobID!)!)
+                                    var tempJobArray = snap.value as! [String: [String:Any]]
+                                    tempJobArray.removeValue(forKey: self.job1.jobID!)
+                                    
                                     //var keyInDictBool = false
                                     //var tempIDArray = [String]()
                                     var uploadDict = [String:Any]()
@@ -329,8 +364,14 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                     
                                 } else if snap.key == "upcomingJobs"{
                                     containsUpcomingJobs = true
-                                    var tempJobArray = snap.value as! [String]
-                                    tempJobArray.append(self.jobID)
+                                    var tempJobArray = snap.value as! [String: [String:Any]]
+                                    var tempWorkers = self.uploadJob["workers"] as! [String]
+                                    tempWorkers.append(Auth.auth().currentUser!.uid)
+                                    self.uploadJob["workers"] = tempWorkers
+                                    var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                    acceptCount = acceptCount + 1
+                                    self.uploadJob["acceptedCount"] = acceptCount
+                                    tempJobArray[self.jobID] = self.uploadJob
                                     //var keyInDictBool = false
                                     //tempJobDict[self.jobID] = self.job
                                     //var tempIDArray = [String]()
@@ -342,15 +383,29 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             }
                             
                             if containsUpcomingJobs == false{
-                                var uploadData = [String]()
-                                uploadData.append(self.jobID)
+                                var uploadData = [String: [String:Any]]()
+                                
+                                var tempWorkers = [String]()
+                                tempWorkers.append(Auth.auth().currentUser!.uid)
+                                self.uploadJob["workers"] = tempWorkers
+                                var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                acceptCount = acceptCount + 1
+                                self.uploadJob["acceptedCount"] = acceptCount
+                                uploadData[self.jobID] = self.uploadJob
                                 var uploadDict = [String:Any]()
                                 uploadDict["upcomingJobs"] = uploadData
                                 Database.database().reference().child("jobPosters").child(self.posterID).updateChildValues(uploadDict)
                             }
                             if containsCurrentListings == false{
-                                var uploadData = [String]()
-                                uploadData.append(self.jobID)
+                                var uploadData = [String: [String:Any]]()
+                                
+                                var tempWorkers = [String]()
+                                tempWorkers.append(Auth.auth().currentUser!.uid)
+                                self.uploadJob["workers"] = tempWorkers
+                                var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                acceptCount = acceptCount + 1
+                                self.uploadJob["acceptedCount"] = acceptCount
+                                uploadData[self.jobID] = self.uploadJob
                                 var uploadDict = [String:Any]()
                                 uploadDict["currentListings"] = uploadData
                                 
@@ -360,19 +415,35 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
                                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                                     var containsJobs = false
-                                    var upcomingArray = [String]()
+                                    var upcomingArray = [String: [String:Any]]()
                                     for snap in snapshots {
                                         
                                         if snap.key == "upcomingJobs"{
-                                            upcomingArray = snap.value as! [String]
-                                            upcomingArray.append(self.jobID)
+                                            upcomingArray = snap.value as! [String: [String:Any]]
+                                            
+                                            var tempWorkers = [String]()
+                                            tempWorkers.append(Auth.auth().currentUser!.uid)
+                                            self.uploadJob["workers"] = tempWorkers
+                                            var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                            acceptCount = acceptCount + 1
+                                            self.uploadJob["acceptedCount"] = acceptCount
+                                            upcomingArray[self.jobID] = self.uploadJob
                                             containsJobs = true
                                         }
                                         var uploadDict2 = [String:Any]()
                                         if containsJobs == false{
                                             
-                                            uploadDict2["upcomingJobs"] = [self.jobID]
-                                        }else {
+                                            
+                                            var tempWorkers = [String]()
+                                            tempWorkers.append(Auth.auth().currentUser!.uid)
+                                            self.uploadJob["workers"] = tempWorkers
+                                            var acceptCount = self.uploadJob["acceptedCount"] as! Int
+                                            acceptCount = acceptCount + 1
+                                            self.uploadJob["acceptedCount"] = acceptCount
+                                            upcomingArray[self.jobID] = self.uploadJob
+                                            
+                                            uploadDict2["upcomingJobs"] = upcomingArray
+                                        } else {
                                             uploadDict2["upcomingJobs"] = upcomingArray
                                         }
                                         Database.database().reference().child("students").child((Auth.auth().currentUser?.uid)!).updateChildValues(uploadDict2)
@@ -408,6 +479,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                         
                                         if containsWorkers == false{
                                             var uploadDict = [String:Any]()
+                                            
                                             uploadDict["workers"] = ([(Auth.auth().currentUser!.uid)] as Any)
                                             Database.database().reference().child("jobs").child(self.jobID).updateChildValues(uploadDict)
                                         }

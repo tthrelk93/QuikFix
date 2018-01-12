@@ -252,11 +252,16 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         print("charge the poster for cancel")
         let tempCharge = 25 * 100
         print("charge in cents: \(tempCharge)")
-        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "cancelJob")
+        MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "cancelJob", jobDict: self.sendJob)
         DispatchQueue.main.async{
             self.performSegue(withIdentifier: "cancelJobToPosterProfile", sender: self)
         }
     }
+    
+    
+    @IBOutlet weak var locNameLabel: UILabel!
+    
+    
     var removeAcceptedCount = Int()
     var workers2 = [String]()
     func confirmCancel2(){
@@ -333,7 +338,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                     }
                    
             DispatchQueue.main.async{
-                 MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: (Auth.auth().currentUser?.uid)!, job: sendJob, senderScreen: "cancelJobStudent")
+                MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: (Auth.auth().currentUser?.uid)!, job: sendJob, senderScreen: "cancelJobStudent", jobDict: self.sendJob)
                 self.performSegue(withIdentifier: "cancelJobToStudentProfile", sender: self)
             }
                 }
@@ -413,6 +418,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
             
         }
     }
+    var sendJob = [String:Any]()
     
     //This is now the cancel job button
     @IBAction func jobCompletedPressed(_ sender: Any) {
@@ -486,7 +492,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         attributedString.append(tempString)
         posterLabel.attributedText = attributedString
         
-        
+        locNameLabel.text = job.location!
         jobCatLabel.text = job.category1
         
         attributedString = NSMutableAttributedString(string: "Job Start Date: ")

@@ -61,7 +61,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
             print("charge the poster for cancel")
             let tempCharge = 200 * 100
             print("charge in cents: \(tempCharge)")
-            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad")
+            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad",jobDict: ["":""])
             DispatchQueue.main.async{
                 sleep(2)
                 SwiftOverlays.removeAllBlockingOverlays()
@@ -88,7 +88,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
             print("charge the poster for underGrad")
             let tempCharge = 100 * 100
             print("charge in cents: \(tempCharge)")
-            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad")
+            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad",jobDict: ["":""])
             DispatchQueue.main.async{
                 sleep(2)
                 SwiftOverlays.removeAllBlockingOverlays()
@@ -155,7 +155,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
                 print("charge the poster for grad")
                 let tempCharge = 200 * 100
                 print("charge in cents: \(tempCharge)")
-                MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad")
+                MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad",jobDict: ["":""])
                 } else {
                     sleep(1)
                     var sendJob = [String:Any]()
@@ -165,7 +165,7 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
                     print("charge the poster for underGrad")
                     let tempCharge = 100 * 100
                     print("charge in cents: \(tempCharge)")
-                    MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad")
+                    MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad",jobDict: ["":""])
                     /*DispatchQueue.main.async{
                         sleep(2)
                         self.performSegue(withIdentifier: "DealsToProf", sender: self)

@@ -718,8 +718,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
     @IBOutlet weak var earnedLabel: UILabel!
   //  @IBOutlet weak var studentBio: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
-    var jobsFinishedArray = [String]()
-    var upcomingJobsArray = [String]()
+    var jobsFinishedArray = [String: [String:Any]]()
+    var upcomingJobsArray = [String:[String:Any]]()
     var experienceDict = [String:Any]()
     var location = CLLocation()
     //edit profile view
@@ -813,8 +813,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                         //self.editMajorTextField.placeholder = snap.value as! String
                     }
                     else if snap.key == "jobsCompleted"{
-                        for job in snap.value as! [String]{
-                            self.jobsFinishedArray.append(job)
+                        for (key, val) in snap.value as! [String: [String:Any]]{
+                            self.jobsFinishedArray[key] = val
                         }
                         self.jobsFinished.text = String(describing:self.jobsFinishedArray.count)
                         
@@ -934,8 +934,8 @@ class studentProfile: UIViewController, UIScrollViewDelegate, UITextViewDelegate
                             //self.editMajorTextField.placeholder = snap.value as! String
                         }
                         else if snap.key == "jobsCompleted"{
-                            for job in snap.value as! [String]{
-                                self.jobsFinishedArray.append(job)
+                            for (key, val) in snap.value as! [String: [String:Any]]{
+                                self.jobsFinishedArray[key] = val
                             }
                             self.jobsFinished.text = String(describing:self.jobsFinishedArray.count)
                             

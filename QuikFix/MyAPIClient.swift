@@ -83,7 +83,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     var creditHours = Double()
     
     func completeCharge(amount: Int,
-                        poster: String, job: [String:Any], senderScreen: String) {
+                        poster: String, job: [String:Any], senderScreen: String, jobDict: [String:Any]) {
         
         print("senderScreen: \(senderScreen)")
         if senderScreen == "dealsGrad" || senderScreen == "dealsUnderGrad"{
@@ -175,7 +175,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                             
                         
                         Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
-                            var cancelUpcomingArray = [String]()
+                            var cancelUpcomingArray = [String: [String:Any]]()
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 
                                 for snap in snapshots {
@@ -183,8 +183,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                         self.posterWhoCancelled = snap.value as! String
                                     }
                                     if snap.key == "upcomingJobs"{
-                                        cancelUpcomingArray = snap.value as! [String]
-                                        cancelUpcomingArray.remove(at: cancelUpcomingArray.index(of: job["jobID"] as! String)!)
+                                        cancelUpcomingArray = snap.value as! [String: [String:Any]]
+                                        cancelUpcomingArray.removeValue(forKey: job["jobID"] as! String)!
+                                        //cancelUpcomingArray.remove(at: cancelUpcomingArray.index(of: job["jobID"] as! String)!)
                                     }
                                     
                                     
@@ -199,13 +200,13 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                     //var containsJobs = false
                                     //var containsCompleted = false
                                     //var upcomingArray = [String]()
-                                    var cancelUpcomingArray2 = [String]()
+                                    var cancelUpcomingArray2 = [String: [String: Any]]()
                                     //var tempCompletedArray = [String]()
                                     for snap in snapshots {
                                         
                                         if snap.key == "upcomingJobs"{
-                                            cancelUpcomingArray2 = snap.value as! [String]
-                                            cancelUpcomingArray2.remove(at: cancelUpcomingArray2.index(of: job["jobID"] as! String)!)
+                                            cancelUpcomingArray2 = snap.value as! [String:[String:Any]]
+                                            cancelUpcomingArray.removeValue(forKey: job["jobID"] as! String)!
                                         }
                                         
                                         
@@ -236,45 +237,46 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                 if snap.key == "upcomingJobs"{
                                     
                                     containsUpcomingJobs = true
-                                    var tempJobArray = snap.value as! [String]
-                                    tempJobArray.remove(at: tempJobArray.index(of: job["jobID"] as! String)!)
+                                    var tempJobArray = snap.value as! [String: [String:Any]]
+                                   
+                                    tempJobArray.removeValue(forKey: job["jobID"] as! String)!
                                     var uploadDict = [String:Any]()
                                     uploadDict["upcomingJobs"] = tempJobArray
                                     Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
                                     
                                 } else if snap.key == "jobsCompleted"{
                                     containsJobsCompleted = true
-                                    var tempJobArray = snap.value as! [String]
-                                    tempJobArray.append(job["jobID"] as! String)
+                                    var tempJobArray = snap.value as! [String:[String:Any]]
+                                    tempJobArray[job["jobID"] as! String] = jobDict
                                     var uploadDict = [String:Any]()
                                     uploadDict["jobsCompleted"] = tempJobArray
                                     Database.database().reference().child("jobPosters").child(poster).updateChildValues(uploadDict)
                                 } else if snap.key == "completedWaitingReview"{
                                     containsWaiting = true
-                                    var tempJobArray = snap.value as! [String]
-                                    tempJobArray.append(job["jobID"] as! String)
+                                    var tempJobArray = snap.value as! [String: [String:Any]]
+                                    tempJobArray[job["jobID"] as! String] = jobDict
                                     var uploadDict = [String:Any]()
                                     uploadDict["completedWaitingReview"] = tempJobArray
                                 }
                             }
                             var uploadDict = [String:Any]()
                             if containsWaiting == false{
-                                var uploadData = [String]()
-                                uploadData.append(job["jobID"] as! String)
+                                var uploadData = [String:[String:Any]]()
+                                uploadData[job["jobID"] as! String] = jobDict
                                 
                                 uploadDict["completedWaitingReview"] = uploadData
                                 
                             }
                             if containsUpcomingJobs == false{
-                                var uploadData = [String]()
-                                uploadData.append(job["jobID"] as! String)
+                                var uploadData = [String:[String:Any]]()
+                                uploadData[job["jobID"] as! String] = jobDict
                                 
                                 uploadDict["upcomingJobs"] = uploadData
                                 
                             }
-                            if containsJobsCompleted == false{
-                                var uploadData = [String]()
-                                uploadData.append(job["jobID"] as! String)
+                            if containsJobsCompleted == false {
+                                var uploadData = [String:[String:Any]]()
+                                uploadData[job["jobID"] as! String] = jobDict
                                
                                 uploadDict["jobsCompleted"] = uploadData
                                 
@@ -396,47 +398,51 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                         }
                                         Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["studentCancelled": self.studentWhoCancelled])
                                         Database.database().reference().child("students").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
-                                            var uploadDataStudent = [String]()
+                                            var uploadDataStudent = [String:[String:Any]]()
                                             
                                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                                 
                                                 for snap in snapshots {
                                                     if snap.key == "upcomingJobs"{
                                                         
-                                                        uploadDataStudent = snap.value as! [String]
-                                                        uploadDataStudent.remove(at: uploadDataStudent.index(of: job["jobID"] as! String)!)
+                                                        uploadDataStudent = snap.value as! [String: [String:Any]]
+                                                        uploadDataStudent.removeValue(forKey: job["jobID"] as! String)!
+                                                        
                                                     }
                                                 }
                                                 Database.database().reference().child("students").child(poster).updateChildValues(["upcomingJobs": uploadDataStudent])
                                                 
                                             }
                                             Database.database().reference().child("jobPosters").child(job["posterID"] as! String).observeSingleEvent(of: .value, with: { (snapshot) in
-                                                var uploadDataPoster = [String]()
+                                                var uploadDataPoster = [String: [String:Any]]()
                                                 var nearbyJobsData = [String]()
-                                                var currentListingsData = [String]()
+                                                var currentListingsData = [String:[String:Any]]()
                                                 var clBool = false
                                                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                                     for snap in snapshots{
                                                         if snap.key == "upcomingJobs"{
-                                                            uploadDataPoster = snap.value as! [String]
-                                                            uploadDataPoster.remove(at: uploadDataPoster.index(of: job["jobID"] as! String)!)
-                                                        }
-                                                        if snap.key == "nearbyJobs"{
+                                                            uploadDataPoster = snap.value as! [String: [String:Any]]
+                                                            uploadDataPoster.removeValue(forKey: job["jobID"] as! String)
                                                             
-                                                            nearbyJobsData = snap.value as! [String]
-                                                            nearbyJobsData.remove(at: nearbyJobsData.index(of: job["jobID"] as! String)!)
                                                         }
+                                                        
                                                         
                                                         if snap.key == "currentListings"{
                                                             clBool = true
-                                                            currentListingsData = snap.value as! [String]
-                                                            currentListingsData.append(job["jobID"] as! String)
+                                                            currentListingsData = snap.value as! [String:[String:Any]]
+                                                            currentListingsData[job["jobID"] as! String] = jobDict
                                                         }
                                                     }
                                                     if clBool == false{
-                                                        currentListingsData = [job["jobID"] as! String]
+                                                        currentListingsData[job["jobID"] as! String] = jobDict
                                                     }
-                                                    Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["upcomingJobs": uploadDataStudent, "nearbyJobs": nearbyJobsData, "currentListings": currentListingsData])
+                                                   
+                                                    if uploadDataPoster.count == 0 {
+                                                        Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["currentListings": currentListingsData])
+                                                        Database.database().reference().child("jobPosters").child(job["posterID"] as! String).child("upcomingJobs").removeValue()
+                                                    } else {
+                                                    Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["upcomingJobs": uploadDataPoster, "currentListings": currentListingsData])
+                                                    }
                                                     Database.database().reference().child("jobPosters").child(job["posterID"] as! String).child("studentCancelled").removeValue()
                                                     
                                                 }

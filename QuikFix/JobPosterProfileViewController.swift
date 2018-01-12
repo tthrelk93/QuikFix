@@ -281,7 +281,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     //var newRating = Int()
     func submitPressed(rating: Double){
         var intRating = rating
-        //
+        var keys1 = [String]()
+        for (key, val) in self.completedWaitingObjects{
+            keys1.append(key)
+        }
         if (collectIndex + 1) == currentCollectData.count{
             currentCollectData.removeAll()
             Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -289,7 +292,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
-                    if (self.completedWaitingObjects[self.collectIndex]["workers"] as! [String]).contains(snap.key){
+                    
+                    if ((self.completedWaitingObjects[keys1[self.collectIndex]]!)["workers"] as! [String]).contains(snap.key){
                         let stud = snap.value as! [String:Any]
                         self.currentCollectData.append(stud)
                         
@@ -298,21 +302,26 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         print("updatedRating: \(curRating)")
                         Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
                         Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                            var tempArray = [String]()
-                            var tempJC = [String]()
+                            var tempDict = [String: [String:Any]]()
+                            var tempJC = [String: [String:Any]]()
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 
                                 for snap in snapshots{
                                     if snap.key == "completedWaitingReview"{
-                                        var tempArray2 = snap.value as! [String]
-                                        for job in tempArray2 {
-                                            if job == self.completedWaitingObjects[self.collectIndex]["jobID"] as! String{
+                                        var tempDict2 = snap.value as! [String: [String:Any]]
+                                        var keys = [String]()
+                                        for (key, _) in tempDict2{
+                                            keys.append(key)
+                                        }
+                                        
+                                        for job in keys {
+                                            if job == ((self.completedWaitingObjects[keys[self.collectIndex]]!)["jobID"] as! String){
                                                 
                                             } else {
-                                                tempArray.append(job)
+                                                tempDict[job] = tempDict2[job] as! [String:Any]
                                             }
                                         }
-                                        print("tempArr: \(tempArray)")
+                                        print("tempDictJWR: \(tempDict)")
                                        // tempArray.remove(at: tempArray.index(of: self.completedWaitingObjects[self.collectIndex]["jobID"] as! String)!)
                                        // print("tempArray: \(tempArray)")
                                         //add it to jobsCompleted
@@ -322,14 +331,14 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                                     
                                     if snap.key == "jobsCompleted"{
                                         containsJC = true
-                                        tempJC = snap.value as! [String]
-                                        tempJC.append(self.completedWaitingObjects[self.collectIndex]["jobID"] as! String)
+                                        tempJC = snap.value as! [String: [String:Any]]
+                                        tempJC[(self.completedWaitingObjects[keys1[self.collectIndex]]!)["jobID"] as! String] = (self.completedWaitingObjects[keys1[self.collectIndex]]!)
                                     }
                                 }
                                 if containsJC == false{
-                                tempJC = [self.completedWaitingObjects[self.collectIndex]["jobID"] as! String]
+                                    tempJC[self.completedWaitingObjects[keys1[self.collectIndex]]!["jobID"] as! String] = (self.completedWaitingObjects[keys1[self.collectIndex]]!)
                             }
-                                Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["completedWaitingReview": tempArray, "jobsCompleted": tempJC])
+                                Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(["completedWaitingReview": tempDict, "jobsCompleted": tempJC])
                             }
                         })
                     }
@@ -348,7 +357,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     
                     for snap in snapshots{
-                        if (self.completedWaitingObjects[self.collectIndex]["workers"] as! [String]).contains(snap.key){
+                        if ((self.completedWaitingObjects[keys1[self.collectIndex]]!)["workers"] as! [String]).contains(snap.key){
                             let stud = snap.value as! [String:Any]
                             let numCompleted = (stud["completedCount"] as! Int) + 1
                             let curRating = ((stud["rating"] as! Double) + intRating) / Double(numCompleted)
@@ -590,7 +599,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }
     
     var currentListings = [String]()
-    var currentListingsObj = [[String:Any]]()
+    var currentListingsObj = [String:[String:Any]]()
     
     
     @IBOutlet weak var cityLabel: UILabel!
@@ -672,13 +681,13 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
     @IBOutlet weak var metalBar: UIImageView!
     @IBOutlet weak var hideMenuButton: UIButton!
-    var inProgressObj = [[String:Any]]()
+    var inProgressObj = [String: [String:Any]]()
     var location = CLLocation()
     var mToken = String()
     var upcomingJobs = [String]()
-    var upcomingJobsObj = [[String:Any]]()
+    var upcomingJobsObj = [String: [String:Any]]()
     //let qfGreen = UIColor(colorLiteralRed: 49/255, green: 74/255, blue: 82/255, alpha: 1.0)
-    var jobsCompleted = [String]()
+    var jobsCompleted = [String: [String: Any]]()
     var completedWaiting = [String]()
     var completedWaitingBool = false
    // var jobsCompleted
@@ -752,11 +761,11 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 
                 for snap in snapshots{
                     if snap.key == "completedWaitingReview"{
-                        
-                        self.completedWaiting = snap.value as! [String]
+                        self.completedWaitingBool = true
+                        self.completedWaitingObjects = snap.value as! [String: [String:Any]]
                     }
                     if snap.key == "jobsCompleted"{
-                        self.jobsCompleted = snap.value as! [String]
+                        self.jobsCompleted = snap.value as! [String: [String:Any]]
                     }
                     if snap.key == "creditHours"{
                         print("creditHours")
@@ -770,8 +779,6 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     else if snap.key == "promoCode"{
                         let tempDict = snap.value as! [String:Any]
                         self.promoCode.text = tempDict.keys.first
-                        
-                        
                     }
                         
                     else if snap.key == "pic"{
@@ -782,16 +789,14 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         //  loadImageUsingCacheWithUrlString(snap.value as! String)
                     }
                     else if snap.key == "currentListings"{
-                        self.currentListings = snap.value as! [String]
+                        self.currentListingsObj = snap.value as! [String: [String:Any]]
                         self.curListBool = true
-                        self.currentListingsCount.text = String(describing: (snap.value as! [String]).count)
+                        self.currentListingsCount.text = String(describing: self.currentListingsObj.count)
                     }
                     else if snap.key == "upcomingJobs"{
-                        self.upcomingJobs = snap.value as! [String]
+                        self.upcomingJobsObj = snap.value as! [String: [String:Any]]
                         
-                        self.jobsCompletedCount.text = String(describing: (snap.value as! [String]).count)
-                        
-                        
+                        self.jobsCompletedCount.text = String(describing: self.upcomingJobsObj.count)
                     } else if snap.key == "location"{
                         var tempDict = snap.value as! [String: Any]
                         self.location = CLLocation(latitude: tempDict["lat"] as! CLLocationDegrees, longitude: tempDict["long"] as! CLLocationDegrees)
@@ -810,19 +815,9 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                             // City
                             if let city = placeMark.addressDictionary!["City"] as? NSString {
                                 print(city)
-                                
-                                
-                                
-                                
                                 self.cityLabel.text = city as String
                             }
                         })
-                        
-                        
-                        
-                        //self.editCityTextField.placeholder = snap.value as! String
-                        
-                        
                     }
                 }
                 /*if responseBool == false{
@@ -837,33 +832,19 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             }
             SwiftOverlays.removeAllBlockingOverlays()
             
-            Database.database().reference().child("jobs").observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+            
                     
-                    for snap in snapshots {
-                        
-                        if self.currentListings.contains(snap.key){
-                            self.currentListingsObj.append(snap.value as! [String:Any])
-                        } else if self.upcomingJobs.contains(snap.key){
-                            
-                            var tempJob = snap.value as! [String:Any]
-                            
-                            if tempJob["inProgress"] as! Bool == true{
-                                self.containsInProgress = true
-                                self.inProgressObj.append(tempJob)
-                            }
-                            self.upcomingJobsObj.append(snap.value as! [String:Any])
-                            
-                           
-                        } else if self.jobsCompleted.contains(snap.key){
-                            //self.jobsCompleted
-                        } else if self.completedWaiting.contains(snap.key){
-                            self.completedWaitingBool = true
-                             let tempJob = snap.value as! [String:Any]
-                            self.completedWaitingObjects.append(tempJob)
-                        }
-                    }
+            for (key, val) in self.upcomingJobsObj {
+                var tempJob = val as! [String:Any]
+                
+                if tempJob["inProgress"] as! Bool == true{
+                    self.containsInProgress = true
+                    self.inProgressObj[key] = tempJob
+                }
+                
+            }
+            
+            
                     if self.completedWaitingBool == true{
                         //show rating and review page
                         self.postJobsButton.isHidden = true
@@ -881,7 +862,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 
                                 for snap in snapshots{
-                                    if (self.completedWaitingObjects.first!["workers"] as! [String]).contains(snap.key){
+                                    if (self.completedWaitingObjects.first?.value["workers"] as! [String]).contains(snap.key){
                                         let stud = snap.value as! [String:Any]
                                         self.currentCollectData.append(stud)
                                     }
@@ -900,16 +881,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                       //  self.normalInfoView.bounds = CGRect(origin: CGPoint(x: self.normalInfoView.frame.origin.x, y: (self.normalInfoView.frame.origin.y - 60.0)), size: self.normalInfoView.bounds.size)
                         self.jobInProgressInfoView.isHidden = false
                             self.inProgressCount.text = String(describing: self.inProgressObj.count)
-                    })
-                    }
-                }
-                
-                
-                
-            })
-
-            
-            
+                    
+                })
+            }
+                 
         })
 
 
@@ -917,7 +892,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     }
     var collectIndex = 0
     var currentCollectData = [[String:Any]]()
-    var completedWaitingObjects = [[String:Any]]()
+    var completedWaitingObjects = [String: [String:Any]]()
     @IBAction func inProgressPressed(_ sender: Any) {
     }
     
@@ -1102,8 +1077,12 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                 cell.ratePic.image = UIImage(data: imageData as Data)
                 
             } }
+        var keys1 = [String]()
+        for (key, _) in self.completedWaitingObjects{
+            keys1.append(key)
+        }
         cell.rateName.text = currentCollectData[indexPath.row]["name"] as? String
-        cell.categoryLabel.text = completedWaitingObjects[self.collectIndex]["category1"] as? String
+        cell.categoryLabel.text = completedWaitingObjects[keys1[self.collectIndex]]!["category1"] as? String
         cell.questionLabel.text = "How did \(currentCollectData[indexPath.row]["name"]!) do today?"
         cell.rateDelegate = self
         //cell.layer.cornerRadius = cell.frame.width/2

@@ -303,15 +303,15 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                     for snap in snapshots{
                         if snap.key == "currentListings"{
                             tempBool = true
-                            for val in snap.value as! [String]{
-                                self.listingsArray.append(val)
+                            for (key, val) in snap.value as! [String: [String:Any]]{
+                                self.listingsArray[key] = val
                             }
                         }
                     }
                     if tempBool == false{
                         
                     }
-                    self.listingsArray.append(ref.key)
+                    self.listingsArray[ref.key] = values
                     
                     var tempDict = [String:Any]()
                     tempDict["currentListings"] = self.listingsArray
@@ -450,7 +450,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             //self.segueJobData = values
             self.jobRef = ref.key
             ref.updateChildValues(values)
-            var values2 = [String: Any]()
+            //var values2 = [String: Any]()
             //values2["currentListings"]
             
             Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -459,15 +459,15 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                     for snap in snapshots{
                         if snap.key == "currentListings"{
                             tempBool = true
-                            for val in snap.value as! [String]{
-                                self.listingsArray.append(val)
+                            for (key, val) in snap.value as! [String: [String:Any]]{
+                                self.listingsArray[key] = val
                             }
                         }
                     }
                     if tempBool == false{
                         
                     }
-                    self.listingsArray.append(ref.key)
+                    self.listingsArray[ref.key] = values
                     
                     var tempDict = [String:Any]()
                     tempDict["currentListings"] = self.listingsArray
@@ -633,7 +633,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
     @IBOutlet weak var categoryLabel: UILabel!
     var jobPost = JobPost()
     
-    var listingsArray = [String]()
+    var listingsArray = [String: [String:Any]]()
     
     
     
