@@ -28,10 +28,14 @@ class JobPostLocationPickerViewController: UIViewController {
     @IBAction func continuePressed(_ sender: Any) {
         
         //jobPost.location = self.place?.formattedAddress
+        if locationLabel.text == nil || locationLabel.text == ""{
+            
+        } else {
         if edit == true{
             performSegue(withIdentifier: "EditLocToPostJob", sender: self)
         } else {
-        performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+            performSegue(withIdentifier: "Step5ToFinalize", sender: self)
+        }
         }
         
         

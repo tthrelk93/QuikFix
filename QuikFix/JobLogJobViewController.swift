@@ -243,6 +243,9 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     var stripeToken = String()
     let settingsVC = SettingsViewController()
     @IBOutlet weak var groupChatButton: UIButton!
+    @IBOutlet weak var homeToHomeView: UIView!
+    @IBOutlet weak var pickupLabel: UILabel!
+    @IBOutlet weak var dropoffLabel: UILabel!
     
     func confirmCancel(){
         var sendJob = [String:Any]()
@@ -258,7 +261,14 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         }
     }
     
+    @IBAction func dropoffPressed(_ sender: Any) {
+        
+    }
+    @IBOutlet weak var dropoffButton: UIButton!
     
+    @IBOutlet weak var pickupButton: UIButton!
+    @IBAction func pickupPressed(_ sender: Any) {
+    }
     @IBOutlet weak var locNameLabel: UILabel!
     
     
@@ -424,7 +434,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBAction func jobCompletedPressed(_ sender: Any) {
         if self.senderScreen == "student"{
             print("cancelByStudent")
-            let alert = UIAlertController(title: "Confirm Cancel", message: "You will be charged a cancellation fee of $25.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Confirm Cancel", message: "You will be charged a cancellation fee of $5.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Confirm Cancel", style: UIAlertActionStyle.default, handler: { action in
                 self.confirmCancel2()
             }))
@@ -492,7 +502,15 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         attributedString.append(tempString)
         posterLabel.attributedText = attributedString
         
-        locNameLabel.text = job.location!
+        if job.category1! == "Moving(Home-To-Home)"{
+            self.homeToHomeView.isHidden = false
+            pickupButton.setTitle(job.pickupLocation!, for: .normal)
+            dropoffButton.setTitle(job.dropOffLocation!, for: .normal)
+        } else {
+            self.homeToHomeView.isHidden = true
+           mapButton.setTitle(job.location!, for: .normal)
+        }
+        //locNameLabel.text = job.location!
         jobCatLabel.text = job.category1
         
         attributedString = NSMutableAttributedString(string: "Job Start Date: ")
@@ -522,7 +540,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         }
         
         
-        if sender == "student"{
+        if senderScreen == "student"{
             if job.tools?.count == 0{
                 var tempPayString = job.payment!
                 let chargeAmount = tempPayString.substring(from: 1)
@@ -541,7 +559,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
                 let chargeAmount = tempPayString.substring(from: 1)
                 tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                 let postToolFeeRemovalDouble = (Double(tempPayString)! - 5.0)
-                let tempPayDouble = ((postToolFeeRemovalDouble * 0.6) / (job.workerCount as! Double))
+                let tempPayDouble = ((postToolFeeRemovalDouble * 0.6) / (Double((job.workers?.count)!)))
                 tempPayString = "$\(tempPayDouble)"
                 attributedString = NSMutableAttributedString(string: "Payment: ")
                 tempString = NSMutableAttributedString(string: tempPayString, attributes:attrs)
@@ -559,28 +577,32 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         }
        
         if job.workers != nil {
-            if self.sender != "student" {
-                
-            }
-            else {
-               /* numberOfStudentsLabel.text = "Job Poster"*/
+            if self.senderScreen != "student" {
+                print("notNilPoster")
+                /* numberOfStudentsLabel.text = "Job Poster"*/
                 if job.workers?.count as! Int > 1 {
+                    print("greaterthanone")
                     numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix students"
                 } else {
+                    print("notGreater")
                     numberOfStudentsLabel.text = "\(job.workers!.count) QuikFix student"
                 }
             }
-        } else {
-            if self.sender == "student" {
+            else {
                 
             }
+        } else {
+            if self.senderScreen == "student" {
+                print("workersNilStudent")
+            }
             else {
+                print("workersNilPoster")
             numberOfStudentsLabel.text = "0 QuikFix Students"
             }
         }
         
         
-        if self.sender == "student"{
+        if self.senderScreen == "student"{
             Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{

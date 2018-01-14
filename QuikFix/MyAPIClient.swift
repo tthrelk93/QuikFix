@@ -65,7 +65,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         ]
         //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
         Alamofire.request(url, method: .post, parameters: params)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<600)
             .responseString() { resData in
             //.responseString { response in
                 //var custID = response
@@ -84,7 +84,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
     func completeCharge(amount: Int,
                         poster: String, job: [String:Any], senderScreen: String, jobDict: [String:Any]) {
-        
+        removeAcceptedCount = 0
         print("senderScreen: \(senderScreen)")
         if senderScreen == "dealsGrad" || senderScreen == "dealsUnderGrad"{
             Database.database().reference().child("jobPosters").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -107,7 +107,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
                     
                     Alamofire.request(url, method: .post, parameters: params)
-                        .validate(statusCode: 200..<300)
+                        .validate(statusCode: 200..<600)
                         .responseString { response in
                             switch response.result {
                             case .success:
@@ -161,7 +161,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
                 
         Alamofire.request(url, method: .post, parameters: params)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<600)
             .responseString { response in
                 switch response.result {
                 case .success:
@@ -185,13 +185,13 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                     if snap.key == "upcomingJobs"{
                                         cancelUpcomingArray = snap.value as! [String: [String:Any]]
                                         cancelUpcomingArray.removeValue(forKey: job["jobID"] as! String)!
+                                        print("justRremoved")
+                                        Database.database().reference().child("jobPosters").child(poster).updateChildValues(["upcomingJobs": cancelUpcomingArray])
+                                        break
                                         //cancelUpcomingArray.remove(at: cancelUpcomingArray.index(of: job["jobID"] as! String)!)
                                     }
-                                    
-                                    
-                                    
                                 }
-                                Database.database().reference().child("jobPosters").child(poster).updateChildValues(["upcomingJobs": cancelUpcomingArray])
+                                
                             }
                             
                             for worker in self.workers{
@@ -206,24 +206,22 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                         
                                         if snap.key == "upcomingJobs"{
                                             cancelUpcomingArray2 = snap.value as! [String:[String:Any]]
-                                            cancelUpcomingArray.removeValue(forKey: job["jobID"] as! String)!
+                                            cancelUpcomingArray2.removeValue(forKey: job["jobID"] as! String)!
                                         }
                                         
-                                        
                                     }
+                                    Database.database().reference().child("students").child(worker).updateChildValues(["upcomingJobs": cancelUpcomingArray2, "posterCancelled": self.posterWhoCancelled])
+                                    Database.database().reference().child("jobs").child(job["jobID"] as! String).removeValue()
                                     
-                                    Database.database().reference().child("students").child(worker).updateChildValues(["upcomingJobs": cancelUpcomingArray, "posterCancelled": self.posterWhoCancelled])
                                     
-                                    sleep(1)
-                                    Database.database().reference().child("students").child(worker).child("posterCancelled").removeValue()
+                                    DispatchQueue.main.async{
+                                        Database.database().reference().child("students").child(worker).child("posterCancelled").removeValue()
+                                    }
                                     
                                     
                                 }
                             })
                         }
-                            
-                            
-                            
                         })
                         })
                     
@@ -372,7 +370,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     //params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
                     
                     Alamofire.request(url, method: .post, parameters: params)
-                        .validate(statusCode: 200..<300)
+                        .validate(statusCode: 200..<600)
                         .responseString { response in
                             switch response.result {
                             case .success:
@@ -396,7 +394,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                                             self.workers.remove(at: self.workers.index(of: Auth.auth().currentUser!.uid)!)
                                             Database.database().reference().child("jobs").child(job["jobID"] as! String).updateChildValues(["acceptedCount": self.removeAcceptedCount, "workers": self.workers])
                                         }
+                                        print("posterID: \(job["posterID"])")
                                         Database.database().reference().child("jobPosters").child(job["posterID"] as! String).updateChildValues(["studentCancelled": self.studentWhoCancelled])
+                                       print("addCancel")
                                         Database.database().reference().child("students").child(poster).observeSingleEvent(of: .value, with: { (snapshot) in
                                             var uploadDataStudent = [String:[String:Any]]()
                                             
@@ -475,7 +475,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         Alamofire.request(url, method: .post, parameters: [
             "api_version": apiVersion,
             ])
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<600)
             .responseJSON { responseJSON in
                 switch responseJSON.result {
                 case .success(let json):

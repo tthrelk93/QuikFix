@@ -11,6 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseMessaging
 import Stripe
+import SwiftOverlays
 
 class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPaymentContextDelegate {
     func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
@@ -80,9 +81,11 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     }
     @IBOutlet weak var applySuccessView: UIView!
    
+    @IBOutlet weak var acceptJob: UIButton!
     //@IBOutlet weak var shadowView: UIView!
     @IBAction func applytoJobPressed(_ sender: Any) {
         print("apply pressed")
+        self.acceptJob.isEnabled = false
         workerInJob()
         
         
@@ -109,7 +112,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                        // sendJob["senderScreen"] = "normCharge"
                         sendJob["posterID"] = self.posterID
                         print("charge the poster")
-                        let tempCharge = ((self.chargeAmount as NSString).intValue * 100)
+                        var tempPayString = sendJob["payment"] as! String
+                        var chargeString = tempPayString.substring(from: 1)
+                        let tempCharge = ((chargeString as NSString).intValue * 100)
                         print("charge in cents: \(tempCharge)")
                         MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: self.posterID, job: sendJob, senderScreen: "normCharge", jobDict: self.uploadJob)
                         Database.database().reference().child("jobs").child(self.jobID).updateChildValues(["inProgress": false])
@@ -129,13 +134,14 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
     var readyToCharge = Bool()
     func workerInJob(){
         //self.workerInJobAlready = false
+         SwiftOverlays.showBlockingWaitOverlayWithText("Success! Job added to Upcoming Jobs.")
         
         print("wIJ: \(jobID)")
         Database.database().reference().child("jobs").child(jobID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 //let tempDict = snapshot.value as! [String:Any]
-                
+               
                 for snap in snapshots{
                     if snap.key == "workers"{
                         self.containsWorkers = true
@@ -144,7 +150,9 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                             
                             //self.workerInJobAlready = true
                             print("already in job")
+                            SwiftOverlays.removeAllBlockingOverlays()
                         } else {
+                            
                             print("sup, not in job")
                                 ////self.applySuccessView.isHidden = false
                                 print("posterID: \(self.posterID)")
@@ -158,13 +166,15 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 containsCurrentListings = true
                                                 var tempJobArray = snap.value as! [String: [String:Any]]
                                                 
+                                                
                                                 var tempWorkers = self.uploadJob["workers"] as! [String]
                                                 tempWorkers.append(Auth.auth().currentUser!.uid)
                                                 self.uploadJob["workers"] = tempWorkers
                                                 var acceptCount = self.uploadJob["acceptedCount"] as! Int
                                                 acceptCount = acceptCount + 1
                                                 self.uploadJob["acceptedCount"] = acceptCount
-                                                tempJobArray[self.jobID] = self.uploadJob
+                                                //tempJobArray[self.jobID] = self.uploadJob
+                                                tempJobArray.removeValue(forKey: self.jobID)
                                                 //var keyInDictBool = false
                                                 //tempJobDict[self.jobID] = self.job
                                                 //var tempIDArray = [String]()
@@ -365,8 +375,15 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                 } else if snap.key == "upcomingJobs"{
                                     containsUpcomingJobs = true
                                     var tempJobArray = snap.value as! [String: [String:Any]]
-                                    var tempWorkers = self.uploadJob["workers"] as! [String]
-                                    tempWorkers.append(Auth.auth().currentUser!.uid)
+                                    var tempWorkers = [String]()
+                                    
+                                    if self.uploadJob["workers"] == nil{
+                                        tempWorkers = [Auth.auth().currentUser!.uid]
+                                    } else {
+                                       tempWorkers = self.uploadJob["workers"] as! [String]
+                                        tempWorkers.append(Auth.auth().currentUser!.uid)
+                                    }
+                                    
                                     self.uploadJob["workers"] = tempWorkers
                                     var acceptCount = self.uploadJob["acceptedCount"] as! Int
                                     acceptCount = acceptCount + 1

@@ -73,7 +73,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.startTime = (tempDict["startTime"] as! String)
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
-                tempJob.location = tempDict["location"] as! String
+                if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                    tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                    tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                } else {
+                    tempJob.location = tempDict["location"] as! String
+                }
                 tempJob.workers = tempDict["workers"] as! [String]
                 tempJob.jobLat = tempDict["jobLat"] as! String
                 tempJob.jobLong = tempDict["jobLong"] as! String
@@ -149,8 +154,13 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                     tempJob.payment = (tempDict["payment"] as! String)
                 }
                 tempJob.startTime = (tempDict["startTime"] as! String)
-                tempJob.location = tempDict["location"] as! String
-                tempJob.workers = tempDict["workers"] as! [String]
+                if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                    tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                    tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                } else {
+                    tempJob.location = tempDict["location"] as! String
+                }
+                tempJob.workers = tempDict["workers"] as? [String]
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
                 tempJob.posterID = (tempDict["posterID"] as! String)
@@ -283,6 +293,10 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     @IBOutlet weak var tabBar: UITabBar!
     
+    
+    
+    
+    
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var jobTypeSegment: UISegmentedControl!
     var datesArray = [String]()
@@ -332,7 +346,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.workers = tempDict["workers"] as! [String]
-                        tempJob.location = tempDict["location"] as! String
+                        if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                            tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                            tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                        } else {
+                            tempJob.location = tempDict["location"] as! String
+                        }
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
                         
@@ -365,7 +384,14 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             tempJob.posterName = (tempDict["posterName"] as! String)
                             tempJob.date = (tempDict["date"] as! String)
                           //  tempJob.workers = tempDict["workers"] as! [String]
-                            tempJob.location = tempDict["location"] as! String
+                           
+                                if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                                    tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                                    tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                                } else {
+                                    tempJob.location = tempDict["location"] as! String
+                                }
+                            
                             tempJob.payment = (tempDict["payment"] as! String)
                             tempJob.startTime = (tempDict["startTime"] as! String)
                             tempJob.jobDuration = tempDict["jobDuration"] as! String
@@ -397,7 +423,13 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                                 tempJob.posterName = (tempDict["posterName"] as! String)
                                 tempJob.date = (tempDict["date"] as! String)
                                 tempJob.workers = tempDict["workers"] as! [String]
-                                tempJob.location = tempDict["location"] as! String
+                                
+                                if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                                    tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                                    tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                                } else {
+                                    tempJob.location = tempDict["location"] as! String
+                                }
                                 tempJob.payment = (tempDict["payment"] as! String)
                                 tempJob.startTime = (tempDict["startTime"] as! String)
                                 tempJob.jobDuration = tempDict["jobDuration"] as! String
@@ -492,21 +524,27 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
                         tempJob.date = (tempDict["date"] as! String)
-                        tempJob.location = tempDict["location"] as! String
+                        if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
+                            tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
+                            tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
+                        } else {
+                            tempJob.location = tempDict["location"] as! String
+                        }
                         tempJob.workers = tempDict["workers"] as! [String]
                         var tempPayString = tempDict["payment"] as! String
                         tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                         let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
                         tempPayString = "$\(tempPayDouble)"
                         tempJob.payment = tempPayString
+                       
                         tempJob.startTime = (tempDict["startTime"] as! String)
                         tempJob.jobDuration = tempDict["jobDuration"] as! String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         tempJob.completed = tempDict["completed"] as! Bool
                         tempJob.workers = (tempDict["workers"] as! [String])
-                        tempJob.jobLat = tempDict["jobLat"] as! String
-                        tempJob.jobLong = tempDict["jobLong"] as! String
+                        tempJob.jobLat = tempDict["jobLat"] as? String
+                        tempJob.jobLong = tempDict["jobLong"] as? String
                         self.tableViewData.append(tempJob)
                         if self.calendarDict[tempJob.date!] != nil {
                             var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]

@@ -501,27 +501,15 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                                             tempArray.append(ref.key)
                                             Database.database().reference().child("students").child(snapDict["studentID"] as! String).updateChildValues(["nearbyJobs": tempArray])
                                         }
-                                        print("need to segue")
-                                        DispatchQueue.main.async{
-                                            self.perfSeg()
-                                        }
+                                        
+                                        
                                         
                                     }
                                 }
-                                
-                                
-                                
-                                
                             }
                         }
                     })
-                    
-                    
                 }
-                
-                
-                
-                
             })
             if self.promoSuccess == true{
                 print("ps: \(self.promoSender)")
@@ -530,6 +518,10 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                 
                 Database.database().reference().child("jobPosters").child(self.promoSender).child("promoCode").updateChildValues([self.promoCode: self.promoSenderArray])
                 Database.database().reference().child("jobPosters").child(self.promoSender).updateChildValues(["availableCredits":self.creditCount])
+            }
+            DispatchQueue.main.async {
+                print("need to segue")
+                self.perfSeg()
             }
             //self.postJobPressed(Any)
             //self.perfSeg()
@@ -684,7 +676,7 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
                     if snap.key == "name"{
                         self.tempPosterName = snap.value as! String
                     }
-                    if snap.key == "stripeToken"{
+                    if snap.key == "stripeToken" && snap.value as! String != ""{
                         self.cardConnected = true
                     }
                     if snap.key == "email"{

@@ -37,7 +37,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     @IBOutlet weak var tabBar: UITabBar!
     var currentListings: [String: [String:Any]]?
-    var expiredJobs: [String: [String:Any]]?
+    var expiredJobs = [String: [String:Any]]()
     var categoryType = String()
     var clKeys = [String]()
     var expKeys = [String]()
@@ -78,14 +78,14 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         if snap.key == "currentListings"{
                             self.currentListings = snap.value as? [String:[String:Any]]
                         } else if snap.key == "expiredJobs"{
-                            self.expiredJobs = snap.value as? [String:[String:Any]]
+                            self.expiredJobs = (snap.value as? [String:[String:Any]])!
                         }
                     }
                     for (key, _) in self.currentListings!{
                         self.clKeys.append(key)
                     }
-                    if self.expiredJobs != nil {
-                    for (key, _) in self.expiredJobs!{
+                    if self.expiredJobs != nil && self.expiredJobs.count != 0 {
+                        for (key, _) in self.expiredJobs{
                         self.expKeys.append(key)
                     }
                     }
@@ -102,6 +102,7 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                     } else {
                     if today > trigger2Date! &&
                         (self.clKeys.contains(tempDict["jobID"] as! String)) {
+                        print("in dat else")
                         //send poster push notification asking if they would like to repost the job or scrap it
                         let index = self.clKeys.index(of: tempDict["jobID"] as! String)
                         
@@ -111,15 +112,11 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         
                         
                         //var tempArray2 = tempDict["expiredJobs"] as! [String]
-                        if self.expiredJobs != nil{
-                            self.expiredJobs![tempDict["jobID"] as! String] = tempDict
-                            Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs!])
-                        } else {
-                            //self.expiredJobs![tempDict["jobID"] as! String] = tempDict
-                            Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!])
-                        }
                         
+                        self.expiredJobs[tempDict["jobID"] as! String] = tempDict
+                        Database.database().reference().child("jobPosters").child(tempDict["posterID"] as! String).updateChildValues(["currentListings": self.currentListings!, "expiredJobs": self.expiredJobs])
                         
+                            
                         }
                     }
                 }
