@@ -12,6 +12,7 @@
 		31366FA91FFAD246002163E6 /* RateCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */; };
 		31366FAA1FFAD246002163E6 /* RateCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
+		31BACF622015280700AFB816 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BACF612015280700AFB816 /* MapViewController.swift */; };
 		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
 		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
 		31CE1FE61FDCB5DA00B783CF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE51FDCB5DA00B783CF /* CoreText.framework */; };
@@ -119,6 +120,7 @@
 		31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateCellCollectionViewCell.xib; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
+		31BACF612015280700AFB816 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		31CE1FE51FDCB5DA00B783CF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -391,6 +393,7 @@
 				3B2007991F9A7CE3000C008D /* ChatContainer.swift */,
 				314C313D1FCC8CD900345E8E /* convertcsv.json */,
 				31E5026620054EF300CD4CA6 /* DealsViewController.swift */,
+				31BACF612015280700AFB816 /* MapViewController.swift */,
 			);
 			path = QuikFix;
 			sourceTree = "<group>";
@@ -990,6 +993,7 @@
 				3B200B521F86EF6800D40997 /* CalendarViewController.swift in Sources */,
 				3B5A1A431FA9301800D55F80 /* CreateStudentAccountFinalViewController.swift in Sources */,
 				3B0AEDF01F58881400246D89 /* CosmosDistrib.swift in Sources */,
+				31BACF622015280700AFB816 /* MapViewController.swift in Sources */,
 				3B5082C41F9FC7B600BFFCE9 /* SettingsViewController.swift in Sources */,
 				3B4331611F75CA9E00121AA0 /* DateCollectionViewCell.swift in Sources */,
 				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,

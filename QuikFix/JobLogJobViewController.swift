@@ -205,6 +205,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBOutlet weak var lowerButtonSep2: UIView!
     @IBOutlet weak var lowerButtonSep1: UIView!
     @IBAction func showDirectionsPressed(_ sender: Any) {
+        performSegue(withIdentifier: "ShowMap", sender: self)
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -749,6 +750,11 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var studentIDFromResponse = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowMap"{
+            if let vc = segue.destination as? MapViewController {
+                vc.address = self.job.location!
+            }
+        }
         if (segue.identifier! as String) == "EmbeddedChat"{
             if let vc = segue.destination as? ChatViewController{
                 

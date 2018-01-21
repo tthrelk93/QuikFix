@@ -210,6 +210,33 @@
             </objects>
             <point key="canvasLocation" x="6164" y="-2893"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="peA-fG-y6M">
+            <objects>
+                <viewController id="bFz-lq-wSz" customClass="MapViewController" customModule="QuikFix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UX0-Tb-fZU"/>
+                        <viewControllerLayoutGuide type="bottom" id="S5T-FB-toy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="trD-PT-Moh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I4S-8B-vlz">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="I4S-8B-vlz" id="Wpv-2q-ia3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1tU-PS-EHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6612" y="-3285.6071964017992"/>
+        </scene>
         <!--posterProfile-->
         <scene sceneID="wxC-6O-8KH">
             <objects>
@@ -290,7 +317,7 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fqf-HJ-xv3">
-                                <rect key="frame" x="62" y="133" width="241" height="199"/>
+                                <rect key="frame" x="61" y="133" width="241" height="199"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vkV-zn-ZBG">
@@ -330,7 +357,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mRe-yz-eja">
-                                <rect key="frame" x="10" y="483" width="351" height="30"/>
+                                <rect key="frame" x="10" y="483" width="350" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <color key="textColor" red="0.35091478298158207" green="0.35091478298158207" blue="0.35091478298158207" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -374,19 +401,19 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fFI-Pe-1uf">
-                                <rect key="frame" x="10" y="329" width="352" height="1"/>
+                                <rect key="frame" x="10" y="329" width="351" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dn-NJ-oE3">
-                                <rect key="frame" x="12" y="282" width="118" height="51"/>
+                                <rect key="frame" x="12" y="282" width="117" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="19"/>
                                 <color key="textColor" red="0.35091478298158207" green="0.35091478298158207" blue="0.35091478298158207" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEc-ZP-YJd">
-                                <rect key="frame" x="137" y="282" width="222" height="51"/>
+                                <rect key="frame" x="136" y="282" width="222" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
@@ -581,6 +608,7 @@
                         <segue destination="L7e-wY-1Mx" kind="show" identifier="JobLogViewJobToStudentProfile" id="KBz-U4-oei"/>
                         <segue destination="mm3-YX-eku" kind="showDetail" identifier="cancelJobToPosterProfile" id="z5J-oz-Z91"/>
                         <segue destination="D3I-I1-sJd" kind="showDetail" identifier="cancelJobToStudentProfile" id="qdG-iK-T6x"/>
+                        <segue destination="bFz-lq-wSz" kind="show" identifier="ShowMap" id="K71-R2-PHB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vVA-cW-ToN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -625,7 +653,7 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCi-mW-fYQ">
-                                <rect key="frame" x="6" y="17" width="44" height="31"/>
+                                <rect key="frame" x="6" y="17" width="43" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Back">
                                     <color key="titleColor" red="0.19215686269999999" green="0.2901960784" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -703,7 +731,7 @@
         <image name="icons8-User-30" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rWP-ri-CCk"/>
-        <segue reference="zeB-RM-kRr"/>
+        <segue reference="KBz-U4-oei"/>
+        <segue reference="xcK-u6-L9w"/>
     </inferredMetricsTieBreakers>
 </document>
