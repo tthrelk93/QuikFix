@@ -26,7 +26,7 @@ import CoreLocation
 
 
 protocol RateDelegate {
-    func submitPressed(rating: Double)
+    func submitPressed(rating: Double, feedback: String)
     
 }
 
@@ -34,7 +34,7 @@ protocol RateDelegate {
 
 
 
-class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate, RateDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, CNContactPickerDelegate {
+class JobPosterProfileViewController: UIViewController, UIViewControllerTransitioningDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PerformSegueInJobPostViewController, MessagingDelegate, RateDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, CNContactPickerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var submitRatingButton: UIButton!
     
@@ -49,6 +49,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         vc?.setInitialText("Download QuikFix!")
         self.present(vc!, animated: true, completion: nil)
     }
+    
+    @IBOutlet weak var completeButton: UIButton!
     /*private let scopes = [kGTLRAuthScopeGmailReadonly]
     
     private let service = GTLRGmailService()
@@ -145,7 +147,165 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }*/
-
+    @IBAction func actionButtonPressed(_ sender: Any) {
+        completeAccountView.isHidden = false
+        actionButton.isHidden = false
+        
+    }
+    
+     var verificationTimer : Timer = Timer()
+    func checkIfTheEmailIsVerified(){
+        
+        Auth.auth().currentUser?.reload(completion: { (err) in
+            if err == nil{
+                
+                if Auth.auth().currentUser!.isEmailVerified{
+                    
+                    
+                    self.verificationTimer.invalidate()     //Kill the timer
+                    Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadDict)
+                    self.completeAccountView.isHidden = true
+                    self.actionButton.isHidden = true
+                    self.loadData()
+                    return
+                } else {
+                    
+                    print("It aint verified yet")
+                    
+                }
+            } else {
+                
+                print(err?.localizedDescription)
+                
+            }
+        })
+        
+    }
+    @IBOutlet weak var actionButton: UIButton!
+    
+    @IBAction func closeButtonPressed(_ sender: Any) {
+        completeAccountView.isHidden = true
+    }
+    var emailVerificationSent = false
+    var uploadDict = [String:Any]()
+    @IBAction func completeAccountFromAnonPressed(_ sender: Any) {
+       var existingCreditAmount = Int()
+        Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    if snap.key == "availableCredits"{
+                        existingCreditAmount = snap.value as! Int
+                    }
+                }
+            }
+            
+        })
+        
+        if (nameTF.text != "First Name" && nameTF.hasText == true) &&  (emailTF.text != "Email" && emailTF.hasText == true) && (passwordTF.text != "Password" && passwordTF.hasText == true) && (confirmPasswordTF.text != "Confirm Password" && confirmPasswordTF.hasText == true) && cellPhoneTF.hasText == true {
+            if confirmPasswordTF.text != passwordTF.text{
+                //present error passwords don't match
+                let alert = UIAlertController(title: "Password Error", message: "Passwords do not match.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                //student.bio = ""
+                self.uploadDict["name"] = nameTF.text!
+                self.uploadDict["email"] = emailTF.text!
+                // poster.password = passwordTextField.text
+                //student.school = ""
+                //student.major = ""
+                //uploadDict["jobsCompleted"] = [String: [String:Any]]()
+                //uploadDict["currentListings"] = [String: [String:Any]]()
+                //uploadDict["upcomingJobs"] = [String: [String:Any]]()
+                // student.rating = Int()
+                self.uploadDict["responses"] = [String:Any]()
+                self.uploadDict["phone"] = cellPhoneTF.text!
+                
+                self.uploadDict["availableCredits"] = existingCreditAmount + 5
+                let credential = EmailAuthProvider.credential(withEmail: emailTF.text!, password: passwordTF.text!)
+                
+                Auth.auth().currentUser!.link(with: credential) { (user, error) in
+                    if !self.emailVerificationSent {
+                        
+                        if error != nil {
+                            let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            return
+                        }
+                        if !(user!.isEmailVerified) {
+                            print("emailVer == false")
+                            let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.emailTF.text)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                            let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                                (_) in
+                                user?.sendEmailVerification(completion: nil)
+                                self.completeButton.setTitle("Re-send Verificaion Email", for: .normal)
+                                
+                                
+                                self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                                
+                            }
+                            let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                            
+                            alertVC.addAction(alertActionCancel)
+                            
+                            alertVC.addAction(alertActionOkay)
+                            self.present(alertVC, animated: true, completion: nil)
+                            self.emailVerificationSent = true
+                        } else {
+                            print("emailVer == true")
+                            //self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
+                        }
+                    }  else {
+                    let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.emailTF.text)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                    let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                        (_) in
+                        user?.sendEmailVerification(completion: nil)
+                        self.completeButton.setTitle("Resend Email Verification", for: .normal)
+                        
+                    }
+                    let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                    
+                    alertVC.addAction(alertActionCancel)
+                    
+                    alertVC.addAction(alertActionOkay)
+                    self.present(alertVC, animated: true, completion: nil)
+                    self.emailVerificationSent = true
+                    
+                }
+                }
+                
+            }
+        } else {
+            
+            let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+                
+    }
+        
+    
+    
+    @IBOutlet weak var confirmPasswordTF: UITextField!
+    
+    
+    @IBOutlet weak var passwordTF: UITextField!
+    
+    @IBOutlet weak var cellPhoneTF: UITextField!
+    @IBOutlet weak var emailTF: UITextField!
+    @IBOutlet weak var nameTF: UITextField!
+    
+    
+    @IBOutlet weak var completeAccountView: UIView!
+    
+    
+    
+    
+    
+    
     
     @IBAction func shareTwitterPressed(_ sender: Any) {
         let vc = SLComposeViewController(forServiceType:SLServiceTypeTwitter)
@@ -279,7 +439,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     
     @IBOutlet weak var rateExp: UIButton!
     //var newRating = Int()
-    func submitPressed(rating: Double){
+    func submitPressed(rating: Double, feedback: String){
         var intRating = rating
         var keys1 = [String]()
         for (key, val) in self.completedWaitingObjects{
@@ -300,7 +460,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                         let numCompleted = (stud["completedCount"] as! Int) + 1
                         let curRating = ((stud["rating"] as! Double) + rating) / Double(numCompleted)
                         print("updatedRating: \(curRating)")
-                        Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                        if feedback == "Tap here to tell us any additional information about how this worker did (optional)" {
+                            Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                        } else {
+                            
+                            var feedbackDict = [String:Any]()
+                                var tempDict = [String:Any]()
+                                tempDict[((self.completedWaitingObjects[keys1[self.collectIndex]]!)["jobID"] as! String)] = ["posterID":((self.completedWaitingObjects[keys1[self.collectIndex]]!)["posterID"] as! String), "optionalFeedback": feedback]
+                            //feedbackDict["feedback": tempDict]
+                                Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted, "feedback": tempDict])
+                            
+                        }
+                        
                         Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                             var tempDict = [String: [String:Any]]()
                             var tempJC = [String: [String:Any]]()
@@ -363,7 +534,18 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                             let curRating = ((stud["rating"] as! Double) + intRating) / Double(numCompleted)
                             print("updatedRating: \(curRating)")
                             
-                            Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                            if feedback == "Tap here to tell us any additional information about how this worker did (optional)" {
+                                Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted])
+                            } else {
+                                
+                                var feedbackDict = [String:Any]()
+                                var tempDict = [String:Any]()
+                                tempDict[((self.completedWaitingObjects[keys1[self.collectIndex]]!)["jobID"] as! String)] = ["posterID":((self.completedWaitingObjects[keys1[self.collectIndex]]!)["posterID"] as! String), "optionalFeedback": feedback]
+                                //feedbackDict["feedback": tempDict]
+                                Database.database().reference().child("students").child(stud["studentID"] as! String).updateChildValues(["rating":curRating, "completedCount": numCompleted, "feedback": tempDict])
+                                
+                            }
+                            
                             
                         }
                     }
@@ -697,6 +879,26 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
     var infoOrigin = CGPoint()
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
+       
+
+
+        // Do any additional setup after loading the view.
+    }
+    
+    func loadData(){
+        nameTF.delegate = self
+        cellPhoneTF.delegate = self
+        emailTF.delegate = self
+        passwordTF.delegate = self
+        confirmPasswordTF.delegate = self
+        actionButton.layer.cornerRadius = actionButton.frame.width/2
+        
+        if Auth.auth().currentUser?.isAnonymous == true{
+            actionButton.isHidden = false
+        }
+        
+        
         self.statementLabel.layer.cornerRadius = 7
         self.rateCollect.register(UINib(nibName: "RateCellCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "RateCell")
         statementLabel.layer.cornerRadius = 7
@@ -712,7 +914,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         content.contentTitle = "Download QuikFix!"
         content.contentDescription = "Use promo code \(self.promoCode.text) during sign up and get $5 off you're first QuikFix job!"
-       // content.imageURL = NSURL(string: "<INSERT STRING HERE>") as! URL
+        // content.imageURL = NSURL(string: "<INSERT STRING HERE>") as! URL
         
         let button = FBSDKShareButton()
         button.shareContent = content
@@ -727,8 +929,8 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         self.myJobsTextButton.setTitleColor(qfGreen, for: .normal)
         self.dealsTextButton.setTitleColor(qfGreen, for: .normal)
         //metalBar.layer.cornerRadius = 8
-       // metalBar.layer.borderWidth = 1
-       // metalBar.layer.borderColor = qfRed.cgColor
+        // metalBar.layer.borderWidth = 1
+        // metalBar.layer.borderColor = qfRed.cgColor
         responseBubble.isHidden = true
         Messaging.messaging().delegate = self
         self.mToken = Messaging.messaging().fcmToken!
@@ -748,7 +950,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         menuButton3ExtendedFrame = dealsButton.bounds
         menuButton3ExtendedOrigin = dealsButton.frame.origin
-         profileImageView.layer.shadowColor = UIColor.black.cgColor
+        profileImageView.layer.shadowColor = UIColor.black.cgColor
         profileImageView.layer.shadowRadius = profileImageView.frame.width + 20
         
         responseBubble.layer.cornerRadius = responseBubble.frame.width/2
@@ -821,10 +1023,10 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
                     }
                 }
                 /*if responseBool == false{
-                    self.responseBubble.isHidden = true
-                } else {
-                    self.responseBubble.isHidden = false
-                }*/
+                 self.responseBubble.isHidden = true
+                 } else {
+                 self.responseBubble.isHidden = false
+                 }*/
                 if self.curListBool == false{
                     self.currentListingsCount.text = "0"
                 }
@@ -833,7 +1035,7 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             SwiftOverlays.removeAllBlockingOverlays()
             
             
-                    
+            
             for (key, val) in self.upcomingJobsObj {
                 var tempJob = val as! [String:Any]
                 
@@ -845,51 +1047,49 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
             }
             
             
-                    if self.completedWaitingBool == true{
-                        //show rating and review page
-                        self.postJobsButton.isHidden = true
-                        self.menuButton.isHidden = true
+            if self.completedWaitingBool == true{
+                //show rating and review page
+                self.postJobsButton.isHidden = true
+                self.menuButton.isHidden = true
+                
+                self.jobRateView.isHidden = false
+                if self.completedWaitingObjects.count == 1{
+                    self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) job to rate"
+                } else {
+                    
+                    self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) jobs to rate"
+                }
+                Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         
-                        self.jobRateView.isHidden = false
-                        if self.completedWaitingObjects.count == 1{
-                             self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) job to rate"
-                        } else {
-                        
-                        self.jobRateTopLabel.text = "You have \(self.completedWaitingObjects.count) jobs to rate"
-                        }
-                        Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
-                            
-                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                
-                                for snap in snapshots{
-                                    if (self.completedWaitingObjects.first?.value["workers"] as! [String]).contains(snap.key){
-                                        let stud = snap.value as! [String:Any]
-                                        self.currentCollectData.append(stud)
-                                    }
-                                }
-                                self.rateCollect.delegate = self
-                                self.rateCollect.dataSource = self
+                        for snap in snapshots{
+                            if (self.completedWaitingObjects.first?.value["workers"] as! [String]).contains(snap.key){
+                                let stud = snap.value as! [String:Any]
+                                self.currentCollectData.append(stud)
                             }
-                        })
-                    } else {
-                        self.jobRateView.isHidden = true
+                        }
+                        self.rateCollect.delegate = self
+                        self.rateCollect.dataSource = self
                     }
-                    if self.containsInProgress == true{
-                        UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
-                            self.normalInfoView.bounds = self.infoViewPos2.bounds
-                            self.normalInfoView.frame.origin = self.infoViewPos2.frame.origin
-                      //  self.normalInfoView.bounds = CGRect(origin: CGPoint(x: self.normalInfoView.frame.origin.x, y: (self.normalInfoView.frame.origin.y - 60.0)), size: self.normalInfoView.bounds.size)
-                        self.jobInProgressInfoView.isHidden = false
-                            self.inProgressCount.text = String(describing: self.inProgressObj.count)
+                })
+            } else {
+                self.jobRateView.isHidden = true
+            }
+            if self.containsInProgress == true{
+                UIView.animate(withDuration: 0.2, delay: 0.09, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                    self.normalInfoView.bounds = self.infoViewPos2.bounds
+                    self.normalInfoView.frame.origin = self.infoViewPos2.frame.origin
+                    //  self.normalInfoView.bounds = CGRect(origin: CGPoint(x: self.normalInfoView.frame.origin.x, y: (self.normalInfoView.frame.origin.y - 60.0)), size: self.normalInfoView.bounds.size)
+                    self.jobInProgressInfoView.isHidden = false
+                    self.inProgressCount.text = String(describing: self.inProgressObj.count)
                     
                 })
             }
-                 
+            
         })
-
-
-        // Do any additional setup after loading the view.
     }
+    
     var collectIndex = 0
     var currentCollectData = [[String:Any]]()
     var completedWaitingObjects = [String: [String:Any]]()
@@ -1092,10 +1292,65 @@ class JobPosterProfileViewController: UIViewController, UIViewControllerTransiti
         
         return cell
     }
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == nameTF {
+            textField.text = textField.text?.capitalizingFirstLetter()
+        }
+        
+    }
     func moveToFrame(contentOffset : CGFloat) {
         
         let frame: CGRect = CGRect(x : contentOffset ,y : self.rateCollect.contentOffset.y ,width : self.rateCollect.frame.width,height : self.rateCollect.frame.height)
         self.rateCollect.scrollRectToVisible(frame, animated: true)
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        if (textField == cellPhoneTF)
+        {
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            let components = newString.components(separatedBy: NSCharacterSet.decimalDigits.inverted as CharacterSet)  //componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            
+            let decimalString = components.joined(separator: "") as NSString
+            let length = decimalString.length
+            let hasLeadingOne = length > 0 && decimalString.character(at: 0) == (1 as unichar)
+            
+            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
+            {
+                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
+                
+                return (newLength > 10) ? false : true
+            }
+            var index = 0 as Int
+            let formattedString = NSMutableString()
+            
+            if hasLeadingOne
+            {
+                formattedString.append("1 ")
+                index += 1
+            }
+            if (length - index) > 3
+            {
+                let areaCode = decimalString.substring(with: NSMakeRange(index, 3))
+                formattedString.appendFormat("(%@)", areaCode)
+                index += 3
+            }
+            if length - index > 3
+            {
+                let prefix = decimalString.substring(with: NSMakeRange(index, 3))
+                formattedString.appendFormat("%@-", prefix)
+                index += 3
+            }
+            
+            let remainder = decimalString.substring(from: index)
+            formattedString.append(remainder)
+            textField.text = formattedString as String
+            return false
+        }
+        else
+        {
+            return true
+        }
     }
     
 

@@ -27,6 +27,7 @@ class CreateAccountJobPosterViewController: UIViewController, UITextFieldDelegat
     @IBOutlet weak var lastNameTextField: UITextField!
     var phoneVerified = false
     var emailVerificationSent = false
+    
     @IBOutlet weak var createAccountButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     

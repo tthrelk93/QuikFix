@@ -66,6 +66,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
     var existingPromoCodes = [String]()
     var promoSender = [String: String]()
     var promoSuccess = false
+    var promo = [String:Any]()
     @IBAction func redeemPressed(_ sender: Any) {
         if promoCodeTF.hasText == false{
             let alert = UIAlertController(title: "Invalid Code Error", message: "It appears that the promo code you are entering does not exist.", preferredStyle: UIAlertControllerStyle.alert)
@@ -80,51 +81,64 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if let tempDict = snap.value as? [String:Any]{
+                            if tempDict["availableCredits"] != nil {
                             self.promoCredit = tempDict["availableCredits"] as! Int
-                            self.promoCredit = self.promoCredit + 5
-                            var promo = (tempDict["promoCode"] as! [String: [String]])
-                            print("promo: \(promo)")
-                            for (key, val) in promo{
-                                if key == self.promoCodeTF.text{
-                                    let tempArray = val as! [String]
-                                    /*if tempArray.contains(Auth.auth().currentUser!.uid){
-                                        let alert = UIAlertController(title: "Promo Code Reuse Error", message: "It appears that you have already used this promo code.", preferredStyle: UIAlertControllerStyle.alert)
-                                        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                                        self.present(alert, animated: true, completion: nil)
-                                        return
-                                        
-                                    }*/
-                                    self.promoSender[snap.key] = key
-                                    self.promoSuccess = true
-                              
+                                self.promoCredit = self.promoCredit + 5
+                                self.promo = (tempDict["promoCode"] as! [String: [String]])
+                                print("promo: \(self.promo)")
+                                print("tf: \(self.promoCodeTF.text)")
+                                for (key, val) in self.promo{
                                     
-                                    break
+                                    if key == self.promoCodeTF.text{
+                                        let tempArray = val as! [String]
+                                        /*if tempArray.contains(Auth.auth().currentUser!.uid){
+                                         let alert = UIAlertController(title: "Promo Code Reuse Error", message: "It appears that you have already used this promo code.", preferredStyle: UIAlertControllerStyle.alert)
+                                         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                                         self.present(alert, animated: true, completion: nil)
+                                         return
+                                         
+                                         }*/
+                                        self.promoSender[snap.key] = key
+                                        self.promoSuccess = true
+                                        
+                                        
+                                        break
+                            } else {
+                                continue
+                            }
+                            
                                 }
                                 
+                            } else {
+                                continue
                             }
+                        }
+                    }
+                    
                             if self.promoSuccess == false{
                                print("promoSuccess = false")
                                 Database.database().reference().child("students").observeSingleEvent(of: .value, with: { (snapshot) in
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                         for snap in snapshots{
                                             if let tempDict = snap.value as? [String:Any]{
+                                                if tempDict["availableCredits"] != nil{
                                                 self.promoCredit = tempDict["availableCredits"] as! Int
                                                 self.promoCredit = self.promoCredit + 5
-                                                var promo = (tempDict["promoCode"] as! [String:Any])
-                                                print("promo: \(promo)")
-                                                for (key, val) in promo{
+                                                self.promo = (tempDict["promoCode"] as! [String:Any])
+                                                print("promo: \(self.promo)")
+                                                for (key, val) in self.promo{
                                                     if key == self.promoCodeTF.text{
                                                         let tempArray = val as! [String]
                                                        
                                                         self.promoSender[snap.key] = key
                                                         self.promoSuccess = true
                                                         //self.promoCredit = tempDict["availableCredits"] as! Int
-                                                        
-                                                        
-                                                        
                                                         break
                                                     }
+                                                    }
                                                     
+                                                } else {
+                                                    continue
                                                 }
                                             }
                                         }
@@ -135,7 +149,7 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                         uploadDict["availableCredits"] =
                                             self.promoCredit
                              
-                                        uploadDict["promoCode"] = promo
+                                        uploadDict["promoCode"] = self.promo
                                         //self.topLabel.text = "Success!"
                                         self.promoSuccessLabel.isHidden = false
                                         self.promoCodeTF.isHidden = true
@@ -158,12 +172,12 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                                     }
                                 })
                             } else {
-                                print("pv: \(promo)")
+                                print("pv: \(self.promo)")
                                 var uploadDict = [String:Any]()
                                 uploadDict["availableCredits"] =
                                     self.promoCredit
                                
-                                uploadDict["promoCode"] = promo
+                                uploadDict["promoCode"] = self.promo
                               
                                 self.promoSuccessLabel.isHidden = false
                                 self.promoCodeTF.isHidden = true
@@ -194,8 +208,6 @@ class CreateAccountMainViewController: UIViewController, UIImagePickerController
                             
                             
                         }
-                    }
-                }
                     
             })
             picker.delegate = self

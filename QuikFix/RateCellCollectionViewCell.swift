@@ -15,6 +15,7 @@ class RateCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     @IBOutlet weak var rateStars: CosmosView!
     @IBOutlet weak var rateName: UILabel!
     var rateDelegate: RateDelegate?
+    var jobID = String()
     @IBOutlet weak var categoryLabel: UILabel!
     
     @IBOutlet weak var questionLabel: UILabel!
@@ -22,7 +23,7 @@ class RateCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     @IBOutlet weak var submitRateButton: UIButton!
     
     @IBAction func submitRatePressed(_ sender: Any) {
-        rateDelegate?.submitPressed(rating: rateStars.rating)
+        rateDelegate?.submitPressed(rating: rateStars.rating, feedback: self.rateTextView.text)
         
         
     }

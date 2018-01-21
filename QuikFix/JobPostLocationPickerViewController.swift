@@ -50,7 +50,12 @@ class JobPostLocationPickerViewController: UIViewController {
                 for snap in snapshots{
                     if snap.key == "address"{
                         //print("snapVal:\((snap.value as! [String]).first)")
-                        
+                        if (snap.value as! [String]).first == "n/a"{
+                            let alert = UIAlertController(title: "No Default Address", message: "You must finish creating your account to store a default address.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            return
+                        }
                         self.locationLabel.text = (snap.value as! [String]).first!
                         if self.edit == true{
                             self.jobPostEdit.location = (snap.value as! [String]).first!

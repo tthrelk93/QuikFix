@@ -82,7 +82,11 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             values["posterID"] = Auth.auth().currentUser!.uid
                             
                             values["promoCode"] = ([tempPromo: [""]] as [String:Any])
-                            values["availableCredits"] = 0
+                            if self.promoSuccess == true {
+                                values["availableCredits"] = 5
+                            } else {
+                                 values["availableCredits"] = 0
+                            }
                             values["upcomingJobs"] = self.poster.upcomingJobs
                             print("locDict: \(self.locDict)")
                             values["location"] = self.locDict
@@ -91,10 +95,51 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             tempDict[(user?.uid)!] = values
                             Database.database().reference().child("jobPosters").updateChildValues(tempDict)
                             if self.promoType == "student"{
-                                Database.database().reference().child("students").child(self.promoData["promoSender"] as! String)
+                                var tempArray = (self.promoData["promoCode"] as! [String:Any]).first?.value as! [String]
+                                if tempArray.first == ""{
+                                    tempArray = [Auth.auth().currentUser!.uid]
+                                } else {
+                                    tempArray.append(Auth.auth().currentUser!.uid)
+                                }
+                                Database.database().reference().child("students").child(self.promoSenderID).child("promoCode").updateChildValues([((self.promoData["promoCode"] as! [String:Any]).first?.key)!: tempArray])
+                                Database.database().reference().child("students").child(self.promoSenderID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        for snap in snapshots{
+                                            if snap.key == "availableCredits"{
+                                                var tempInt = snap.value as! Int
+                                                tempInt = tempInt + 5
+                                                Database.database().reference().child("students").child(self.promoSenderID).updateChildValues(["availableCredits": tempInt])
+                                            }
+                                        }
+                                    }
+                                })
+                            } else {
+                                var tempArray = (self.promoData["promoCode"] as! [String:Any]).first?.value as! [String]
+                                if tempArray.first == ""{
+                                    tempArray = [Auth.auth().currentUser!.uid]
+                                } else {
+                                    tempArray.append(Auth.auth().currentUser!.uid)
+                                }
+                                Database.database().reference().child("jobPosters").child(self.promoSenderID).child("promoCode").updateChildValues([((self.promoData["promoCode"] as! [String:Any]).first?.key)!: tempArray])
+                                Database.database().reference().child("jobPosters").child(self.promoSenderID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        for snap in snapshots{
+                                            if snap.key == "availableCredits"{
+                                                var tempInt = snap.value as! Int
+                                                tempInt = tempInt + 5
+                                                Database.database().reference().child("jobPosters").child(self.promoSenderID).updateChildValues(["availableCredits": tempInt])
+                                            }
+                                        }
+                                    }
+                                })
+                            
+                            
                             }
                             
                             self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
+                            
                             
                         }
                     })
@@ -150,7 +195,11 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             values["stripeToken"] = self.dataID
                             values["posterID"] = Auth.auth().currentUser!.uid
                             values["promoCode"] = ([tempPromo: [""]] as [String:Any])
-                            values["availableCredits"] = 0
+                            if self.promoSuccess == true {
+                                values["availableCredits"] = 5
+                            } else {
+                                 values["availableCredits"] = 0
+                            }
                             values["creditHours"] = 0.0
                             values["upcomingJobs"] = self.poster.upcomingJobs
                             //values["experience"] = self.student.experience
@@ -161,6 +210,47 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                             var tempDict = [String: Any]()
                             tempDict[(user?.uid)!] = values
                             Database.database().reference().child("jobPosters").updateChildValues(tempDict)
+                            if self.promoType == "student"{
+                                var tempArray = (self.promoData["promoCode"] as! [String:Any]).first?.value as! [String]
+                                if tempArray.first == ""{
+                                    tempArray = [Auth.auth().currentUser!.uid]
+                                } else {
+                                    tempArray.append(Auth.auth().currentUser!.uid)
+                                }
+                                Database.database().reference().child("students").child(self.promoSenderID).child("promoCode").updateChildValues([((self.promoData["promoCode"] as! [String:Any]).first?.key)!: tempArray])
+                                Database.database().reference().child("students").child(self.promoSenderID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        for snap in snapshots{
+                                            if snap.key == "availableCredits"{
+                                                var tempInt = snap.value as! Int
+                                                tempInt = tempInt + 5
+                                                Database.database().reference().child("students").child(self.promoSenderID).updateChildValues(["availableCredits": tempInt])
+                                            }
+                                        }
+                                    }
+                                })
+                            } else {
+                                var tempArray = (self.promoData["promoCode"] as! [String:Any]).first?.value as! [String]
+                                if tempArray.first == ""{
+                                    tempArray = [Auth.auth().currentUser!.uid]
+                                } else {
+                                    tempArray.append(Auth.auth().currentUser!.uid)
+                                }
+                                Database.database().reference().child("jobPosters").child(self.promoSenderID).child("promoCode").updateChildValues([((self.promoData["promoCode"] as! [String:Any]).first?.key)!: tempArray])
+                                Database.database().reference().child("jobPosters").child(self.promoSenderID).observeSingleEvent(of: .value, with: { (snapshot) in
+                                    
+                                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                        for snap in snapshots{
+                                            if snap.key == "availableCredits"{
+                                                var tempInt = snap.value as! Int
+                                                tempInt = tempInt + 5
+                                                Database.database().reference().child("jobPosters").child(self.promoSenderID).updateChildValues(["availableCredits": tempInt])
+                                            }
+                                        }
+                                    }
+                                })
+                            }
                             
                             self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
                             
@@ -433,9 +523,11 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
                         Database.database().reference().child("jobPosters").child((Auth.auth().currentUser!.uid)).updateChildValues(values)
                         if self.promoSuccess == true {
                         if self.promoType == "student"{
+                           print("promoSuccessStudent")
                             Database.database().reference().child("students").child(self.promoSenderID).updateChildValues(self.promoData)
                         } else {
-                            Database.database().reference().child("posters").child(self.promoSenderID).updateChildValues(self.promoData)
+                           print("promoSuccessPoster")
+                            Database.database().reference().child("jobPosters").child(self.promoSenderID).updateChildValues(self.promoData)
                         }
                         }
                         self.performSegue(withIdentifier: "CreatePosterToProfile", sender: self)
@@ -514,10 +606,12 @@ class CreatePosterStep3ViewController: UIViewController, UITextFieldDelegate, ST
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if let tempDict = snap.value as? [String:Any]{
+                        if tempDict["promoCode"] != nil {
                         let promo = (tempDict["promoCode"] as! [String:Any])
                         for (key, _) in promo{
                             self.existingPromoCodes.append(key)
                         }
+                    }
                     }
                     
 
