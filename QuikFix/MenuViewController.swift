@@ -14,8 +14,10 @@ import FirebaseStorage
 import GooglePlaces
 import GoogleMaps
 import GooglePlacePicker
+import Stripe
 
-class MenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+class MenuViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, STPAddCardViewControllerDelegate, STPPaymentCardTextFieldDelegate, STPPaymentMethodsViewControllerDelegate {
     
     @IBOutlet weak var editView: UIView!
     
@@ -78,6 +80,7 @@ class MenuViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
+        handleAddPaymentMethodButtonTapped()
     }
     
     @IBOutlet weak var menuframe: UIButton!
@@ -216,6 +219,139 @@ class MenuViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("canceled picker")
         dismiss(animated: true, completion: nil)
     }
+    
+    func handleAddPaymentMethodButtonTapped() {
+        // Setup add card view controller
+        print("handleAddPayment")
+        let addCardViewController = STPAddCardViewController()
+        addCardViewController.delegate = self
+        
+        // Present add card view controller
+        let navigationController = UINavigationController(rootViewController: addCardViewController)
+        present(navigationController, animated: true)
+    }
+    var selectorJobID = String()
+    
+    
+    // MARK: STPAddCardViewControllerDelegate
+    
+    func addCardViewControllerDidCancel(_ addCardViewController: STPAddCardViewController) {
+        // Dismiss add card view controller
+        dismiss(animated: true)
+    }
+    
+    func submitTokenToBackend(token: STPToken, completion: @escaping STPErrorBlock, completionHandler: (Error) -> ()){
+        print("submitTokenToBackEnd")
+        //var tempDict = [String:Any]()
+        //tempDict["stripeToken"] = token.tokenId
+        //Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).updateChildValues(tempDict)
+        //self.poster.email = "tthrelk@gmail.com"
+        //self.poster.name = "Thomas"
+        //MyAPIClient.sharedClient.delegate = self
+        Database.database().reference().child("jobPosters").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snapshot) in
+            var name = String()
+            var email = String()
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                for snap in snapshots{
+                    if snap.key == "name"{
+                        name = snap.value as! String
+                    }
+                    
+                    if snap.key == "email"{
+                        email = snap.value as! String
+                    }
+                }
+                MyAPIClient.sharedClient.callSaveCard(stripeToken: token, email: email, name: name){ responseObject, error in
+                    // use responseObject and error here
+                    //self.dataID = responseObject as! String
+                    print("jobCoord")
+                    print("responseObject = \(responseObject!); error = \(error)")
+                    self.dismiss(animated: true)
+                    var tempDict = [String:Any]()
+                    tempDict["stripeToken"] = responseObject!
+                    Database.database().reference().child("jobPosters").child(Auth.auth().currentUser!.uid).updateChildValues(tempDict)
+                    //self.cardConnected = true
+            
+                }
+            }
+        })
+                
+    }
+    
+    func addCardViewController(_ addCardViewController: STPAddCardViewController, didCreateToken token: STPToken, completion: @escaping STPErrorBlock) {
+        print("begin save card")
+        submitTokenToBackend(token: token, completion: completion, completionHandler: { (error: Error?) in
+            if let error = error {
+                // Show error in add card view controller
+                print("error: \(error.localizedDescription)")
+                completion(error)
+            }
+            else {
+                print("Sup")
+                completion(nil)
+                
+                
+                // Dismiss add card view controller
+                dismiss(animated: true)
+            }
+        })
+    }
+    var buyButton = UIButton()
+    let paymentCardTextField = STPPaymentCardTextField()
+    func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+        // Toggle buy button state
+        buyButton.isEnabled = textField.isValid
+        buyButton.isHidden = false
+    }
+    
+    func handlePaymentMethodsButtonTapped() {
+        // Setup customer context
+        print("handlemethodstouched")
+        let customerContext = STPCustomerContext(keyProvider: STPAPIClient.shared as! STPEphemeralKeyProvider)
+        
+        
+        
+        
+        // Setup payment methods view controller
+        let paymentMethodsViewController = STPPaymentMethodsViewController(configuration: STPPaymentConfiguration.shared(), theme: STPTheme.default(), customerContext: customerContext, delegate: self)
+        
+        // Present payment methods view controller
+        let navigationController = UINavigationController(rootViewController: paymentMethodsViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: STPPaymentMethodsViewControllerDelegate
+    
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didFailToLoadWithError error: Error) {
+        // Dismiss payment methods view controller
+        dismiss(animated: true)
+        
+        // Present error to user...
+    }
+    
+    func paymentMethodsViewControllerDidCancel(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        print("cancel")
+        dismiss(animated: true)
+    }
+    
+    func paymentMethodsViewControllerDidFinish(_ paymentMethodsViewController: STPPaymentMethodsViewController) {
+        // Dismiss payment methods view controller
+        print("inDismiss")
+        dismiss(animated: true)
+        /* let secondViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "posterProfile") as! JobPosterProfileViewController
+         let nav = UINavigationController(rootViewController: secondViewController)
+         self.present(nav, animated:true, completion:nil)*/
+       
+    }
+    
+    var selectedPaymentMethod: STPPaymentMethod?
+    func paymentMethodsViewController(_ paymentMethodsViewController: STPPaymentMethodsViewController, didSelect paymentMethod: STPPaymentMethod) {
+        // Save selected payment method
+        selectedPaymentMethod = paymentMethod
+    }
+
 
     
 

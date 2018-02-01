@@ -190,7 +190,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         if detailsButton.backgroundColor == UIColor.white {
             detailsButton.backgroundColor = UIColor.clear
             detailsButton.setTitleColor(qfGreen, for: .normal)
-            groupChatButton.setTitleColor(UIColor.lightGray, for: .normal)
+            groupChatButton.setTitleColor(qfGreen, for: .normal)
             groupChatButton.backgroundColor = UIColor.white
             messageContainer.isHidden = true
             
@@ -226,7 +226,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
        // performSegue(withIdentifier: "JobLogJobToChat", sender: self)
         if groupChatButton.backgroundColor == UIColor.white {
             groupChatButton.backgroundColor = UIColor.clear
-            groupChatButton.setTitleColor(qfGreen, for: .normal)
+            groupChatButton.setTitleColor(.lightGray, for: .normal)
             detailsButton.setTitleColor(UIColor.lightGray, for: .normal)
             detailsButton.backgroundColor = UIColor.white
             //performSegue(withIdentifier: "", sender: <#T##Any?#>)
@@ -282,7 +282,7 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         var now = Date()
         
         let date = self.job.date!
-        var timeComp = self.job.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
+        var timeComp = self.job.startTime!.first!.components(separatedBy: ":")// .componentsSeparatedByString(":")
         let timeHours = timeComp[0]
         print("timeHours: \(timeHours)")
         let timeHoursInt = (timeHours as NSString).integerValue
@@ -515,12 +515,12 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         jobCatLabel.text = job.category1
         
         attributedString = NSMutableAttributedString(string: "Job Start Date: ")
-        tempString = NSMutableAttributedString(string: job.date!, attributes:attrs)
+        tempString = NSMutableAttributedString(string: job.date!.first!, attributes:attrs)
         attributedString.append(tempString)
         dateLabel.attributedText = attributedString
         
         attributedString = NSMutableAttributedString(string: "Job Start Time: ")
-        tempString = NSMutableAttributedString(string: job.startTime!, attributes:attrs)
+        tempString = NSMutableAttributedString(string: job.startTime!.first!, attributes:attrs)
         attributedString.append(tempString)
         timeLabel.attributedText = attributedString
         
@@ -753,6 +753,10 @@ class JobLogJobViewController: UIViewController, UICollectionViewDelegate, UICol
         if segue.identifier == "ShowMap"{
             if let vc = segue.destination as? MapViewController {
                 vc.address = self.job.location!
+                vc.senderScreen = self.senderScreen
+                vc.job = self.job
+                vc.jobType = self.jobType
+                vc.sendJob = self.sendJob
             }
         }
         if (segue.identifier! as String) == "EmbeddedChat"{

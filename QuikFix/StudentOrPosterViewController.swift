@@ -98,7 +98,7 @@ class StudentOrPosterViewController: UIViewController, CLLocationManagerDelegate
                     
                     //values["posterID"] = Auth.auth().currentUser!.uid
                     //values["bio"] = self.student.bio
-                    values["name"] = "n/a"
+                    values["name"] = "guest"
                     values["email"] = "n/a"
                     values["address"] = ["n/a"]
                     values["phone"] = "n/a"

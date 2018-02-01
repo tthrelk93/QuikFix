@@ -12,6 +12,8 @@
 		31366FA91FFAD246002163E6 /* RateCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */; };
 		31366FAA1FFAD246002163E6 /* RateCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */; };
 		314C313E1FCC8CD900345E8E /* convertcsv.json in Resources */ = {isa = PBXBuildFile; fileRef = 314C313D1FCC8CD900345E8E /* convertcsv.json */; };
+		31B217852016786200DD9D5D /* DirectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B217842016786200DD9D5D /* DirectionCell.swift */; };
+		31B21787201693A100DD9D5D /* JobPostStep3RangeOfDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B21786201693A100DD9D5D /* JobPostStep3RangeOfDates.swift */; };
 		31BACF622015280700AFB816 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BACF612015280700AFB816 /* MapViewController.swift */; };
 		31CE1FE21FDCB5C500B783CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */; };
 		31CE1FE41FDCB5CF00B783CF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */; };
@@ -120,6 +122,8 @@
 		31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateCellCollectionViewCell.xib; sourceTree = "<group>"; };
 		314C313D1FCC8CD900345E8E /* convertcsv.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = convertcsv.json; sourceTree = "<group>"; };
+		31B217842016786200DD9D5D /* DirectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionCell.swift; sourceTree = "<group>"; };
+		31B21786201693A100DD9D5D /* JobPostStep3RangeOfDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobPostStep3RangeOfDates.swift; sourceTree = "<group>"; };
 		31BACF612015280700AFB816 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		31CE1FE11FDCB5C500B783CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		31CE1FE31FDCB5CF00B783CF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -423,6 +427,7 @@
 				3B9F21A21F6350540068D7EB /* Finalize.swift */,
 				3B712A971F649AB500FC6567 /* JobPostCategoryViewController.swift */,
 				3B712A991F649BBA00FC6567 /* JobPostDateAndTimeViewController.swift */,
+				31B21786201693A100DD9D5D /* JobPostStep3RangeOfDates.swift */,
 				3B144E121F7983220088A1D0 /* JobPostTimeViewController.swift */,
 				3B1DDB0C1F8552BA00FC5586 /* SelectWorkerNumberViewController.swift */,
 				3B200B4F1F86AB1C00D40997 /* FindAvailableWorkersViewController.swift */,
@@ -470,6 +475,7 @@
 				3B5A1A461FAA6E9300D55F80 /* ExpTableViewCell.swift */,
 				31366FA71FFAD246002163E6 /* RateCellCollectionViewCell.swift */,
 				31366FA81FFAD246002163E6 /* RateCellCollectionViewCell.xib */,
+				31B217842016786200DD9D5D /* DirectionCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -999,6 +1005,7 @@
 				3B2D9FC01F6B21C3006C5BB5 /* MenuViewController.swift in Sources */,
 				3B2007311F96AF8B000C008D /* JobLogJobViewController.swift in Sources */,
 				3B5A1A4B1FAB764900D55F80 /* CreatePosterStep3ViewController.swift in Sources */,
+				31B21787201693A100DD9D5D /* JobPostStep3RangeOfDates.swift in Sources */,
 				3B9802471F66F49600F785C8 /* CreateAccountStudentViewController.swift in Sources */,
 				3B5082C11F9FC7A600BFFCE9 /* MyAPIClient.swift in Sources */,
 				3B144E0F1F79644C0088A1D0 /* JobTypePickerViewController.swift in Sources */,
@@ -1015,6 +1022,7 @@
 				3B5A1A471FAA6E9300D55F80 /* ExpTableViewCell.swift in Sources */,
 				3B20079A1F9A7CE3000C008D /* ChatViewController.swift in Sources */,
 				3B200B4E1F8590ED00D40997 /* SpecificResponseViewController.swift in Sources */,
+				31B217852016786200DD9D5D /* DirectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

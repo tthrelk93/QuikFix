@@ -295,12 +295,12 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                                 }
                                                //// self.applySuccessView.isHidden = true
                                                 let date = self.job1.date!
-                                                var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
-                                                let timeHours = timeComp[0]
+                                                var timeComp = self.job1.startTime!.first?.components(separatedBy: ":")// .componentsSeparatedByString(":")
+                                                let timeHours = timeComp![0].first!
                                                 print("timeHours: \(timeHours)")
-                                                let timeHoursInt = Int(timeHours)
+                                                let timeHoursInt = Int(String(timeHours))
                                                 let triggerTime = timeHoursInt! + (Int(self.job1.jobDuration!)!)
-                                                let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                                let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp![1])"
                                                 print("triggerTime: \(triggerTimeString)")
                                                 let dateToFormat = "\(date) \(triggerTimeString)"
                                                 
@@ -503,10 +503,10 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                     }
                                     //self.applySuccessView.isHidden = true
                                     let date = self.job1.date!
-                                    var timeComp = self.job1.startTime!.components(separatedBy: ":")// .componentsSeparatedByString(":")
-                                    let timeHours = timeComp[0]
+                                    var timeComp = self.job1.startTime!.first?.components(separatedBy: ":")// .componentsSeparatedByString(":")
+                                    let timeHours = timeComp![0].first!
                                     print("timeHours: \(timeHours)")
-                                    let timeHoursInt = (timeHours as NSString).integerValue
+                                    let timeHoursInt = (timeHours as! NSString).integerValue
                                     let trigger1Time = timeHoursInt + (Int(self.job1.jobDuration!)!)
                                     var triggerTime = Int()
                                     if trigger1Time > 12{
@@ -515,7 +515,7 @@ class SingleJobPostViewController: UIViewController, MessagingDelegate, STPPayme
                                         triggerTime = trigger1Time
                                     }
                                     print("modTime:\(triggerTime)")
-                                    let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp[1])"
+                                    let triggerTimeString = "\(String(describing: triggerTime)):\(timeComp![1].first!)"
                                     print("triggerTime: \(triggerTimeString)")
                                     let dateToFormat = "\(date) \(triggerTimeString)"
                                     print("dataToFormat: \(dateToFormat)")

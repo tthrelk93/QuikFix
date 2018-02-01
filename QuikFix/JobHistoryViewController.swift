@@ -60,7 +60,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.category1 = (tempDict["category1"] as! String)
                 //tempJob.category2 = (tempDict["category2"] as! String)
                 tempJob.posterName = (tempDict["posterName"] as! String)
-                tempJob.date = (tempDict["date"] as! String)
+                tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                 if self.senderScreen == "student"{
                     var tempPayString = tempDict["payment"] as! String
                     tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
@@ -70,7 +70,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 } else {
                     tempJob.payment = (tempDict["payment"] as! String)
                 }
-                tempJob.startTime = (tempDict["startTime"] as! String)
+                tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                 tempJob.jobID = (tempDict["jobID"] as! String)
                 if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
@@ -89,12 +89,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
 
                 tableViewData.append(tempJob)
-                if self.calendarDict[tempJob.date!] != nil {
-                    var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                if self.calendarDict[tempJob.date!.first!] != nil {
+                    var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                     tempJobArray.append(tempJob)
-                    self.calendarDict[tempJob.date!] = tempJobArray
+                    self.calendarDict[tempJob.date!.first!] = tempJobArray
                 } else {
-                    self.calendarDict[tempJob.date!] = [tempJob]
+                    self.calendarDict[tempJob.date!.first!] = [tempJob]
                 }
                 
             }
@@ -143,7 +143,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 tempJob.category1 = (tempDict["category1"] as! String)
                 //tempJob.category2 = (tempDict["category2"] as! String)
                 tempJob.posterName = (tempDict["posterName"] as! String)
-                tempJob.date = (tempDict["date"] as! String)
+                tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                 if self.senderScreen == "student"{
                     var tempPayString = tempDict["payment"] as! String
                     tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
@@ -153,7 +153,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 } else {
                     tempJob.payment = (tempDict["payment"] as! String)
                 }
-                tempJob.startTime = (tempDict["startTime"] as! String)
+                tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                 if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
                     tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
                     tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
@@ -172,12 +172,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
                 tableViewData.append(tempJob)
             
-                if self.calendarDict[tempJob.date!] != nil {
-                    var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                if self.calendarDict[tempJob.date!.first!] != nil {
+                    var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                     tempJobArray.append(tempJob)
-                    self.calendarDict[tempJob.date!] = tempJobArray
+                    self.calendarDict[tempJob.date!.first!] = tempJobArray
                 } else {
-                    self.calendarDict[tempJob.date!] = [tempJob]
+                    self.calendarDict[tempJob.date!.first!] = [tempJob]
                 }
                 
             }
@@ -353,10 +353,10 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             tempJob.location = tempDict["location"] as! String
                         }
                         tempJob.posterName = (tempDict["posterName"] as! String)
-                        tempJob.date = (tempDict["date"] as! String)
+                        tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                         
                         tempJob.payment = (tempDict["payment"] as! String)
-                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                         tempJob.jobDuration = tempDict["jobDuration"] as! String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
@@ -365,12 +365,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.jobLat = tempDict["jobLat"] as! String
                         tempJob.jobLong = tempDict["jobLong"] as! String
                         self.tableViewData.append(tempJob)
-                        if self.calendarDict[tempJob.date!] != nil {
-                            var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                        if self.calendarDict[tempJob.date!.first!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                             tempJobArray.append(tempJob)
-                            self.calendarDict[tempJob.date!] = tempJobArray
+                            self.calendarDict[tempJob.date!.first!] = tempJobArray
                         } else {
-                            self.calendarDict[tempJob.date!] = [tempJob]
+                            self.calendarDict[tempJob.date!.first!] = [tempJob]
                         }
 
                     }
@@ -382,7 +382,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             tempJob.category1 = (tempDict["category1"] as! String)
                             //tempJob.category2 = (tempDict["category2"] as! String)
                             tempJob.posterName = (tempDict["posterName"] as! String)
-                            tempJob.date = (tempDict["date"] as! String)
+                            tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                           //  tempJob.workers = tempDict["workers"] as! [String]
                            
                                 if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
@@ -393,7 +393,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                             
                             tempJob.payment = (tempDict["payment"] as! String)
-                            tempJob.startTime = (tempDict["startTime"] as! String)
+                            tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                             tempJob.jobDuration = tempDict["jobDuration"] as! String
                             tempJob.jobID = (tempDict["jobID"] as! String)
                             tempJob.posterID = (tempDict["posterID"] as! String)
@@ -404,12 +404,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                             tempJob.workers = (tempDict["workers"] as! [String])
                             }
                             self.tableViewData.append(tempJob)
-                            if self.calendarDict[tempJob.date!] != nil {
-                                var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                            if self.calendarDict[tempJob.date!.first!] != nil {
+                                var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                                 tempJobArray.append(tempJob)
-                                self.calendarDict[tempJob.date!] = tempJobArray
+                                self.calendarDict[tempJob.date!.first!] = tempJobArray
                             } else {
-                                self.calendarDict[tempJob.date!] = [tempJob]
+                                self.calendarDict[tempJob.date!.first!] = [tempJob]
                             }
                             
                         }
@@ -421,7 +421,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                                 tempJob.category1 = (tempDict["category1"] as! String)
                                 //tempJob.category2 = (tempDict["category2"] as! String)
                                 tempJob.posterName = (tempDict["posterName"] as! String)
-                                tempJob.date = (tempDict["date"] as! String)
+                                tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                                 tempJob.workers = tempDict["workers"] as! [String]
                                 
                                 if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
@@ -431,19 +431,19 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                                     tempJob.location = tempDict["location"] as! String
                                 }
                                 tempJob.payment = (tempDict["payment"] as! String)
-                                tempJob.startTime = (tempDict["startTime"] as! String)
+                                tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                                 tempJob.jobDuration = tempDict["jobDuration"] as! String
                                 tempJob.jobID = (tempDict["jobID"] as! String)
                                 tempJob.posterID = (tempDict["posterID"] as! String)
                                 tempJob.completed = tempDict["completed"] as! Bool
                                 tempJob.workers = (tempDict["workers"] as! [String])
                                 self.tableViewData.append(tempJob)
-                                if self.calendarDict[tempJob.date!] != nil {
-                                    var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                                if self.calendarDict[tempJob.date!.first!] != nil {
+                                    var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                                     tempJobArray.append(tempJob)
-                                    self.calendarDict[tempJob.date!] = tempJobArray
+                                    self.calendarDict[tempJob.date!.first!] = tempJobArray
                                 } else {
-                                    self.calendarDict[tempJob.date!] = [tempJob]
+                                    self.calendarDict[tempJob.date!.first!] = [tempJob]
                                 }
                                 
                             }
@@ -523,7 +523,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
-                        tempJob.date = (tempDict["date"] as! String)
+                        tempJob.date = [((tempDict["date"] as! [String]).first as! String)]
                         if tempDict["category1"] as! String == "Moving(Home-To-Home)"{
                             tempJob.pickupLocation = (tempDict["pickupLocation"] as! String)
                             tempJob.dropOffLocation = (tempDict["dropOffLocation"] as! String)
@@ -537,7 +537,7 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempPayString = "$\(tempPayDouble)"
                         tempJob.payment = tempPayString
                        
-                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.startTime = [((tempDict["startTime"] as! [String]).first as! String)]
                         tempJob.jobDuration = tempDict["jobDuration"] as! String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
@@ -546,12 +546,12 @@ class JobHistoryViewController: UIViewController, UITableViewDelegate, UITableVi
                         tempJob.jobLat = tempDict["jobLat"] as? String
                         tempJob.jobLong = tempDict["jobLong"] as? String
                         self.tableViewData.append(tempJob)
-                        if self.calendarDict[tempJob.date!] != nil {
-                            var tempJobArray = self.calendarDict[tempJob.date!]! as! [JobPost]
+                        if self.calendarDict[tempJob.date!.first!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!.first!]! as! [JobPost]
                             tempJobArray.append(tempJob)
-                            self.calendarDict[tempJob.date!] = tempJobArray
+                            self.calendarDict[tempJob.date!.first!]! = tempJobArray
                         } else {
-                            self.calendarDict[tempJob.date!] = [tempJob]
+                            self.calendarDict[tempJob.date!.first!] = [tempJob]
                         }
                         
                     }

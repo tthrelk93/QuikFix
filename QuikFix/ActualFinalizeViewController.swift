@@ -703,8 +703,8 @@ class ActualFinalizeViewController: UIViewController, UITextFieldDelegate, STPAd
             self.locationLabel.text = jobPost.location
             self.totalHaulingFee.text = "+ $0 Hauling Fee"
         }
-        self.dateLabel.text = jobPost.date
-        self.timeLabel.text = jobPost.startTime
+        self.dateLabel.text = jobPost.date?.first
+        self.timeLabel.text = jobPost.startTime?.first
         self.totalBaselineCost.text = "$25 Baseline Cost"
         self.totalHoursWorked.text = "x \(jobPost.jobDuration!) hours"
         if self.toolCount == 0{

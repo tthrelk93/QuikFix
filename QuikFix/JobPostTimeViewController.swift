@@ -11,6 +11,7 @@ import CoreLocation
 
 class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    @IBOutlet weak var currentDateLabel: UILabel!
     
     
     var edit = Bool()
@@ -30,8 +31,19 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let timeStamp = timeFormatter.string(from: time)
         return timeStamp
     }
-    
+    var timesArray = [String]()
+    var curIndex = 0
     @IBAction func continueButtonPressed(_ sender: Any) {
+        if continueButton.titleLabel?.text == "Next Date"{
+            currentDateLabel.text = jobPost.date![curIndex] as! String
+            let jobTime = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+            timesArray.append(jobTime)
+            if curIndex == (jobPost.date?.count)! - 1 {
+                continueButton.setTitle("Continue", for: .normal)
+            }
+        } else {
+           
+            
         var hourData = [String]()
        
             hourData = self.hourData
@@ -47,6 +59,8 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         print("actualDateTime: \(tempDate)")
         
         let jobTime = "\(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
+            
+            timesArray.append(jobTime)
         var tempString = String()
         if edit == true {
             tempString = "\(self.jobPostEdit.date!) \(hourData[hourPicker.selectedRow(inComponent: 0)]):\(minuteData[minutePicker.selectedRow(inComponent: 0)]) \(amPMData[amPMPicker.selectedRow(inComponent: 0)])"
@@ -67,9 +81,9 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
             return
         } else {
             print("selectedTime: \(tempString)")
-            jobPost.startTime = jobTime
+            jobPost.startTime = timesArray
             
-            jobPostEdit.startTime = jobTime
+            jobPostEdit.startTime = timesArray
             jobPostEdit.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
             
             jobPost.jobDuration = durString[durationPicker.selectedRow(inComponent: 0)]
@@ -85,6 +99,8 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
             }
         }
+        }
+        curIndex = curIndex + 1
     }
     
     @IBOutlet weak var durationPicker: UIPickerView!
@@ -141,6 +157,7 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var durString = ["1", "2", "3", "4", "5"]
     var durationData = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours"]
 
+    @IBOutlet weak var continueButton: UIButton!
     
     
     //@IBOutlet weak var endTimePicker: UIDatePicker!
@@ -148,7 +165,10 @@ class JobPostTimeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var jobPost = JobPost()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if (jobPost.date?.count as! Int) > 1 {
+            continueButton.setTitle("Next Date", for: .normal)
+        }
+        currentDateLabel.text = jobPost.date!.first
         amPMPicker.delegate = self
         amPMPicker.dataSource = self
         amPMPicker.isUserInteractionEnabled = false

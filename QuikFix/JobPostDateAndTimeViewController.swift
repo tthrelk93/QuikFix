@@ -13,6 +13,14 @@ import CoreLocation
 
 class JobPostDateAndTimeViewController: UIViewController {
     
+    @IBAction func specificDatePressed(_ sender: Any) {
+        singleOrRangeView.isHidden = true
+    }
+    @IBAction func rangeOfDatesPressed(_ sender: Any) {
+        performSegue(withIdentifier: "ToRangeOfDates", sender: self)
+    }
+    
+    @IBOutlet weak var singleOrRangeView: UIView!
     var jobPost = JobPost()
     var edit = Bool()
     var jobPostEdit = JobPost()
@@ -22,8 +30,8 @@ class JobPostDateAndTimeViewController: UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM-dd-yyyy"
         var dateStamp = dateFormatter.string(from: timeAndDatePicker.date)
-        jobPost.date = dateStamp
-        jobPostEdit.date  = dateStamp
+        jobPost.date = [dateStamp]
+        jobPostEdit.date  = [dateStamp]
         if edit == true{
             performSegue(withIdentifier: "EditDateToPostJob", sender: self)
         }
@@ -70,6 +78,11 @@ class JobPostDateAndTimeViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("jobPost: \(self.jobPost)")
+        if segue.identifier == "rangeOfDates"{
+            if let vc = segue.destination as? JobPostStep3RangeOfDates{
+                vc.jobPost = self.jobPost
+            }
+        }
         if segue.identifier == "JPStepTwoToStepThree"{
             if let vc = segue.destination as? JobPostTimeViewController{
                 vc.jobPost = self.jobPost

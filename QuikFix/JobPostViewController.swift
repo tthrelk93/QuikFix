@@ -127,23 +127,23 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
-                        tempJob.date = (tempDict["date"] as! String)
+                        tempJob.date = (tempDict["date"] as! [String])
                         var tempPayString = tempDict["payment"] as! String
                         tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                         let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
                         tempPayString = "$\(tempPayDouble)"
                         tempJob.payment = tempPayString
-                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.startTime = (tempDict["startTime"] as! [String])
                         tempJob.jobDuration = tempDict["jobDuration"] as? String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         //tempJob.paymentType = tempDict["paymentType"] as! Int
-                        if self.calendarDict[tempJob.date!] != nil {
-                            var tempJobArray = self.calendarDict[tempJob.date!]!
+                        if self.calendarDict[(tempJob.date?.first!)!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!.first!] as! [JobPost]
                             tempJobArray.append(tempJob)
-                            self.calendarDict[tempJob.date!] = tempJobArray
+                            self.calendarDict[tempJob.date!.first!] = tempJobArray
                         } else {
-                            self.calendarDict[tempJob.date!] = [tempJob]
+                            self.calendarDict[tempJob.date!.first!] = [tempJob]
                             }
                     } else if self.categoryType == "All"{
                         let tempJob = JobPost()
@@ -151,24 +151,24 @@ class JobPostViewController: UIViewController, UITableViewDelegate, UITableViewD
                         tempJob.category1 = (tempDict["category1"] as! String)
                         //tempJob.category2 = (tempDict["category2"] as! String)
                         tempJob.posterName = (tempDict["posterName"] as! String)
-                        tempJob.date = (tempDict["date"] as! String)
+                        tempJob.date = (tempDict["date"] as! [String])
                         var tempPayString = tempDict["payment"] as! String
                         tempPayString = tempPayString.replacingOccurrences(of: "$", with: "")
                         let tempPayDouble = ((Double(tempPayString)! * 0.6) / (tempDict["workerCount"] as! Double))
                         tempPayString = "$\(tempPayDouble)"
                         tempJob.payment = tempPayString
                         print("studentPayment: \(tempPayString)")
-                        tempJob.startTime = (tempDict["startTime"] as! String)
+                        tempJob.startTime = (tempDict["startTime"] as! [String])
                         tempJob.jobDuration = tempDict["jobDuration"] as? String
                         tempJob.jobID = (tempDict["jobID"] as! String)
                         tempJob.posterID = (tempDict["posterID"] as! String)
                         //tempJob.paymentType = tempDict["paymentType"] as! Int
-                        if self.calendarDict[tempJob.date!] != nil {
-                            var tempJobArray = self.calendarDict[tempJob.date!]!
+                        if self.calendarDict[tempJob.date!.first!] != nil {
+                            var tempJobArray = self.calendarDict[tempJob.date!.first!]!
                             tempJobArray.append(tempJob)
-                            self.calendarDict[tempJob.date!] = tempJobArray
+                            self.calendarDict[tempJob.date!.first!] = tempJobArray
                         } else {
-                            self.calendarDict[tempJob.date!] = [tempJob]
+                            self.calendarDict[tempJob.date!.first!] = [tempJob]
                         }
                     }
                     

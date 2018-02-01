@@ -49,58 +49,79 @@ class DealsViewController: UIViewController, STPAddCardViewControllerDelegate, S
         performSegue(withIdentifier: "DealsToProf", sender: self)
     }
     var buttonPressed = String()
-    
-    @IBAction func gradPressed(_ sender: Any) {
-        self.buttonPressed = "grad"
-        if self.cardConnected == true {
-            SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
-            var sendJob = [String:Any]()
-            sendJob["posterID"] = Auth.auth().currentUser!.uid
-            sendJob["jobID"] = ""
-            
-            print("charge the poster for cancel")
-            let tempCharge = 200 * 100
-            print("charge in cents: \(tempCharge)")
-            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad",jobDict: ["":""])
-            DispatchQueue.main.async{
-                sleep(2)
-                SwiftOverlays.removeAllBlockingOverlays()
+    func confirmPayment(type: String){
+        if type == "grad"{
+            if self.cardConnected == true {
+                SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
+                var sendJob = [String:Any]()
+                sendJob["posterID"] = Auth.auth().currentUser!.uid
+                sendJob["jobID"] = ""
+                
+                print("charge the poster for cancel")
+                let tempCharge = 200 * 100
+                print("charge in cents: \(tempCharge)")
+                MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsGrad",jobDict: ["":""])
+                DispatchQueue.main.async{
+                    sleep(2)
+                    SwiftOverlays.removeAllBlockingOverlays()
+                }
+                
+            } else {
+                
+                let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+                    self.showAddCard()
+                }))
+                self.present(alert, animated: true, completion: nil)
             }
-        
         } else {
-            
-            let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
-                self.showAddCard()
-            }))
-            self.present(alert, animated: true, completion: nil)
+            if self.cardConnected == true {
+                SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
+                var sendJob = [String:Any]()
+                sendJob["posterID"] = Auth.auth().currentUser!.uid
+                sendJob["jobID"] = ""
+                
+                print("charge the poster for underGrad")
+                let tempCharge = 100 * 100
+                print("charge in cents: \(tempCharge)")
+                MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad",jobDict: ["":""])
+                DispatchQueue.main.async{
+                    sleep(2)
+                    SwiftOverlays.removeAllBlockingOverlays()
+                }
+                
+            } else {
+                let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+                    self.showAddCard()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
+    }
+    @IBAction func gradPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Confirm Purchase", message: "Press okay to confirm purchase of 10 prepaid QuikFix hours for $200 to be applied to jobs at your choosing.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+            self.confirmPayment(type: "grad")
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
+        
+        self.buttonPressed = "grad"
+        
     }
     
     @IBAction func undergradPressed(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Confirm Purchase", message: "Press okay to confirm purchase of 5 prepaid QuikFix hours for $100 to be applied to jobs at your choosing.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
+            self.confirmPayment(type: "underGrad")
+        }))
+        alert.addAction(UIAlertAction(title: "cancel", style: UIAlertActionStyle.cancel, handler: nil) )
+        self.present(alert, animated: true, completion: nil)
+        
         self.buttonPressed = "underGrad"
-        if self.cardConnected == true {
-            SwiftOverlays.showBlockingTextOverlay("Verifying Purchase...")
-            var sendJob = [String:Any]()
-            sendJob["posterID"] = Auth.auth().currentUser!.uid
-            sendJob["jobID"] = ""
-            
-            print("charge the poster for underGrad")
-            let tempCharge = 100 * 100
-            print("charge in cents: \(tempCharge)")
-            MyAPIClient.sharedClient.completeCharge(amount: Int(tempCharge), poster: Auth.auth().currentUser!.uid, job: sendJob, senderScreen: "dealsUnderGrad",jobDict: ["":""])
-            DispatchQueue.main.async{
-                sleep(2)
-                SwiftOverlays.removeAllBlockingOverlays()
-            }
-            
-        } else {
-            let alert = UIAlertController(title: "No Credit Card Connected", message: "You must connect an active credit card to QuikFix in order to post jobs.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: { action in
-                self.showAddCard()
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
+        
     }
     
     

@@ -14,9 +14,18 @@ import FirebaseStorage
 import FirebaseAuth
 
 
-class MapViewController:  UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class MapViewController:  UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet var mapView: MKMapView!
     
+    var senderScreen = String()
+    var job = JobPost()
+    var jobType = String()
+    var sendJob = [String:Any]()
+    
+    @IBAction func backPressed(_ sender: Any) {
+        performSegue(withIdentifier: "Back", sender: self)
+    }
+    @IBOutlet weak var directionsCollect: UICollectionView!
     var destLat = CLLocationDegrees()
     var destLong = CLLocationDegrees()
     let locationManager = CLLocationManager()
@@ -54,7 +63,7 @@ class MapViewController:  UIViewController, MKMapViewDelegate, CLLocationManager
         let request = MKDirectionsRequest()
             request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: self.startLat, longitude: self.startLong), addressDictionary: nil))
             request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: self.destLat, longitude: self.destLong), addressDictionary: nil))
-        request.requestsAlternateRoutes = true
+        request.requestsAlternateRoutes = false
         request.transportType = .automobile
         
         let directions = MKDirections(request: request)
@@ -66,14 +75,48 @@ class MapViewController:  UIViewController, MKMapViewDelegate, CLLocationManager
                 self.mapView.add(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
                 for step in route.steps {
-                    print(step.instructions)
+                    //use step.distance to change direction
+                    self.directionsArray.append(step.instructions)
+                    //print(step.instructions)
                 }
+               self.directionsArray.reverse()
+                self.directionsCollect.delegate = self
+                self.directionsCollect.dataSource = self
                 print("routes: \(route)")
             }
         }
         }
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return directionsArray.count
+    }
+    var jobID = String()
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DirectionCell", for: indexPath) as! DirectionCell
+        
+        cell.layer.cornerRadius = 10
+        //print((workers[indexPath.row].values.first as! [String:Any])["name"] as! String)
+        
+        cell.directionText.text = directionsArray[indexPath.row]
+        
+        
+       
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+    }
+    
+    
+    var directionsArray = [String]()
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         print("herreeeee")
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
@@ -89,4 +132,14 @@ class MapViewController:  UIViewController, MKMapViewDelegate, CLLocationManager
         self.startLat = locValue.latitude
         self.startLong = locValue.longitude
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? JobLogJobViewController{
+            vc.senderScreen = self.senderScreen
+            vc.job = self.job
+            vc.jobType = self.jobType
+            vc.sendJob = self.sendJob
+        }
+    }
+    
 }

@@ -62,7 +62,7 @@ class DateTableViewCell: UITableViewCell, UICollectionViewDataSource,UICollectio
         cell.posterName.text = self.jobsForDate[indexPath.row].category1
         cell.distLabel.text = ""
         cell.rateLabel.text = self.jobsForDate[indexPath.row].payment
-        cell.timeLabel.text = self.jobsForDate[indexPath.row].date
+        cell.timeLabel.text = self.jobsForDate[indexPath.row].date?.first
         cell.additInfoLabel.text = self.jobsForDate[indexPath.row].additInfo
         cell.category = self.category
         cell.jobID = self.jobsForDate[indexPath.row].jobID!

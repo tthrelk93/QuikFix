@@ -12,8 +12,8 @@ class JobPost: NSObject {
     
     var category1: String?
     var payment: String?
-    var date: String?
-    var startTime: String?
+    var date: [String]?
+    var startTime: [String]?
     var jobDuration: String?
     var additInfo: String?
     var posterName: String?
