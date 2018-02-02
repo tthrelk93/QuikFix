@@ -14,9 +14,9 @@ module.exports = {
   // API Keys: https://dashboard.stripe.com/account/apikeys
   // Connect Settings: https://dashboard.stripe.com/account/applications/settings
   stripe: {
-    secretKey: 'YOUR_STRIPE_SECRET_KEY',
-    publishableKey: 'YOUR_STRIPE_PUBLISHABLE_KEY',
-    clientId: 'YOUR_STRIPE_CLIENT_ID',
+    secretKey: 'sk_test_LV43Yng4WPSPXvyNElx2dwg0',
+    publishableKey: 'pk_test_cmqNsIYuyCchUdHAnaHOyiXp',
+    clientId: 'ca_B4F4BbbvDs0jH5cSZpYnkB9yLpCsdQVM',
     authorizeUri: 'https://connect.stripe.com/express/oauth/authorize',
     tokenUri: 'https://connect.stripe.com/oauth/token'
   },
